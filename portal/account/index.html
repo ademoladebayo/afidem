@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from www.smarteyeapps.com/demo/html5-template-login-page/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 15 Oct 2021 08:09:11 GMT -->
+
+<head id="common-library">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SSHUB | login</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700" rel="stylesheet"> -->
+    <link rel="shortcut icon" href="../asset/images/fav-2.html">
+    <link rel="stylesheet" href="../asset/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../asset/css/fontawsom-all.min.css">
+    <link rel="stylesheet" type="text/css" href="../asset/css/style.css" />
+    <link href="../assets/css/lib/toastr/toastr.min.css" rel="stylesheet">
+    <link href="../assets/css/lib/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+
+<body style="font-family: Poppins; font-weight: bold;"   onload="getSchoolDetails()">
+    <div class="container-fluid">
+        <div class="container">
+            <div class="col-xl-10 col-lg-11 login-container">
+                <div class="row">
+                    <div class="col-lg-7 img-box">
+                        <img src="../asset/images/login-banner.png" alt="">
+                    </div>
+                    <div class="col-lg-5 no-padding">
+                        <div class="login-box">
+                            <div style="display: flex;
+                            justify-content: center;" class="row">
+
+                                <b>
+                                    <h1 style="font-weight: bold; font-family: Rowdies; color:#051f3e;">
+                                        <i style="color: #051f3e;" class="fas fa-graduation-cap fa-xs"></i> SSHUB
+                                    </h1>
+                                </b>
+
+                            </div>
+                            <br>
+
+                            <h5 style="color: #ff9d01;">Welcome Bursary!</h5>
+
+                            <label for=""><i class="fas fa-user"></i> Staff ID</label>
+                            <div class="login-row row no-margin">
+                                <input oninput="this.value = this.value.toUpperCase()" value="" id="id" type="text"
+                                    placeholder="USERNAME" class="form-control form-control-sm">
+                            </div>
+                            <label for=""><i class="fas fa-unlock-alt"></i> Password</label>
+                            <div class="login-row row no-margin">
+                                <input id="password" type="password" value="" class="form-control form-control-sm"><i
+                                    id="togglePassword" class="fas fa-eye"
+                                    style="margin-left: -35px; cursor: pointer; margin-bottom: 15px"></i>
+                            </div>
+                            <br>
+                            <a style="float: right; color: blue;" href="../index.html">Switch User</a>
+
+
+
+                            <div class="login-row btnroo row no-margin">
+                                <button id="signin" onclick="signIn()" class="btn btn-primary btn-sm ">Sign
+                                    In</button>
+                            </div>
+
+                            <br />
+
+                        </div>
+                        <footer class="footer">
+                            <div style="display: flex;
+                            justify-content: center;" class="copyright">© <a style="color: #051f3e;" href="../#"><b>
+                                        Dextroux Technologies</b></a></div>
+                        </footer>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+<script src="../asset/js/jquery-3.2.1.min.js"></script>
+<script src="../asset/js/popper.min.js"></script>
+<script src="../asset/js/bootstrap.min.js"></script>
+<script src="../asset/plugins/scroll-fixed/jquery-scrolltofixed-min.js"></script>
+<script src="../asset/js/script.js"></script>
+<script src="../common-library.js"></script>
+<script src="./js/bursary.js?v=1"></script>
+<script src="../assets/js/lib/toastr/toastr.min.js"></script>
+<script src="../assets/js/lib/toastr/toastr.init.js"></script>
+<script src="../assets/js/lib/sweetalert/sweetalert.min.js"></script>
+<script src="../assets/js/lib/sweetalert/sweetalert.init.js"></script>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    })
+</script>
+
+<!-- Mirrored from www.smarteyeapps.com/demo/html5-template-login-page/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 15 Oct 2021 08:09:14 GMT -->
+
+</html>

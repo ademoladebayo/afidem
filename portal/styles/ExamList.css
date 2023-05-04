@@ -1,0 +1,13 @@
+.examListContainer {
+    padding: 5rem 0.2rem;
+}
+
+a {
+    text-decoration: none !important
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}

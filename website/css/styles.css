@@ -1,0 +1,1903 @@
+/* Template: Cedo - Loans Credit Landing Page Template
+   Author: InovatikThemes
+   Created: Jan 2018
+   Description: Master CSS file
+*/
+
+/*****************************************
+Table Of Contents:
+
+01. General Styles
+02. Preloader
+03. Navigation
+04. Header
+05. Form Lightbox
+06. Approval
+07. Loan Options
+08. Loan Options Lightboxes
+09. Amount Based
+10. Description 1
+11. Description 2
+12. Questions
+13. About
+14. Testimonials
+15. Contact
+16. Footer
+17. Back To Top Button
+18. Terms Conditions And Privacy Policy
+19. Media Queries
+******************************************/
+
+/*****************************************
+Colors:
+- Text white: #f9f9fc
+- Text lighter purple: #864b82
+- Light purple: #7a2874
+- Dark purple: #70256b
+- Pink: #e23963
+- Light green: #97be5d
+- Dark green: #8baf56
+******************************************/
+
+
+/******************************/
+/*     01. General Styles     */
+/******************************/
+body,
+html {
+    width: 100%;
+	height: 100%;
+}
+
+body, p {
+	color: #f9f9fc; 
+	font: 400 0.9375rem/1.5rem "Open Sans", sans-serif;
+}
+
+.p-large {
+	font: 400 1rem/1.625rem "Open Sans", sans-serif;
+}
+
+.p-heading {
+	margin-bottom: 3rem;
+}
+
+.v-space-lg li {
+	margin-bottom: 0.375rem;
+}
+
+h1 {
+	font: 700 3rem/3.5rem "Open Sans", sans-serif;
+	letter-spacing: -1.25px;
+}
+
+.h1-large {
+	font: 700 3rem/3.25rem "Open Sans", sans-serif;
+	letter-spacing: -1.25px;
+}
+
+h2 {
+	margin-bottom: 1rem;
+	font: 700 2.5rem/2.75rem "Open Sans", sans-serif;
+	letter-spacing: -1px;
+}
+
+h3 {
+	font: 700 2rem/2.5rem "Open Sans", sans-serif;
+}
+
+h4 {
+	font: 700 1.375rem/1.75rem "Open Sans", sans-serif;
+}
+
+h5 {
+	font: 700 1.125rem/1.5rem "Open Sans", sans-serif;
+}
+
+a {
+	color: #f9f9fc;
+}
+
+a:hover {
+	color: #f9f9fc;
+	text-decoration: none;
+}
+
+.underline,
+.underline:hover {
+	text-decoration: underline;
+}
+
+.testimonial-text {
+	font-style: italic;
+}
+
+.btn-solid-reg {
+	display: inline-block;
+	padding: 1.25rem 2.25rem 1.25rem 2.25rem;
+	border: 1px solid #e23963;
+	border-radius: 2rem;
+	background-color: #e23963;
+	color: #fff;
+	font: 600 0.875rem/0 "Open Sans", sans-serif;
+	transition: all 0.2s;
+}
+
+.btn-solid-reg:hover {
+	border: 1px solid #e23963;
+	background-color: transparent;
+	color: #e23963;
+}
+
+.btn-solid-lg {
+	display: inline-block;
+	padding: 1.5rem 2.625rem 1.5rem 2.625rem;
+	border: 1px solid #e23963;
+	border-radius: 2rem;
+	background-color: #e23963;
+	color: #fff;
+	font: 600 0.875rem/0 "Open Sans", sans-serif;
+	transition: all 0.2s;
+}
+
+.btn-solid-lg:hover {
+	border: 1px solid #e23963;
+	background-color: transparent;
+	color: #e23963;
+}
+
+.btn-outline-reg {
+	display: inline-block;
+	padding: 1.25rem 2.25rem 1.25rem 2.25rem;
+	border: 1px solid #fff;
+	border-radius: 2rem;
+	background-color: transparent;
+	color: #fff;
+	font: 600 0.875rem/0 "Open Sans", sans-serif;
+	transition: all 0.2s;
+}
+
+.btn-outline-reg:hover {
+	border: 1px solid #e23963;
+	color: #e23963;
+}
+
+.section-divide-hr {
+	width: 84%;
+	height: 1px;
+	border: none;
+	background-color: #864b82;
+	opacity: 0.2;
+}
+
+.form-group {
+	position: relative;
+	margin-bottom: 1.125rem;
+}
+
+.form-group.has-error.has-danger {
+	margin-bottom: 0.625rem;
+}
+
+.form-group.has-error.has-danger .help-block.with-errors ul {
+	margin-top: 0.25rem;
+}
+
+.label-control {
+	position: absolute;
+	top: 0.75rem;
+	left: 1.875rem;
+	color: #864b82;
+	opacity: 0.8;
+	font: 400 0.9375rem/1.25rem "Open Sans", sans-serif;
+	cursor: text;
+	transition: all 0.2s ease;
+}
+
+/* IE10+ hack to solve lower label text position compared to the rest of the browsers */
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+	.label-control {
+		top: 0.75rem;
+	}
+}
+
+.form-control-input:focus + .label-control,
+.form-control-input.notEmpty + .label-control,
+.form-control-textarea:focus + .label-control,
+.form-control-textarea.notEmpty + .label-control {
+	top: 0.125rem;
+	opacity: 1;
+	font-size: 0.75rem;
+	font-weight: 700;
+}
+
+.form-control-input,
+.form-control-select {
+	display: block; /* needed for proper display of the label in Firefox, IE, Edge */
+	width: 100%;
+	padding-top: 1rem;
+	padding-bottom: 0rem;
+	padding-left: 1.75rem;
+	border: 1px solid #f9f9fc;
+	border-radius: 2rem;
+	background-color: #f9f9fc;
+	color: #864b82;
+	font: 400 0.9375rem/1.75rem "Open Sans", sans-serif;
+	transition: all 0.2s;
+	-webkit-appearance: none; /* removes inner shadow on form inputs on ios safari */
+}
+
+.form-control-select {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	height: 2.875rem;
+	color: rgb(133, 75, 129, 0.8);
+}
+
+.form-control-select .select-option {
+	color: rgb(133, 75, 129, 1);
+}
+
+/* IE10+ hack to solve lower label text position compared to the rest of the browsers */
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+	.form-control-input {
+		padding-top: 1rem;
+		padding-bottom: 0.5rem;
+	}
+
+	.form-control-select {
+		padding-top: 0.625rem;
+		padding-bottom: 0.75rem;
+	}
+}
+
+select {
+    /* you should keep these first rules in place to maintain cross-browser behavior */
+    -webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    background-image: url('../images/down-arrow.png');
+    background-position: 93% 50%;
+    background-repeat: no-repeat;
+    outline: none;
+}
+
+select::-ms-expand {
+    display: none; /* removes the ugly default down arrow on select form field in IE11 */
+}
+
+.form-control-textarea {
+	display: block; /* used to eliminate a bottom gap difference between Chrome and IE/FF */
+	width: 100%;
+	height: 8rem; /* used instead of html rows to normalize height between Chrome and IE/FF */
+	padding-top: 1.25rem;
+	padding-left: 1.75rem;
+	border: 1px solid #f9f9fc;
+	border-radius: 1.5rem;
+	background-color: #f9f9fc;
+	color: #864b82;
+	font: 400 0.9375rem/1.75rem "Open Sans", sans-serif;
+	transition: all 0.2s;
+}
+
+.form-control-input:focus,
+.form-control-select:focus,
+.form-control-textarea:focus {
+	outline: none; /* Removes blue border on focus */
+	box-shadow: 0 0.5rem 0.5rem -0.375rem #44143c;
+}
+
+.form-control-input:hover,
+.form-control-select:hover,
+.form-control-textarea:hover {
+	box-shadow: 0 0.5rem 0.5rem -0.375rem #44143c;
+}
+
+.checkbox {
+	font: 400 0.75rem/1.25rem "Open Sans", sans-serif;
+}
+
+input[type='checkbox'] {
+	vertical-align: middle;
+	margin-right: 0.375rem;
+}
+
+/* IE10+ hack to raise checkbox field position compared to the rest of the browsers */
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+	input[type="checkbox"] {
+		vertical-align: -9%;
+	}
+}
+
+.form-control-submit-button {
+	display: inline-block;
+	width: 100%;
+	height: 2.75rem;
+	border: 1px solid #e23963;
+	border-radius: 1.5rem;
+	background-color: #e23963;
+	color: #fff;
+	font: 600 0.875rem/1.75rem "Open Sans", sans-serif;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.form-control-submit-button:hover {
+	background-color: transparent;
+	color: #e23963;
+}
+
+/* Form Success And Error Message Formatting */
+#gmsgSubmit.h3.text-center.tada.animated,
+#cmsgSubmit.h3.text-center.tada.animated,
+#pmsgSubmit.h3.text-center.tada.animated,
+#gmsgSubmit.h3.text-center,
+#cmsgSubmit.h3.text-center,
+#pmsgSubmit.h3.text-center {
+	margin-bottom: 0;
+	font: 400 1.125rem/1rem "Open Sans", sans-serif;
+}
+
+
+#gmsgSubmit.h3.text-center.tada.animated,
+#gmsgSubmit.h3.text-center {
+	color: #f9f9fc;
+}
+
+#cmsgSubmit.h3.text-center.tada.animated,
+#pmsgSubmit.h3.text-center.tada.animated,
+#cmsgSubmit.h3.text-center,
+#pmsgSubmit.h3.text-center {
+	color: #864b82;
+}
+
+#cmsgSubmit.h3.text-center.tada.animated,
+#cmsgSubmit.h3.text-center {
+	display: block;
+}
+
+.help-block.with-errors {
+	color: #fff;
+	font-size: 0.75rem;
+	line-height: 1.125rem
+}
+
+.help-block.with-errors ul {
+	margin-bottom: 0;
+}
+/* end of form success and error message formatting */
+
+/* Form Success And Error Message Animation - Animate.css */
+@-webkit-keyframes tada {
+	from {
+		-webkit-transform: scale3d(1, 1, 1);
+		-ms-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+	10%, 20% {
+		-webkit-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+		-ms-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+		transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+	}
+	30%, 50%, 70%, 90% {
+		-webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+		-ms-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+		transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+	}
+	40%, 60%, 80% {
+		-webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+		-ms-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+		transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+	}
+	to {
+		-webkit-transform: scale3d(1, 1, 1);
+		-ms-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+@keyframes tada {
+	from {
+		-webkit-transform: scale3d(1, 1, 1);
+		-ms-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+	10%, 20% {
+		-webkit-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+		-ms-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+		transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+	}
+	30%, 50%, 70%, 90% {
+		-webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+		-ms-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+		transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+	}
+	40%, 60%, 80% {
+		-webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+		-ms-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+		transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+	}
+	to {
+		-webkit-transform: scale3d(1, 1, 1);
+		-ms-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+.tada {
+	-webkit-animation-name: tada;
+	animation-name: tada;
+}
+
+.animated {
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+/* end of form success and error message animation - Animate.css */
+
+/* Fade-move Animation For Lightbox - Magnific Popup */
+/* at start */
+.my-mfp-slide-bottom .zoom-anim-dialog {
+	opacity: 0;
+	transition: all 0.2s ease-out;
+	-webkit-transform: translateY(-1.25rem) perspective(37.5rem) rotateX(10deg);
+	-ms-transform: translateY(-1.25rem) perspective(37.5rem) rotateX(10deg);
+	transform: translateY(-1.25rem) perspective(37.5rem) rotateX(10deg);
+}
+
+/* animate in */
+.my-mfp-slide-bottom.mfp-ready .zoom-anim-dialog {
+	opacity: 1;
+	-webkit-transform: translateY(0) perspective(37.5rem) rotateX(0); 
+	-ms-transform: translateY(0) perspective(37.5rem) rotateX(0); 
+	transform: translateY(0) perspective(37.5rem) rotateX(0); 
+}
+
+/* animate out */
+.my-mfp-slide-bottom.mfp-removing .zoom-anim-dialog {
+	opacity: 0;
+	-webkit-transform: translateY(-0.625rem) perspective(37.5rem) rotateX(10deg); 
+	-ms-transform: translateY(-0.625rem) perspective(37.5rem) rotateX(10deg); 
+	transform: translateY(-0.625rem) perspective(37.5rem) rotateX(10deg); 
+}
+
+/* dark overlay, start state */
+.my-mfp-slide-bottom.mfp-bg {
+	opacity: 0;
+	transition: opacity 0.2s ease-out;
+}
+
+/* animate in */
+.my-mfp-slide-bottom.mfp-ready.mfp-bg {
+	opacity: 0.8;
+}
+/* animate out */
+.my-mfp-slide-bottom.mfp-removing.mfp-bg {
+	opacity: 0;
+}
+/* end of fade-move animation for lightbox - magnific popup */
+
+/* Fade Animation For Image Slider - Magnific Popup */
+@-webkit-keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.fadeIn {
+	-webkit-animation: fadeIn 0.6s;
+	animation: fadeIn 0.6s;
+}
+
+@-webkit-keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.fadeOut {
+	-webkit-animation: fadeOut 0.8s;
+	animation: fadeOut 0.8s;
+}
+/* end of fade animation for image slider - magnific popup */
+
+
+/*************************/
+/*     02. Preloader     */
+/*************************/
+.spinner-wrapper {
+	position: fixed;
+	z-index: 999999;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: #7a2874;
+}
+
+.spinner {
+	position: absolute;
+	top: 50%; /* centers the loading animation vertically one the screen */
+	left: 50%; /* centers the loading animation horizontally one the screen */
+	width: 3.75rem;
+	height: 1.25rem;
+	margin: -0.625rem 0 0 -1.875rem; /* is width and height divided by two */ 
+	text-align: center;
+}
+
+.spinner > div {
+	display: inline-block;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 100%;
+	background-color: #fff;
+	-webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+	animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+	0%, 80%, 100% { -webkit-transform: scale(0); }
+	40% { -webkit-transform: scale(1.0); }
+}
+
+@keyframes sk-bouncedelay {
+	0%, 80%, 100% { 
+		-webkit-transform: scale(0);
+		-ms-transform: scale(0);
+		transform: scale(0);
+	} 40% { 
+		-webkit-transform: scale(1.0);
+		-ms-transform: scale(1.0);
+		transform: scale(1.0);
+	}
+}
+
+
+/**************************/
+/*     03. Navigation     */
+/**************************/
+.navbar-custom {
+	background-color: #7a2874;
+	font: 600 0.875rem/2rem "Open Sans", sans-serif;
+}
+
+.navbar-custom .navbar-brand.logo-text {
+	font: italic 600 2.75rem/2rem "Open Sans", sans-serif;
+	letter-spacing: -1px;
+}
+
+.navbar-custom .navbar-brand.logo-image img {
+    width: 5.5rem;
+	height: 2.1875rem;
+	-webkit-backface-visibility: hidden;
+}
+
+.navbar-custom .navbar-nav {
+	margin-top: 0.75rem;
+}
+
+.navbar-custom .nav-item .nav-link {
+	padding: 0.25rem 0.625rem 0.25rem 0.625rem;
+	color: rgba(255, 255, 255, 0.8);
+	transition: all 0.2s ease;
+}
+
+.navbar-custom .nav-item .nav-link:hover {
+	color: rgba(255, 255, 255, 1);
+}
+
+/* Dropdown Menu */
+.navbar-custom .dropdown:hover > .dropdown-menu {
+	display: block; /* this makes the dropdown menu stay open while hovering it */
+	min-width: auto;
+	animation: fadeDropdown 0.2s; /* required for the fade animation */
+}
+
+@keyframes fadeDropdown {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.navbar-custom .dropdown-toggle:focus { /* removes dropdown outline on focus  */
+	outline: 0;
+}
+
+.navbar-custom .dropdown-menu {
+	margin-top: 0;
+	border: none;
+	border-radius: 0.375rem;
+	background-color: #7a2874;
+}
+
+.navbar-custom .dropdown-item {
+	color: #f2f2f2;
+}
+
+.navbar-custom .dropdown-item:hover {
+	background-color: #7a2874;
+}
+
+.navbar-custom .dropdown-item .item-text {
+	opacity: 0.8;
+	font: 600 0.875rem/1.5rem "Open Sans", sans-serif;
+}
+
+.navbar-custom .dropdown-item:hover .item-text {
+	opacity: 1;
+}
+
+.navbar-custom .dropdown-items-divide-hr {
+	width: 100%;
+	height: 1px;
+	margin: 0.25rem auto 0.25rem auto;
+	border: none;
+	background-color: #b5bcc4;
+	opacity: 0.2;
+}
+/* end of dropdown menu */
+
+.navbar-custom .navbar-toggler {
+	border-color: #f9f9fc;
+	border-radius: 0.5rem;
+}
+
+.navbar-dark .navbar-toggler-icon {
+	width: 1.5rem;
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(239, 239, 239, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+
+/*********************/
+/*    04. Header     */
+/*********************/
+.header {
+    position: relative;
+    width: 100%;
+}
+
+.header .h1-large {
+	margin-bottom: 1.25rem;
+}
+
+.header .btn-solid-lg {
+	border: 1px solid #97be5d;
+	background-color: #97be5d;
+}
+
+.header .btn-solid-lg:hover {
+	border: 1px solid #97be5d;
+	background-color: transparent;
+	color: #97be5d;
+}
+
+.header .swiper-slide.first {
+	height: 100%;
+	padding-top: 9rem;
+	padding-bottom: 9rem;
+	background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0)), url('../images/header-background-1.jpg') center center no-repeat;
+	background-size: cover;	
+	text-align: center;
+}
+
+.header .swiper-slide.first .p-large {
+	margin-bottom: 1.5rem;
+}
+
+.header .swiper-slide.first .image-container {
+	max-width: 300px;
+	margin-top: 3rem;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.header .swiper-slide.second {
+	height: 100%;
+	padding-top: 9rem;
+	padding-bottom: 9rem;
+	background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0)), url('../images/header-background-2.jpg') center center no-repeat;
+	background-size: cover;	
+	text-align: center;
+}
+
+.header .swiper-slide.second .image-container {
+	max-width: 300px;
+	margin-bottom: 3rem;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.header .swiper-slide.second .p-large {
+	margin-bottom: 1.5rem;
+}
+
+.header .swiper-slide.third {
+	height: 100%;
+	padding-top: 14rem;
+	padding-bottom: 4rem;
+	background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0)), url('../images/header-background-1.jpg') center center no-repeat;
+	background-size: cover;	
+	text-align: center;
+}
+
+.header .swiper-slide.third .p-heading {
+	margin-bottom: 1.75rem;
+}
+
+.header .swiper-pagination {
+	right: 0;
+	left: 0;
+	bottom: 3rem;
+	color: #efefef;
+}
+
+.header .swiper-pagination-bullet {
+	width: 0.7rem;
+	height: 0.7rem;
+	margin-right: 0.2rem;
+	margin-left: 0.2rem;
+	background-color: #efefef;
+}
+
+
+/*****************************/
+/*     05. Form Lightbox     */
+/*****************************/
+.lightbox-form {
+	position: relative;
+	max-width: 31.25rem;
+	margin: 2.5rem auto;
+	padding: 1.625rem 0.375rem;
+	border-radius: 1.5rem;
+	background: #70256b;
+	text-align: left;
+}
+
+.lightbox-form button.mfp-close.x-button {
+	position: absolute;
+	top: -0.125rem;
+	right: -0.125rem;
+	width: 2.75rem;
+	height: 2.75rem;
+	color: #efefef;
+}
+
+.lightbox-form form {
+	margin-top: 1.5rem;
+}
+
+
+/************************/
+/*     06. Approval     */
+/************************/
+.accordion {
+	padding-top: 5rem;
+	padding-bottom: 3rem;
+	background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.0)), url('../images/approval-background.jpg') center center no-repeat;
+	background-size: cover; 
+}
+
+.accordion .item {
+	margin-bottom: 2rem;
+}
+
+.accordion a[aria-expanded="true"] .circle-numbering {
+	display: inline-block;
+	width: 2.5rem;
+	height: 2.5rem;
+	margin-right: 0.75rem;
+	border: 1px solid #97be5d;
+	border-radius: 50%;
+	background-color: #97be5d;
+	color: #f9f9fc;
+	font: 700 1rem/2.375rem "Open Sans", sans-serif;
+	text-align: center;
+	vertical-align: top;
+}
+
+.accordion a[aria-expanded="false"] .circle-numbering {
+	display: inline-block;
+	width: 2.5rem;
+	height: 2.5rem;
+	margin-right: 0.75rem;
+	border: 1px solid #97be5d;
+	border-radius: 50%;
+	background-color: #97be5d;
+	color: #f9f9fc;
+	font: 700 1rem/2.375rem "Open Sans", sans-serif;
+	text-align: center;
+	vertical-align: top;
+}
+
+.accordion .accordion-title {
+	display: inline-block;
+	width: 78%;
+	margin-top: 0.375rem;
+	margin-bottom: 0.25rem;
+	font: 700 1.25rem/1.75rem "Open Sans", sans-serif;
+}
+
+.accordion .accordion-body {
+	margin-left: 3.25rem;
+	margin-bottom: 0;
+}
+
+
+/****************************/
+/*     07. Loan Options     */
+/****************************/
+.cards-1 {
+	padding-top: 5rem;
+	padding-bottom: 0.5rem;
+	color: #864b82;
+}
+
+.cards-1 p {
+	color: #864b82;
+}
+
+.cards-1 .card {
+	margin-right: auto;
+	margin-left: auto;
+	border: none;
+	margin-top: 1rem;
+	margin-bottom: 3rem;
+}
+
+.cards-1 .card-title {
+	margin-bottom: 0.375rem;
+}
+
+.cards-1 .card .card-image {
+	width: 6.875rem;
+	height: 6.25rem;
+	margin-right: auto;
+	margin-bottom: 0.5rem;
+	margin-left: auto;
+}
+
+.cards-1 .card-body {
+	padding-right: 1rem;
+	padding-left: 1rem;
+}
+
+.cards-1 .card-body p {
+	margin-bottom: 1.5rem;
+}
+
+
+/**************************************/
+/*     08. Loan Options Lightboxes    */
+/**************************************/
+.lightbox-basic {
+	position: relative;
+	max-width: 62.5rem;
+	margin: 2.5rem auto;
+	padding: 1.5rem;
+	border-radius: 1.5rem;
+	background: #70256b;
+	text-align: left;
+}
+
+.lightbox-basic .container {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.lightbox-basic img {
+	display: block;
+	width: 100%;
+	max-width: 33.75rem;
+	margin-right: auto;
+	margin-left: auto;
+	border-radius: 1.5rem;
+}
+
+.lightbox-basic h3 {
+	margin-top: 2rem;
+	margin-bottom: 0.875rem;
+}
+
+.lightbox-basic hr {
+	width: 2.5rem;
+	height: 1px;
+	margin-top: 0;
+	margin-bottom: 0.875rem;
+	margin-left: 0;
+	border: 0;
+	background-color: #f9f9fc;
+	text-align: left;
+}
+
+.lightbox-basic h4 {
+	margin-bottom: 1rem;
+}
+
+.lightbox-basic table {
+	margin-top: 0.875rem;
+}
+
+.lightbox-basic table tr {
+	line-height: 1.75rem;
+}
+
+.lightbox-basic table .icon-cell {
+	width: 2rem;
+	text-align: center;
+}
+
+.lightbox-basic table .fas {
+	color: #f9f9fc;
+}
+
+.lightbox-basic .btn-outline-reg,
+.lightbox-basic .btn-solid-reg {
+	margin-top: 1.25rem;
+}
+
+.lightbox-basic a.mfp-close.as-button {
+	position: relative;
+	width: auto;
+	height: auto;
+	margin-right: 0.375rem;
+	color: #f9f9fc;
+	opacity: 1;
+}
+
+.lightbox-basic .btn-solid-reg.mfp-close.as-button:hover {
+	border: 1px solid #e23963;
+	background-color: transparent;
+	color: #e23963;
+}
+
+.lightbox-basic .btn-outline-reg.mfp-close.as-button:hover {
+	border: 1px solid #e23963;
+	color: #e23963;
+}
+
+.lightbox-basic button.mfp-close.x-button {
+	position: absolute;
+	top: -0.125rem;
+	right: -0.125rem;
+	width: 2.75rem;
+	height: 2.75rem;
+	color: #f9f9fc;
+}
+
+
+/****************************/
+/*     09. Amount Based     */
+/****************************/
+.cards-2 {
+	padding-top: 4rem;
+	padding-bottom: 0.5rem;
+	color: #864b82;
+}
+
+.cards-2 p {
+	color: #864b82;
+}
+
+.cards-2 .card {
+	max-width: 20rem;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 5rem;
+	padding-top: 1rem;
+	padding-bottom: 2rem;
+	border: 1px solid #864b82;
+	border-radius: 1.5rem;
+}
+
+.cards-2 .card .cell-divide-hr {
+	width: 6rem;
+	height: 1px;
+	margin-top: 1.75rem;
+	margin-bottom: 1.5rem;
+	border: none;
+	background-color: #864b82;
+	opacity: 0.5;
+
+}
+
+.cards-2 .card .card-body p:first-of-type {
+	margin-bottom: 0;
+}
+
+.cards-2 .card .price {
+	font: 300 3rem/3rem "Open Sans", sans-serif;
+}
+
+.cards-2 .card .price .currency {
+	position: relative;
+	top: -0.5rem;
+	font-size: 2.75rem;
+}
+
+.cards-2 .card .list-group {
+	margin-top: 1.75rem;
+	margin-bottom: 1.75rem;
+}
+
+.cards-2 .card .list-group-item {
+	border: none;
+	padding: .25rem;
+	font-size: 1rem;
+}
+
+.cards-2 .card .fa-check {
+	margin-right: 0.5rem;
+	color: #97be5d;
+}
+
+
+/*****************************/
+/*     10. Description 1     */
+/*****************************/
+.slider-1 {
+	padding-top: 6rem;
+	padding-bottom: 7rem;
+	margin-bottom: -1px;
+	background: url('../images/curved-hills-top-background.jpg') center bottom no-repeat;
+	background-size: cover;
+}
+
+.slider-1 .swiper-container {
+	border-radius: 1.5rem;
+	margin-bottom: 3rem;
+}
+
+.slider-1 .swiper-button-prev,
+.slider-1 .swiper-button-next {
+	top: 49%;
+	background: none;
+	color: #e23963;
+}
+
+.slider-1 .swiper-button-prev {
+	left: 1.25rem;
+}
+
+.slider-1 .swiper-button-next {
+	right: 2rem;
+}
+
+.slider-1 h3 {
+	margin-bottom: 1.5rem;
+}
+
+.slider-1 .icon-cell {
+	vertical-align: top;
+}
+
+.slider-1 .icon-cell .fas {
+	margin-right: 0.5rem;
+	color: #97be5d;
+	font-size: 1.25rem;
+	vertical-align: -8%;
+}
+
+.slider-1 table td {
+	padding-bottom: 0.5rem;
+}
+
+
+/*****************************/
+/*     11. Description 2     */
+/*****************************/
+.pills {
+	padding-top: 4rem;
+	padding-bottom: 4rem;
+	background-color: #70256b;
+	color: #f9f9fc;
+}
+
+.pills .nav-tabs {
+	margin-bottom: 2rem;
+	border: none;
+}
+
+.pills .nav-tabs .nav-item {
+	width: 100%;
+	margin-bottom: 0.75rem;
+	text-align: center;
+}
+
+.pills .nav-tabs .nav-item .nav-link {
+	padding: 0.5rem 2rem;
+	border-radius: 1.5rem;
+	border: 1px solid #f9f9fc;
+	color: #f9f9fc;
+	transition: all 0.2s ease;
+}
+
+.pills .nav-tabs .nav-item .nav-link.active {
+	color: #864b82;
+}
+
+.pills .nav-tabs .nav-item .nav-link:hover {
+	background-color: #f9f9fc;
+	color: #864b82;
+}
+
+.pills .tab-content {
+	margin-bottom: 3rem;
+}
+
+.pills #tab-1 .btn-solid-reg {
+	margin-top: 0.5rem;
+	margin-right: 0.25rem;
+}
+
+.pills #tab-1 .btn-outline-reg {
+	margin-top: 0.5rem;
+}
+
+.pills #tab-2 .icon-cell {
+	vertical-align: top;
+}
+
+.pills #tab-2 .icon-cell .fas {
+	margin-top: 0.25rem;
+	margin-right: 1rem;
+	font-size: 2.625rem;
+}
+
+.pills #tab-2 table td {
+	padding-bottom: 1rem;
+}
+
+
+/*************************/
+/*     12. Questions     */
+/*************************/
+.basic-1 {
+	padding-top: 9rem;
+	padding-bottom: 5.5rem;
+	background: url('../images/curved-hills-bottom-background.jpg') center top no-repeat;
+	background-size: cover;
+}
+
+.basic-1 h3 {
+	margin-bottom: 1rem;
+}
+
+.basic-1 .p-heading {
+	margin-bottom: 1rem;
+}
+
+.basic-1 .btn-solid-reg {
+	margin-top: 0.5rem;
+}
+
+.basic-1 .btn-solid-reg .fa-phone {
+	margin-right: 0.375rem;
+	font-size: 0.875rem;
+	line-height: 0;
+}
+
+
+/*********************/
+/*     13. About     */
+/*********************/
+.basic-2 {
+	padding-top: 5rem;
+	padding-bottom: 6rem;
+	background-color: #97be5d;
+}
+
+.basic-2 .embed-responsive {
+	border-radius: 1.5rem;
+	max-width: 40rem;
+}
+
+
+/****************************/
+/*     14. Testimonials     */
+/****************************/
+.slider-2 {
+	padding-top: 5rem;
+	padding-bottom: 5.5rem;
+	background-color: #8baf56;
+}
+
+.slider-2 h3 {
+	margin-bottom: 3rem;
+}
+
+.slider-2 .card {
+	border: none;
+	background-color: transparent;
+}
+
+.slider-2 .card-image {
+	width: 8.125rem;
+	height: 8.125rem;
+	margin-right: auto;
+	margin-bottom: 0.25rem;
+	margin-left: auto;
+}
+
+.slider-2 .testimonial-text {
+	margin-bottom: 0.5rem;
+}
+
+.slider-2 .swiper-container {
+	padding-bottom: 0.25rem;
+}
+
+.slider-2 .swiper-pagination {
+	bottom: -0.25rem;
+}
+
+.slider-2 .swiper-pagination-bullet {
+	width: 0.625rem;
+	height: 0.625rem;
+	background: #f9f9fc;
+}
+
+
+/***********************/
+/*     15. Contact     */
+/***********************/
+.form {
+	padding-top: 5rem;
+	padding-bottom: 5rem;
+	color: #864b82;
+}
+
+.form p,
+.form a {
+	color: #864b82;
+}
+
+.form a:hover {
+	color: #864b82;
+}
+
+.form .map-responsive {
+	position: relative;
+	overflow: hidden;
+	height: 0;
+	margin-right: 1rem;
+	margin-bottom: 3rem;
+	padding-bottom: 64%;
+	border-radius: 1.5rem;
+}
+
+.form .map-responsive iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: none; 
+}
+
+.form .form-control-input:focus,
+.form .form-control-select:focus,
+.form .form-control-textarea:focus {
+	outline: none; /* Removes blue border on focus */
+	box-shadow: 0 0.5rem 0.5rem -0.375rem #d8c1d4;
+}
+
+.form .form-control-input:hover,
+.form .form-control-select:hover,
+.form .form-control-textarea:hover {
+	box-shadow: 0 0.5rem 0.5rem -0.375rem #d8c1d4;
+}
+
+.form .help-block.with-errors {
+	color: #864b82;
+}
+
+.form .form-control-submit-button:hover {
+	color: #e23963;
+}
+
+
+/**********************/
+/*     16. Footer     */
+/**********************/
+.footer {
+	padding-top: 4rem;
+	background-color: #7a2874;
+}
+
+.footer .footer-col {
+	margin-bottom: 2rem;
+}
+
+.footer h4 {
+	margin-bottom: 0.75rem;
+}
+
+.footer h3,
+.footer p,
+.footer a {
+	color: #f9f9fc;
+}
+
+.footer .fa-stack.fa-lg {
+	margin-top: 0.125rem;
+	font-size: 1.5rem;
+	line-height: 3rem;
+}
+
+.footer .fa-stack a .facebook.fa-stack-2x {
+    color: #3b5998;
+}
+
+.footer .fa-stack a .twitter.fa-stack-2x {
+    color: #45b0e3;
+}
+
+.footer .fa-stack a .google-plus.fa-stack-2x {
+    color: #dd4b39;
+}
+
+.footer .fa-stack a .instagram.fa-stack-2x {
+    color: #d51a6f;
+}
+
+.footer .fa-stack a .linkedin.fa-stack-2x {
+    color: #0177b5;
+}
+
+.footer .fa-stack a .dribbble.fa-stack-2x {
+    color: #ea4c89;
+}
+
+/* Default Social Icon */
+.footer .fa-stack a .fa-stack-1x {
+    color: #fff;
+	transition: all 0.2s;
+}
+
+.footer .fa-stack a .fa-stack-2x {
+	color: #3b5998;
+	transition: all 0.2s;
+}
+
+.footer .fa-stack a:hover .fa-stack-1x {
+	color: #e23963;
+}
+
+.footer .fa-stack a:hover .fa-stack-2x {
+    color: #fff;
+}
+/* end of default social icon */
+
+.footer .copyright {
+	padding-top: 1.5rem;
+	padding-bottom: 0.5rem;
+	background-color: #70256b;
+	text-align: center;
+}
+
+.footer .copyright p {
+	opacity: 0.8;
+}
+
+.footer .copyright p,
+.footer .copyright p a {
+	color: #f9f9fc;
+	font: 400 0.875rem/1.5rem "Open Sans", sans-serif;
+}
+
+
+/**********************************/
+/*     17. Back To Top Button     */
+/**********************************/
+a.back-to-top {
+	position: fixed;
+	z-index: 999;
+	right: 0.75rem;
+	bottom: 0.75rem;
+	display: none;
+	width: 2.625rem;
+	height: 2.625rem;
+	border-radius: 1.875rem;
+	background: #e23963 url("../images/up-arrow.png") no-repeat center 47%;
+	background-size: 1.125rem 1.125rem;
+	text-indent: -9999px;
+}
+
+a:hover.back-to-top {
+	background-color: #dd2956; 
+}
+
+
+/***************************************************/
+/*     18. Terms Conditions And Privacy Policy     */
+/***************************************************/
+.ex-header {
+	padding-top: 7rem;
+	padding-bottom: 5rem;
+	background: #7a2874;
+	text-align: center;
+}
+
+.ex-basic {
+	padding-top: 4rem;
+	padding-bottom: 5.5rem;
+	color: #864b82;
+}
+
+.ex-basic h4,
+.ex-basic p,
+.ex-basic a.underline {
+	color: #864b82;
+}
+
+.ex-basic .breadcrumbs .list-inline-item {
+	margin-right: 0.25rem;
+	font-size: 0.875rem;
+}
+
+.ex-basic .text-container h4 {
+	margin-bottom: 0.75rem;
+}
+
+.ex-basic .text-container {
+	margin-bottom: 3rem;
+}
+
+.ex-basic form {
+	margin-bottom: 4rem;
+}
+
+.ex-basic .form-control-input:focus,
+.ex-basic .form-control-select:focus,
+.ex-basic .form-control-textarea:focus {
+	outline: none; /* Removes blue border on focus */
+	box-shadow: 0 0.5rem 0.5rem -0.375rem #d8c1d4;
+}
+
+.ex-basic .form-control-input:hover,
+.ex-basic .form-control-select:hover,
+.ex-basic .form-control-textarea:hover {
+	box-shadow: 0 0.5rem 0.5rem -0.375rem #d8c1d4;
+}
+
+.ex-basic .help-block.with-errors {
+	color: #864b82;
+}
+
+.ex-basic .list-wrapper {
+	margin-top: 2rem;
+	margin-bottom: 3rem;
+	padding-top: 1.75rem;
+	padding-right: 1.5rem;
+	padding-bottom: 1rem;
+	background-color: #fcfcfd;
+}
+
+
+/*****************************/
+/*     19. Media Queries     */
+/*****************************/	
+/* Min-width width 768px */
+@media (min-width: 768px) {
+	
+	/* Navigation */
+	.navbar-custom {
+        padding: 2.125rem 1.5rem 2.125rem 1.5rem;
+        background-color: transparent;
+        transition: all 0.2s;
+    }
+
+    .navbar-custom.top-nav-collapse {
+        padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+        background-color: #7a2874;
+	}
+	
+	.navbar-custom .navbar-brand.logo-image img {
+        width: 6.25rem;
+        height: 2.5rem;
+	}
+
+	.navbar-custom.top-nav-collapse .navbar-brand.logo-image img {
+        width: 5.5rem;
+		height: 2.1875rem;
+	}
+    
+	.navbar-custom .navbar-nav {
+		margin-top: 1px;
+	}
+
+	.navbar-custom .dropdown-item {
+		padding-top: 0.25rem;
+		padding-bottom: 0.25rem;
+	}
+
+	.navbar-custom .dropdown-items-divide-hr {
+		width: 84%;
+	}
+	/* end of navigation */
+
+
+	/* Header */
+	.header .swiper-slide.first {
+		padding-top: 11rem;
+		padding-bottom: 11rem;
+		text-align: left;
+	}
+
+	.header .swiper-slide.first .image-container {
+		max-width: 100%;
+		margin-top: 0;
+	}
+
+	.header .swiper-slide.second {
+		padding-top: 11rem;
+		padding-bottom: 11rem;
+		text-align: left;
+	}
+
+	.header .swiper-slide.second .image-container {
+		max-width: 100%;
+		margin-bottom: 0
+	}
+	
+	.header .swiper-slide.third {
+		padding-top: 13rem;
+		padding-bottom: 9rem;
+	}
+	/* end of header */
+
+	
+	/* Form Lightbox */
+	.lightbox-form {
+		padding: 2rem 1.5rem;
+	}
+	/* end of form lightbox */
+
+
+	/* Approval */
+	.accordion #detailsAccordion {
+		width: 80%;
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	.accordion .accordion-title {
+		width: 90%;
+	}
+	/* end of approval */
+
+
+	/* Amount Based */
+	.cards-2 .card .price {
+		font: 300 4rem/3.5rem "Open Sans", sans-serif;
+	}
+	/* end of amount based */
+
+
+	/* Description 1 */
+	.slider-1 {
+		padding-bottom: 9rem;
+	}
+	/* end of description 1 */
+
+
+	/* Description 2 */
+	.pills .nav-tabs .nav-item {
+		width: auto;
+		margin-right: 0.625rem;
+		margin-bottom: 0;
+	}
+	/* end of description 2 */
+
+
+	/* Footer */
+	.footer .footer-col {
+		margin-bottom: 4rem;
+	}
+	/* end of footer */
+
+
+	/* Terms Conditions And Privacy Policy */
+	.ex-header {
+		padding-top: 10rem;
+		padding-bottom: 8rem;
+	}
+
+	.ex-basic form {
+		margin-bottom: 0;
+	}
+	/* end of terms conditions and privacy policy */
+}
+/* end of min-width width 768px */
+
+
+/* Min-width width 992px */
+@media (min-width: 992px) {
+	
+	/* General Styles */
+	.p-heading {
+		width: 70%;
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	.h1-large {
+		font: 700 4rem/4.375rem "Open Sans", sans-serif;
+	}
+	/* end of general styles */
+
+
+	/* Header */
+	.header {
+		height: 100%;
+		min-height: 55rem;
+	}
+
+	.header .swiper-container {
+		height: 100vh;
+		min-height: 55rem;
+	}
+
+	.header .swiper-slide {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.header .swiper-slide.first {
+		padding-top: 0;
+		padding-bottom: 2rem;
+	}
+
+	.header .swiper-slide.first .image-container {
+		max-width: 80%;
+		margin-left: 2rem;
+	}
+	
+	.header .swiper-slide.second {
+		padding-top: 0rem;
+		padding-bottom: 1rem;
+	}
+	
+	.header .swiper-slide.third {
+		padding-top: 0;
+		padding-bottom: 2rem;
+	}
+
+	.header .swiper-pagination {
+		bottom: 3rem;
+	}
+	/* end of header */
+
+
+	/* Approval */
+	.accordion #detailsAccordion {
+		width: 65%;
+	}
+	/* end of approval */
+
+
+	/* Loan Options */
+	.cards-1 .card {
+		width: auto;
+		margin-bottom: 3rem;
+	}
+	/* end of loan options */
+
+
+	/* Loan Options Lightboxes */
+	.lightbox-basic {
+		padding: 2.125rem;
+	}
+
+	.lightbox-basic img {
+		max-width: 96%;
+		margin-left: 0.5rem;
+	}
+	
+	.lightbox-basic h3 {
+		margin-top: 0;
+	}
+	/* end of loan options lightboxes */
+
+
+	/* Description 1 */
+	.slider-1 .swiper-container {
+		max-width: 30rem;
+		margin-left: 2rem;
+		margin-bottom: 0rem;
+	}
+
+	.slider-1 .text-container {
+		margin-left: 1rem;
+	}
+	/* end of description 1 */
+
+
+	/* Description 2 */
+	.pills .tab-content {
+		margin-bottom: 0;
+	}
+	/* end of description 2 */
+
+
+	/* Contact */
+	.form .map-responsive {
+		margin-bottom: 0;
+		padding-bottom: 73%;
+	}
+
+	.form .form-control-textarea {
+		height: 6.5rem; 
+	}
+	/* end of contact */
+}
+/* end of min-width width 992px */
+
+
+/* Min-width width 1200px */
+@media (min-width: 1200px) {
+	
+	/* General Styles */
+	.p-heading {
+		width: 60%;
+	}
+	/* end of general styles */
+
+
+	/* Header */
+	.header {
+		background-position: bottom;
+	}
+
+	.header .swiper-slide.first .text-container {
+		margin-top: 3rem;
+		width: 92%;
+		margin-left: 2rem;
+	}
+
+	.header .swiper-slide.first .image-container {
+		margin-left: 1.5rem;
+		margin-right: 1rem;
+	}
+
+	.header .swiper-slide.second .text-container {
+		margin-top: 0.5rem;
+		width: 92%;
+		margin-left: 1rem;
+	}
+
+	.header .swiper-slide.second .image-container {
+		margin-top: 0;
+		margin-left: 0;
+		margin-right: 1rem;
+	}
+	/* end of header */
+
+
+	/* Approval */
+	.accordion {
+		padding-bottom: 3.5rem;
+	}
+
+	.accordion .accordion-title {
+		width: 91%;
+	}
+
+	.accordion #detailsAccordion {
+		width: 55%;
+	}
+	/* end of approval */
+
+
+	/* Description 1 */
+	.slider-1 {
+		padding-bottom: 11rem;
+	}
+
+	.slider-1 h3 {
+		margin-top: 1.5rem;
+	}
+	/* end of description 1 */
+
+
+	/* Description 2 */
+	.pills {
+		padding-top: 2rem;
+	}
+
+	.pills .nav-tabs,
+	.pills .tab-content {
+		margin-left: 1.75rem;
+	}
+
+	.pills .nav-tabs {
+		margin-top: 4rem;
+	}
+
+	.pills .description-image {
+		margin-left: 3rem;
+	}
+	/* end of description 2 */
+
+
+	/* Questions */
+	.basic-1 {
+		padding-top: 10rem;
+	}
+	/* end of questions */
+
+
+	/* Contact */
+	.form #ContactForm {
+		margin-left: 1rem;
+	}
+
+	.form .form-control-textarea {
+		height: 10rem; 
+	}
+	/* end of contact */
+
+
+	/* Footer */
+	.footer .footer-col {
+		width: 95%;
+	}
+	/* end of footer */
+
+
+	/* Terms & Conditions And Privacy Policy */
+	.ex-basic .list-wrapper {
+		padding-right: 2rem;
+		padding-left: 0.75rem;
+	}
+
+	.ex-basic form {
+		max-width: 28.75rem;
+		margin-left: 2rem;
+	}
+	/* end of terms & conditions and privacy policy */
+}
+/* end of min-width width 1200px */
