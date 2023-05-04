@@ -1,14 +1,14 @@
 var ip = "";
 var domain = "";
-APP_MODE = "DEV";
+APP_MODE = "LIVE";
 if (this.APP_MODE == "DEV") {
   // DEVELOPMENT IP
   ip = "http://127.0.0.1:8000";
   domain = "http://localhost/afidem-portal";
 } else if (this.APP_MODE == "LIVE") {
   // LIVE IP
-  ip = "https://afidemglobalresource.com.ng/backend/";
-  domain = "https://afidemglobalresource.com.ng";
+  ip = "https://afidemglobalresource.com.ng/backend/afidem";
+  domain = "https://portal.afidemglobalresource.com.ng/";
 }
 
 // VAR
