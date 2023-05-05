@@ -115,7 +115,7 @@ class TransactionService
         foreach ($data as $keys => $value) {
             $transaction = TransactionModel::find($keys);
             foreach ($data[$keys] as $key => $value) {
-                $transaction[$key] = $value == null ? "-" : $value;
+                $transaction[$key] = $value == null ? 0 : intVal($value);
             }
             $transaction->save();
         }

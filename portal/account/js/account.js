@@ -4,7 +4,7 @@ APP_MODE = "LIVE";
 if (this.APP_MODE == "DEV") {
   // DEVELOPMENT IP
   ip = "http://127.0.0.1:8000";
-  domain = "http://localhost/afidem-portal";
+  domain = "http://localhost/afidem/portal";
 } else if (this.APP_MODE == "LIVE") {
   // LIVE IP
   ip = "https://afidemglobalresource.com.ng/backend/afidem";
@@ -1230,7 +1230,7 @@ aria-labelledby="endModalTitle" aria-hidden="true" data-backdrop="static" data-k
                             </div>
                         </form>    
                         <br>
-                        <a  style="float: right; color: red;" href="./index.html">Log out</a>
+                        <a  style="float: right; color: red;" onclick="goTo('');">Log out</a>
 
 
                         <div class="login-row btnroo row no-margin">
