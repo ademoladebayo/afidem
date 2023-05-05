@@ -604,18 +604,18 @@ function getAllTransaction() {
           parseInt(data.daily_stat.purchase)
       );
       document.getElementById("d_withdrawal").innerHTML = formatNumber(
-        data.daily_stat.withdrawal
+        parseInt(data.daily_stat.withdrawal)
       );
       document.getElementById("d_card_transfer").innerHTML = formatNumber(
-        data.daily_stat.card_transfer
+        parseInt(data.daily_stat.card_transfer)
       );
 
       document.getElementById("d_transfer").innerHTML = formatNumber(
-        data.daily_stat.transfer
+        parseInt(data.daily_stat.transfer)
       );
 
       document.getElementById("d_airtime").innerHTML = formatNumber(
-        data.daily_stat.airtime
+        parseInt(data.daily_stat.airtime)
       );
 
       document.getElementById("d_purchase").innerHTML = formatNumber(
@@ -623,7 +623,7 @@ function getAllTransaction() {
       );
 
       document.getElementById("d_trans_count").innerHTML = formatNumber(
-        data.daily_stat.trans_count
+        parseInt(data.daily_stat.trans_count)
       );
 
       document.getElementById("m_profit").innerHTML = formatNumber(
@@ -634,30 +634,30 @@ function getAllTransaction() {
           parseInt(data.montly_stat.purchase)
       );
       document.getElementById("m_withdrawal").innerHTML = formatNumber(
-        data.montly_stat.withdrawal
+        parseInt(data.montly_stat.withdrawal)
       );
       document.getElementById("m_card_transfer").innerHTML = formatNumber(
-        data.montly_stat.card_transfer
+        parseInt(data.montly_stat.card_transfer)
       );
 
       document.getElementById("m_transfer").innerHTML = formatNumber(
-        data.montly_stat.transfer
+        parseInt(data.montly_stat.transfer)
       );
 
       document.getElementById("m_airtime").innerHTML = formatNumber(
-        data.montly_stat.airtime
+        parseInt(data.montly_stat.airtime)
       );
 
       document.getElementById("m_purchase").innerHTML = formatNumber(
-        data.montly_stat.purchase
+        parseInt(data.montly_stat.purchase)
       );
 
       document.getElementById("m_trans_count").innerHTML = formatNumber(
-        data.montly_stat.trans_count
+        parseInt(data.montly_stat.trans_count)
       );
 
       document.getElementById("m_expense").innerHTML = formatNumber(
-        data.montly_stat.expense
+        parseInt(data.montly_stat.expense)
       );
 
       c = 1;
