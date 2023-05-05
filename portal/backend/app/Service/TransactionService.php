@@ -7,6 +7,7 @@ use App\Model\ExpenseModel;
 use App\Model\TransactionModel;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\TransactionImport;
+use App\Model\AdminModel;
 use Illuminate\Support\Facades\Log;
 
 class TransactionService
@@ -58,6 +59,13 @@ class TransactionService
         $c = 0;
         $day = "";
         foreach ($sheetData as $row) {
+            //CHECK IF TERMIAL BELONG TO THIS STATION
+            $terminal_id = AdminModel::where('id', $admin_station)->value('terminal_id');
+
+            if (trim($row["terminal_id"]) != $terminal_id) {
+                return response(['success' => false, 'message' => "Transactions does not belong to this terminal !"]);
+            }
+
             if (TransactionModel::where('transaction_ref', trim($row["transaction_ref"]))->exists()) {
                 continue;
             }
@@ -85,7 +93,7 @@ class TransactionService
         if ($c > 0) {
             return response(['success' => true, 'message' => "(" . $c . ") new transaction has been uploaded successfully  for " . $day]);
         } else {
-            return response(['success' => false, 'message' => "No transaction was uploaded"]);
+            return response(['success' => false, 'message' => "Transactions has been uploaded before."]);
         }
     }
 
