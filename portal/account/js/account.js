@@ -689,13 +689,13 @@ function getAllTransaction() {
               <td>${formatNumber(
                 parseInt(data.transaction_history[i].earnings)
               )}</td>
-              <td class="allownumeric" style="font-size: 18px; color: ${
+              <td class="allownumeric" style="font-style:bold; font-size: 18px; color: ${
                 data.transaction_history[i].profit == 0 ? "red" : "green"
               }" oninput=" addToProfitList('${
             data.transaction_history[i].id
-          }','profit',this.innerHTML)" contenteditable="true"><b>${
+          }','profit',this.innerHTML)" contenteditable="true">${
             data.transaction_history[i].profit
-          }<b></td>
+          }</td>
              </tr>
               `;
           c = c + 1;
