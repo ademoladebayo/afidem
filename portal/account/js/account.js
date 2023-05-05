@@ -315,7 +315,7 @@ function createExpense() {
           setTimeout(function () {
             closeModal("modalYT");
             // window.parent.location.reload();
-            window.parent.getAllExpense();
+            window.parent.processReport();
           }, 1000);
         } else {
           errortoast("<b>" + data.message + "</b>");
@@ -333,7 +333,7 @@ function getAllExpense() {
   if (custom_date == "") {
     date = changeDateFormat(getDate().split("~")[1]);
   } else {
-    date = custom_date;
+    date = changeDateFormat(custom_date);
   }
 
   openSpinnerModal("Fetch expense");
@@ -345,7 +345,7 @@ function getAllExpense() {
       Authorization: "Bearer " + localStorage["token"],
     },
     body: JSON.stringify({
-      date: changeDateFormat(date),
+      date: date,
       admin_station: document.getElementById("station").value,
     }),
   })
