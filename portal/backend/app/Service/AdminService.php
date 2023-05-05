@@ -38,10 +38,10 @@ class AdminService
             if ($admin->password == $request->password) {
                 $token = $admin->createToken('token')->plainTextToken;
                 $station = [];
-                if ($admin->role === "SUPERADMIN") {
+                if ($admin->role == "SUPERADMIN") {
                     $station = AdminModel::where("role", "ADMIN")->get();
                 } else {
-                    $station = AdminModel::find($admin->id)->get();
+                    $station = AdminModel::where('id',$admin->id)->get();
                 }
 
                 return  response(['token' => $token, 'success' => true, 'message' => 'Welcome, Admin', 'data' => $admin, 'station' => $station]);
