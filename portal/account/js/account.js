@@ -295,7 +295,7 @@ function createExpense() {
         description: description,
         amount: amount,
         date_incurred: date,
-        admin_station: document.getElementById("station").value,
+        admin_station: window.parent.document.getElementById("station").value,
       }),
     })
       .then(function (res) {
