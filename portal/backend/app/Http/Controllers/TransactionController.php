@@ -52,9 +52,21 @@ class TransactionController extends Controller
         return $TransactionService->fetchTransaction($request);
     }
 
+    public function deleteTransaction($id)
+    {
+        $TransactionService = new TransactionService();
+        return $TransactionService->deleteTransaction($id);
+    }
+
     public function uploadProfit(Request $request)
     {
         $TransactionService = new TransactionService();
         return $TransactionService->uploadProfit($request);
+    }
+
+    public function getFinancialSummary(Request $request)
+    {
+        $TransactionService = new TransactionService();
+        return $TransactionService->getFinancialSummary($request);
     }
 }

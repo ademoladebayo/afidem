@@ -56,7 +56,14 @@ Route::middleware([ActivityLog::class])->group(function () {
         Route::post('transaction', 'TransactionController@fetchTransaction', function () {
         })->middleware(Cors::class);
 
+        Route::get('transaction/delete-transaction/{id}', 'TransactionController@deleteTransaction', function () {
+        })->middleware(Cors::class);
+
+
         Route::post('transaction/profit', 'TransactionController@uploadProfit', function () {
+        })->middleware(Cors::class);
+
+        Route::post('transaction/financial-summary', 'TransactionController@getFinancialSummary', function () {
         })->middleware(Cors::class);
 
 

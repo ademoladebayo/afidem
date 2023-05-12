@@ -14,6 +14,8 @@ if (this.APP_MODE == "DEV") {
 // VAR
 var profit_list = {};
 
+var newObj = {};
+
 collapseSidebar();
 
 function loadSideNav(page) {
@@ -29,7 +31,7 @@ function loadSideNav(page) {
     </li>
 
     <li class="nav-item">
-        <a   id="expense" href="dashboard.html?#paginate1" class="nav-link"><i class="fas fa-file-invoice-dollar"></i><span>Expenses</span></a>
+        <a   id="financial-summary" href="financial-summary.html" class="nav-link"><i class="fas fa-file-invoice-dollar"></i><span>Financial Summary</span></a>
     </li>
 
     <li class="nav-item">
@@ -328,12 +330,17 @@ function createExpense() {
 }
 
 function getAllExpense() {
-  custom_date = document.getElementById("custom_date").value;
+  start_date = document.getElementById("start_date").value;
+  end_date = document.getElementById("end_date").value;
   date = "";
-  if (custom_date == "") {
-    date = changeDateFormat(getDate().split("~")[1]);
+  if (start_date == "") {
+    // START AND END DATE DEFAULF AS TODAY
+    date =
+      changeDateFormat(getDate().split("~")[1]) +
+      "~" +
+      changeDateFormat(getDate().split("~")[1]);
   } else {
-    date = changeDateFormat(custom_date);
+    date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
   }
 
   openSpinnerModal("Fetch expense");
@@ -517,9 +524,9 @@ function uploadTransactionReport() {
   }
 
   const formData = new FormData();
-
+  formData.append("report_type", "UPLOAD");
   formData.append("file", report[0]);
-  formData.append("admin_station", localStorage["user_id"]);
+  formData.append("admin_station", document.getElementById("station").value);
   // Select your input type file and store it in a variable
 
   // This will upload the file after having read it
@@ -559,12 +566,17 @@ function uploadTransactionReport() {
 }
 
 function getAllTransaction() {
-  custom_date = document.getElementById("custom_date").value;
+  start_date = document.getElementById("start_date").value;
+  end_date = document.getElementById("end_date").value;
   date = "";
-  if (custom_date == "") {
-    date = changeDateFormat(getDate().split("~")[1]);
+  if (start_date == "") {
+    // START AND END DATE DEFAULF AS TODAY
+    date =
+      changeDateFormat(getDate().split("~")[1]) +
+      "~" +
+      changeDateFormat(getDate().split("~")[1]);
   } else {
-    date = changeDateFormat(custom_date);
+    date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
   }
 
   openSpinnerModal("Fetch Transaction");
@@ -594,6 +606,9 @@ function getAllTransaction() {
 
       // CLEAR LIST
       profit_list = {};
+
+      localStorage.setItem("ALLOWED_REPORT_TYPE", data.ALLOWED_REPORT_TYPE);
+      checkAllowedReportType();
 
       // POPULATE CHART
       document.getElementById("d_profit").innerHTML = formatNumber(
@@ -693,9 +708,23 @@ function getAllTransaction() {
                 data.transaction_history[i].profit == 0 ? "red" : "green"
               }" oninput=" addToProfitList('${
             data.transaction_history[i].id
-          }','profit',this.innerHTML)" contenteditable="true">${
+          }','profit',parseInt(this.innerHTML))" contenteditable="true">${
             data.transaction_history[i].profit
           }</td>
+          <td id="allowKeyboard"  oninput="addToProfitList('${
+            data.transaction_history[i].id
+          }','comment',this.innerHTML)" contenteditable="true">${
+            data.transaction_history[i].comment
+          }</td>
+          <td>
+          <a ${
+            data.transaction_history[i].report_type != "MANUAL" ? `hidden` : ``
+          }   onclick="deleteTransaction(${
+            data.transaction_history[i].id
+          })" href="#" class="btn btn-danger"><i
+                  class="fas fa-trash"></i>
+              Delete</a>
+              </td>
              </tr>
               `;
           c = c + 1;
@@ -719,14 +748,14 @@ function processReport() {
   getAllExpense();
 }
 
-function addToProfitList(id, name, amount) {
+function addToProfitList(id, name, value) {
   let profit_obj = {};
 
   // CHECK IF KEY EXIST
   if (profit_list[id]) {
-    profit_list[id][name] = amount;
+    profit_list[id][name] = value;
   } else {
-    profit_obj[name] = amount;
+    profit_obj[name] = value;
     profit_list[id] = profit_obj;
   }
   console.log(profit_list);
@@ -765,6 +794,238 @@ function uploadProfit() {
       }
     })
     .catch((err) => console.log(err));
+}
+
+function createTransaction() {
+  if (Object.keys(newObj).length < 9) {
+    errortoast("Please check that no field is empty");
+    return 0;
+  }
+
+  newObj["admin_station"] = window.parent.document.getElementById("station").value;
+  openSpinnerModal("Create Transaction");
+  fetch(ip + "/api/transaction/report", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      report_type: "MANUAL",
+      data: newObj
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      if (data.success) {
+        successtoast(data.message);
+        processReport();
+        newObj = {};
+        resetFormInputs();
+        closeModal("transModal");
+      } else {
+        errortoast(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+function deleteTransaction(id) {
+  if (!confirm("Are you sure you want to delete ?")) {
+    return 0;
+  }
+
+  openSpinnerModal("Delete Transaction");
+  fetch(ip + "/api/transaction/delete-transaction/" + id, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+      removeSpinnerModal();
+      toastr.remove();
+      if (data.success) {
+        successtoast("<b>" + data.message + "</b>");
+        getAllTransaction();
+      } else {
+        errortoast("<b>" + data.message + "</b>");
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+function getFinancialSummary() {
+  custom_date =
+    document.getElementById("year").value +
+    "-" +
+    document.getElementById("month").value;
+  date = "";
+  if (custom_date == "") {
+    date = changeDateFormat(getDate().split("~")[1]);
+  } else {
+    date = custom_date;
+  }
+
+  openSpinnerModal("Fetch Financial Summary");
+  fetch(ip + "/api/transaction/financial-summary", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      date: date,
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+      removeSpinnerModal();
+
+      c = 1;
+      m_total_income = 0;
+      m_total_expense = 0;
+      m_total_gross_profit = 0;
+
+      y_total_income = 0;
+      y_total_expense = 0;
+      y_total_gross_profit = 0;
+
+      // Destroy the existing DataTable
+      if ($.fn.DataTable.isDataTable("#paginate0")) {
+        $("#paginate0").DataTable().destroy();
+      }
+
+      if ($.fn.DataTable.isDataTable("#paginate1")) {
+        $("#paginate1").DataTable().destroy();
+      }
+
+      if (data.length > 0) {
+        document.getElementById("month_summary").innerHTML = ``;
+        document.getElementById("year_summary").innerHTML = ``;
+
+        for (i in data) {
+          document.getElementById("month_summary").innerHTML += `
+              <tr>
+      
+              <td>${c}.</td>
+              <td>${data[i].station_name}</td>
+              <td>${formatNumber(data[i].monthly.income)}</td>
+              <td></td>
+              <td>${formatNumber(data[i].monthly.expense)}</td>
+              <td></td>
+              <td>${formatNumber(data[i].monthly.gross_profit)}</td>
+             </tr>
+              `;
+
+          document.getElementById("year_summary").innerHTML += `
+              <tr>
+      
+              <td>${c}.</td>
+              <td>${data[i].station_name}</td>
+              <td>${formatNumber(data[i].yearly.income)}</td>
+              <td></td>
+              <td>${formatNumber(data[i].yearly.expense)}</td>
+              <td></td>
+              <td>${formatNumber(data[i].yearly.gross_profit)}</td>
+             </tr>
+              `;
+          c = c + 1;
+
+          // INCREMENT VALUE
+          m_total_income += data[i].monthly.income;
+          m_total_expense += data[i].monthly.expense;
+          m_total_gross_profit += data[i].monthly.gross_profit;
+
+          y_total_income += data[i].yearly.income;
+          y_total_expense += data[i].yearly.expense;
+          y_total_gross_profit += data[i].yearly.gross_profit;
+        }
+
+        // POPULATE TOTALS
+        document.getElementById("month_summary").innerHTML += `
+        <tr>
+            <td></td>
+            <td>TOTAL :</td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+              m_total_income
+            )}</td>
+            <td></td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+              m_total_expense
+            )}</td>
+            <td></td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+              m_total_gross_profit
+            )}</td>
+        </tr>
+        `;
+
+        document.getElementById("year_summary").innerHTML += `
+        <tr>
+            <td></td>
+            <td>TOTAL :</td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+              y_total_income
+            )}</td>
+            <td></td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+              y_total_expense
+            )}</td>
+            <td></td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+              y_total_gross_profit
+            )}</td>
+        </tr>
+        `;
+
+        // $("#paginate0").DataTable();
+        // $("#paginate1").DataTable();
+      } else {
+        document.getElementById("month_summary").innerHTML = `<td colspan="12">
+        <center>No record found</center>
+    </td>`;
+
+        document.getElementById("year_summary").innerHTML = `<td colspan="12">
+    <center>No record found</center>
+</td>`;
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+function addToNewObject(name, value) {
+  newObj[name] = value;
+  console.log(newObj);
 }
 
 // GET TODAY'S DATE

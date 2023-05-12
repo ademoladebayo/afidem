@@ -1,0 +1,497 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+
+<head id="common-library">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>AFIDEM | Financial Summary</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="../css/normalize.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="../css/all.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="../fonts/flaticon.css">
+    <!-- Full Calender CSS -->
+    <link rel="stylesheet" href="../css/fullcalendar.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="../css/animate.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="../css/select2.min.css">
+    <!-- Date Picker CSS -->
+    <link rel="stylesheet" href="../css/datepicker.min.css">
+    <link href="../assets/css/lib/toastr/toastr.min.css" rel="stylesheet">
+    <link href="../assets/css/lib/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="../css/frame_style.css"> -->
+    <!-- Modernize js -->
+    <script src="../js/modernizr-3.6.0.min.js"></script>
+</head>
+
+<body style="font-family: Poppins; font-weight: bold;"
+    onload="loadSideNav('financial-summary');  getFinancialSummary(); loadDashBoardInformation()">
+    <!-- Preloader Start Here -->
+    <div id="preloader"></div>
+    <!-- Preloader End Here -->
+    <div id="wrapper" class="wrapper bg-ash">
+        <!-- Header Menu Area Start Here -->
+        <div class="navbar navbar-expand-md header-menu-one bg-light">
+            <div class="nav-bar-header-one">
+                <b style="margin-left: 5px; margin-top: 5px;" id="logo">
+                    <h1 style="font-weight: bold; font-family: Rowdies; color:white;"> AFIDEM
+                    </h1>
+                </b>
+                <div class="toggle-button sidebar-toggle">
+                    <button onclick="changeLogo()" type="button" class="item-link">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="d-md-none mobile-nav-bar">
+                <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
+                    <i class="far fa-arrow-alt-circle-down"></i>
+                </button>
+                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav">
+                    <li class="navbar-item header-search-bar">
+                        <div class="input-group stylish-input-group">
+                            <span class="input-group-addon">
+                                <button type="submit">
+                                    <span class="flaticon-search" aria-hidden="true"></span>
+                                </button>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Find Something . . .">
+                        </div>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="navbar-item dropdown header-admin">
+                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <div class="admin-title">
+                                <h5 id="user_name" class="item-title"></h5>
+                                <span id="user_type">ADMIN</span>
+                            </div>
+                            <div id="user_img" class="admin-img">
+                                <img src="../img/figure/admin.jpg" alt="Admin">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="item-header">
+                                <h6 id="user_name1" class="item-title"></h6>
+                            </div>
+                            <div class="item-content">
+                                <ul class="settings-list">
+                                    <li><a href="my-profile.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                    <li><a href="change-password.html"><i class="flaticon-gear-loading"></i>Account
+                                            Settings</a></li>
+                                    <li><a onclick="goTo('')" href="#"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+        <!-- Header Menu Area End Here -->
+        <!-- Page Area Start Here -->
+        <div class="dashboard-page-one">
+            <!-- Sidebar Area Start Here -->
+            <div style="font-family: Poppins; font-weight: bold;"
+                class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+
+
+                <div class="mobile-sidebar-header d-md-none">
+                    <div class="header-logo">
+                        <a href="dashboard.html"><b id="logo">
+                                <h1 style="font-weight: bold; font-family: Rowdies; color:white;"> AFIDEM
+                                </h1>
+                            </b></a>
+                    </div>
+                </div>
+                <div id="side_nav" class="sidebar-menu-content">
+
+                </div>
+            </div>
+            <!-- Sidebar Area End Here -->
+            <div class="dashboard-content-one">
+                <div class="breadcrumbs-area">
+                    <h3 style="font-weight: bold; font-family: Poppins;">Financial Report Summary</h3>
+                    <ul>
+                        <li>
+                            <a style="font-weight: bold; font-family: Poppins;" href="#">Home</a>
+                        </li>
+                        <li style="font-weight: bold; font-family: Poppins;">Summary</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <select onchange="" id="month" class="select2">
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-6 form-group">
+                        <select onchange="" id="year" class="select2">
+                            <option>SELECT YEAR</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-12 form-group">
+                        <button onclick="getFinancialSummary()" type="button"
+                            style="border-radius: 0.2rem; box-shadow: 10px; background-color:#051f3e; border-color:#051f3e;"
+                            class="btn btn-primary btn-block">
+                            <i class="fas fa-download"></i> <b> FETCH SUMMARY</b></button>
+                    </div>
+
+
+
+                </div>
+
+                <div class="row">
+                    <br>
+                    <br>
+                    <h3 style="font-weight: bold; font-family: Poppins;">MONTHLY SUMMARY</h3>
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="paginate1" class="table  text-dark table-sm " width="100%" cellspacing="0"
+                                    style="color: white; margin-bottom: 50px;  border-collapse: separate; border-spacing: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th style="font-size: 35px;">₦</th>
+                                            <th></th>
+                                            <th style="font-size: 35px;">₦</th>
+                                            <th></th>
+                                            <th style="font-size: 35px;">₦</th>
+                                        </tr>
+                                        <tr>
+                                            <th>S/N</th>
+                                            <th>Station</th>
+                                            <th>Income</th>
+                                            <th></th>
+                                            <th>Expense</th>
+                                            <th></th>
+                                            <th>Gross Profit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-custom" id="month_summary">
+
+                                        <td colspan="12">
+                                            <center>No data yet</center>
+                                        </td>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <br>
+                    <h3 style="font-weight: bold; font-family: Poppins;">YEARLY SUMMARY</h3>
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="paginate1" class="table table-striped text-dark table-sm " width="100%"
+                                    cellspacing="0"
+                                    style="color: white; margin-bottom: 50px;  border-collapse: separate; border-spacing: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th style="font-size: 35px;">₦</th>
+                                            <th></th>
+                                            <th style="font-size: 35px;">₦</th>
+                                            <th></th>
+                                            <th style="font-size: 35px;">₦</th>
+                                        </tr>
+                                        <tr>
+                                            <th>S/N</th>
+                                            <th>Station</th>
+                                            <th>Income</th>
+                                            <th></th>
+                                            <th>Expense</th>
+                                            <th></th>
+                                            <th>Gross Profit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-custom" id="year_summary">
+
+                                        <td colspan="12">
+                                            <center>No data yet</center>
+                                        </td>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="page-modal">
+                    <!-- CREATE EXPENSE MODAL -->
+                    <div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
+
+                        <div class="modal-dialog modal-lg">
+
+                            <!--Content-->
+                            <div class="modal-content">
+                                <div class="modal-header justify-content-center">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">CREATE EXPENSE</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+
+                                <!--Body-->
+                                <div class="modal-body mb-0 p-0">
+
+                                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                                        <iframe class="embed-responsive-item" src="./frame-new-expense.html"
+                                            allowfullscreen></iframe>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <!--/.Content-->
+
+                        </div>
+                    </div>
+
+                    <!-- CREATE TRANS MODAL -->
+                    <div class="modal fade" id="transModal" tabindex="-1" aria-labelledby="trans_modal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">CREATE TRANSACTION</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="heading-layout1">
+                                                        <div class="item-title">
+                                                            <!-- <h3>Add New User</h3> -->
+                                                        </div>
+
+                                                    </div>
+                                                    <form class="new-added-form">
+                                                        <div class="row">
+                                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                                                <label>Bank</label>
+                                                                <input id="bank" type="text" placeholder="Bank Name"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                                                <label>Card No</label>
+                                                                <input id="card_no" type="text" placeholder="Card No"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                                                <label>Trans Type</label>
+                                                                <select onchange="" id="trans_type" class="select2">
+                                                                    <option value="DEPOSIT">DEPOSIT</option>
+                                                                    <option value="WITHDRAWAL">WITHDRAWAL</option>
+                                                                    <option value="TRANSFER">TRANSFER</option>
+
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                                                <label>Trans Amount</label>
+                                                                <input id="trans_amount" type="text"
+                                                                    placeholder="Amount" class="form-control">
+                                                            </div>
+                                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                                                <label>Charge</label>
+                                                                <input id="charge" type="text" placeholder="Charge"
+                                                                    class="form-control">
+                                                            </div>
+
+                                                            <div class="col-12 form-group mg-t-8">
+                                                                <button onclick="createTransaction()"
+                                                                    class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+                <footer class="footer-wrap-layout1">
+                    <div class="copyright" style="justify-content: center; display: flex;">© Copyrights <br /><a
+                            href="../#"><b> afidemglobalresource.com.ng </b></a> 2023. All rights
+                        reserved. Designed by <a href="../#"><b>Dextroux Technologies</b></a></div>
+                </footer>
+            </div>
+        </div>
+        <!-- Page Area End Here -->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <!-- jquery-->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <!-- Plugins js -->
+    <script src="../js/plugins.js"></script>
+    <!-- Popper js -->
+    <script src="../js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- Counterup Js -->
+    <script src="../js/jquery.counterup.min.js"></script>
+    <!-- Moment Js -->
+    <script src="../js/moment.min.js"></script>
+    <!-- Waypoints Js -->
+    <script src="../js/jquery.waypoints.min.js"></script>
+    <!-- Scroll Up Js -->
+    <script src="../js/jquery.scrollUp.min.js"></script>
+    <!-- Full Calender Js -->
+    <script src="../js/fullcalendar.min.js"></script>
+    <!-- Chart Js -->
+    <script src="../js/Chart.min.js"></script>
+    <!-- Data Table Js -->
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <!-- Custom Js -->
+    <script src="../js/main.js"></script>
+    <script src="../js/myscript.js"></script>
+    <script src="./js/account.js"></script>
+    <script src="../common-library.js"></script>
+    <!-- Select 2 Js -->
+    <script src="../js/select2.min.js"></script>
+    <!-- Date Picker Js -->
+    <script src="../js/datepicker.min.js"></script>
+    <!-- <script src="../js/iframeSizer.min.js"></script>
+    <script src="../js/frame_script.js"></script> -->
+
+    <script src="../assets/js/lib/toastr/toastr.min.js"></script>
+    <script src="../assets/js/lib/toastr/toastr.init.js"></script>
+    <script src="../assets/js/lib/sweetalert/sweetalert.min.js"></script>
+    <script src="../assets/js/lib/sweetalert/sweetalert.init.js"></script>
+
+
+    <script>
+
+        // Get the current month (0-11, where 0 is January)
+        const currentMonth = new Date().getMonth();
+
+        // Set the selected option of the select element to the current month
+        value = currentMonth + 1;
+        document.getElementById("month").value = value < 10 ? "0" + value : value;
+
+
+        // Get the current year
+        const currentYear = new Date().getFullYear();
+
+        // Create options for the select element
+        let options = '';
+        for (let year = 2022; year <= currentYear + 100; year++) {
+            options += `<option value="${year}">${year}</option>`;
+        }
+
+        // Add the options to the select element
+        document.getElementById('year').innerHTML = options;
+        document.getElementById("year").value = currentYear;
+    </script>
+
+    <style id="result_upload_style">
+        [contenteditable] {
+
+            outline-color: #105c05;
+        }
+    </style>
+
+
+    <style>
+        .table>:not(:last-child)>:last-child>* {
+            border-bottom-color: #e1e1e1;
+        }
+
+        #session_term0 {
+            text-align: center;
+        }
+    </style>
+
+    <script>
+
+    </script>
+
+</body>
+
+
+
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/AFIDEM/AFIDEM/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jul 2021 15:19:04 GMT -->
+
+</html>

@@ -45,65 +45,106 @@ class TransactionService
 
     public function uploadReport(Request $request)
     {
-        $file = $request->file('file');
-        $admin_station = $request->admin_station;
 
-        $import = new TransactionImport();
-        $importedData = Excel::toArray($import, $file);
-
-        // Get the first sheet from the imported data
-        $sheetData = $importedData[0];
-
-
-        // Iterate over the rows in the sheet
-        $c = 0;
-        $day = "";
-        foreach ($sheetData as $row) {
-            //CHECK IF TERMIAL BELONG TO THIS STATION
-            $terminal_id = AdminModel::where('id', $admin_station)->value('terminal_id');
-
-            if (trim($row["terminal_id"]) != $terminal_id) {
-                return response(['success' => false, 'message' => "Transactions does not belong to this terminal !"]);
-            }
-
-            if (TransactionModel::where('transaction_ref', trim($row["transaction_ref"]))->exists()) {
-                continue;
-            }
-
-            if (trim($row["status"] == "COMPLETED")) {
-                $transaction = new TransactionModel();
-                $day = explode(" ", trim($row["transaction_time"]))[0];
-                $transaction->transaction_type = trim($row["transaction_type"]);
-                $transaction->amount = trim($row["amount"]);
-                $transaction->status = trim($row["status"]);
-                $transaction->payer = trim($row["payer"]);
-                $transaction->payer_fi = trim($row["payer_fi"]);
-                $transaction->payee = trim($row["payee"]);
-                $transaction->payee_fi = trim($row["payee_fi"]);
-                $transaction->transaction_time = trim($row["transaction_time"]);
-                $transaction->transaction_ref = trim($row["transaction_ref"]);
-                $transaction->earnings = trim($row["earnings"]);
-                $transaction->terminal_id = trim($row["terminal_id"]);
-                $transaction->admin_station = $admin_station;
-                $transaction->save();
-                $c = $c + 1;
-            }
-        }
-
-        if ($c > 0) {
-            return response(['success' => true, 'message' => "(" . $c . ") new transaction has been uploaded successfully  for " . $day]);
+        Log::debug($request->report_type);
+        if ($request->report_type === "MANUAL") {
+            return $this->uploadReportManual($request);
         } else {
-            return response(['success' => false, 'message' => "Transactions has been uploaded before."]);
+            $file = $request->file('file');
+            $admin_station = $request->admin_station;
+
+            $import = new TransactionImport();
+            $importedData = Excel::toArray($import, $file);
+
+            // Get the first sheet from the imported data
+            $sheetData = $importedData[0];
+
+
+            // Iterate over the rows in the sheet
+            $c = 0;
+            $day = "";
+            foreach ($sheetData as $row) {
+                if (trim($row["status"] == "COMPLETED")) {
+
+                    //CHECK IF TERMIAL BELONG TO THIS STATION
+                    $terminal_id = AdminModel::where('id', $admin_station)->value('terminal_id');
+
+                    if (trim($row["terminal_id"]) != $terminal_id) {
+                        return response(['success' => false, 'message' => "Transactions does not belong to this terminal !"]);
+                    }
+
+                    if (TransactionModel::where('transaction_ref', trim($row["transaction_ref"]))->exists()) {
+                        continue;
+                    }
+
+
+                    $transaction = new TransactionModel();
+                    $day = explode(" ", trim($row["transaction_time"]))[0];
+                    $transaction->transaction_type = trim($row["transaction_type"]);
+                    $transaction->amount = trim($row["amount"]);
+                    $transaction->status = trim($row["status"]);
+                    $transaction->payer = trim($row["payer"]);
+                    $transaction->payer_fi = trim($row["payer_fi"]);
+                    $transaction->payee = trim($row["payee"]);
+                    $transaction->payee_fi = trim($row["payee_fi"]);
+                    $transaction->transaction_time = trim($row["transaction_time"]);
+                    $transaction->transaction_ref = trim($row["transaction_ref"]);
+                    $transaction->earnings = trim($row["earnings"]);
+                    $transaction->terminal_id = trim($row["terminal_id"]);
+                    $transaction->comment = "NO COMMENT";
+                    $transaction->report_type = "UPLOAD";
+                    $transaction->admin_station = $admin_station;
+                    $transaction->save();
+                    $c = $c + 1;
+                }
+            }
+
+            if ($c > 0) {
+                return response(['success' => true, 'message' => "(" . $c . ") new transaction has been uploaded successfully  for " . $day]);
+            } else {
+                return response(['success' => false, 'message' => "Transactions has been uploaded before."]);
+            }
         }
+    }
+
+    public function deleteTransaction($id)
+    {
+        TransactionModel::destroy($id);
+        return response(['success' => true, 'message' => "Transaction was deleted successfully."]);
+    }
+
+
+    public function uploadReportManual(Request $request)
+    {
+        $data = $request->data;
+        $transaction = new TransactionModel();
+        foreach ($data as $key => $value) {
+            if ($value != null || $value != "") {
+                $transaction[$key] = $value;
+            }
+        }
+        $transaction->save();
+        return response()->json(['success' => true, 'message' => 'Transaction has been added successfully']);
     }
 
     public function fetchTransaction(Request $request)
     {
         $month = explode("-", $request->date)[0] . "-" . explode("-", $request->date)[1];
+        $start_date = explode("~", $request->date)[0] . " 00:00:00";
+        $end_date = explode("~", $request->date)[1] . " 23:59:00";
+
+        $ALLOWED_REPORT_TYPE = TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->exists();
+
+        if ($ALLOWED_REPORT_TYPE) {
+            $ALLOWED_REPORT_TYPE = TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->first()->report_type;
+        } else {
+            $ALLOWED_REPORT_TYPE = "ANY";
+        }
+
 
         $daily_stat = [
-            'withdrawal' => TransactionModel::where("transaction_type", "WITHDRAWAL")->where('transaction_time', 'like', $request->date . '%')->where("admin_station", $request->admin_station)->sum("profit"), 'card_transfer' => TransactionModel::where("transaction_type", "CARD_TRANSFER")->where('transaction_time', 'like', $request->date . '%')->where("admin_station", $request->admin_station)->sum("profit"), 'transfer' => TransactionModel::where("transaction_type", "TRANSFER")->where('transaction_time', 'like', $request->date . '%')->where("admin_station", $request->admin_station)->sum("profit"), 'airtime' => TransactionModel::where("transaction_type", "AIRTIME")->where('transaction_time', 'like', $request->date . '%')->where("admin_station", $request->admin_station)->sum("profit"), 'purchase' => TransactionModel::where("transaction_type", "PURCHASE")->where('transaction_time', 'like', $request->date . '%')->where("admin_station", $request->admin_station)->sum("profit"),
-            'trans_count' => TransactionModel::where('transaction_time', 'like', $request->date . '%')->where("admin_station", $request->admin_station)->count("id")
+            'withdrawal' => TransactionModel::where("transaction_type", "WITHDRAWAL")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"), 'card_transfer' => TransactionModel::where("transaction_type", "CARD_TRANSFER")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"), 'transfer' => TransactionModel::where("transaction_type", "TRANSFER")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"), 'airtime' => TransactionModel::where("transaction_type", "AIRTIME")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"), 'purchase' => TransactionModel::where("transaction_type", "PURCHASE")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
+            'trans_count' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->count("id")
         ];
 
         $monthly_stat = [
@@ -112,7 +153,7 @@ class TransactionService
             'trans_count' => TransactionModel::where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->count("id"),
         ];
 
-        return ['daily_stat' => $daily_stat, 'montly_stat' => $monthly_stat, 'transaction_history' => TransactionModel::where('transaction_time', 'like', $request->date . '%')->where("admin_station", $request->admin_station)->orderBy("id", "DESC")->get()];
+        return ['ALLOWED_REPORT_TYPE' => $ALLOWED_REPORT_TYPE,  'daily_stat' => $daily_stat, 'montly_stat' => $monthly_stat, 'transaction_history' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->orderBy("id", "DESC")->get()];
     }
 
 
@@ -123,10 +164,48 @@ class TransactionService
         foreach ($data as $keys => $value) {
             $transaction = TransactionModel::find($keys);
             foreach ($data[$keys] as $key => $value) {
-                $transaction[$key] = $value == null ? 0 : intVal($value);
+                if ($value != null) {
+                    $transaction[$key] = $value;
+                }
             }
             $transaction->save();
         }
         return response()->json(['success' => true, 'message' => 'Profit has successfully been recorded']);
+    }
+
+    public function getFinancialSummary(Request $request)
+    {
+        $month = $request->date;
+        $year = explode("-", $month)[0];
+        $financial_summary = [];
+
+        $stations = AdminModel::where("role", "ADMIN")->get();
+
+        foreach ($stations as $station) {
+            $m_income = TransactionModel::where('transaction_time', 'like', $month . '%')->where("admin_station", $station->id)->sum("profit");
+            $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("amount");
+            $m_gross_profit = $m_income - $m_expense;
+
+            $y_income = TransactionModel::where('transaction_time', 'like', $year . '%')->where("admin_station", $station->id)->sum("profit");
+            $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $request->admin_station)->sum("amount");
+            $y_gross_profit = $y_income - $y_expense;
+
+            $data = [
+                "station_name" => $station->username,
+                "monthly" => [
+                    "income" => intval($m_income),
+                    "expense" =>  intval($m_expense),
+                    "gross_profit" => intval($m_gross_profit)
+                ],
+                "yearly" => [
+                    "income" => intval($y_income),
+                    "expense" =>  intval($y_expense),
+                    "gross_profit" => intval($y_gross_profit)
+                ]
+            ];
+            array_push($financial_summary, $data);
+        }
+
+        return $financial_summary;
     }
 }
