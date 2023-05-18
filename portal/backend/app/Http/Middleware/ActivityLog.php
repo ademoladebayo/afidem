@@ -43,12 +43,14 @@ class ActivityLog
         $response_content = $response->content();
 
 
-        // Log::debug($token);
-        // Log::debug($request_data);
-        // Log::debug($request_method);
-        // Log::debug($request_url);
-        // Log::debug($response_status);
-        // Log::debug($response_content);
+        Log::debug("=============================================================================================================");
+        Log::debug($token);
+        Log::debug($request_data);
+        Log::debug($request_method);
+        Log::debug($request_url);
+        Log::debug($response_status);
+        Log::debug($response_content);
+        Log::debug("=============================================================================================================");
 
         $request_data = count($request_data) > 0 ? $request_data : "NO DATA WAS SENT";
         $utils = new Utils();
