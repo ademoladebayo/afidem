@@ -3351,7 +3351,7 @@ ul {
 }
 /*=============== 6.6 Login Page ==================*/
 .login-page-wrap {
-  background-image: url('img/figure/login-bg.jpg');
+  background-image: url('img/figure/login-bg.png');
   background-repeat: no-repeat;
   background-position: top;
   position: fixed;

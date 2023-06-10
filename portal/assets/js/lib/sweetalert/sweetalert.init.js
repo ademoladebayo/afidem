@@ -60,7 +60,7 @@ document.querySelector(".sweet-image-message").onclick = function () {
   swal({
     title: "Sweet !!",
     text: "Hey, Here's a custom image !!",
-    imageUrl: "assets/images/hand.jpg",
+    imageUrl: "assets/images/hand.png",
   });
 };
 document.querySelector(".sweet-html").onclick = function () {

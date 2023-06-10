@@ -11,6 +11,9 @@ if (this.APP_MODE == "DEV") {
   domain = "https://portal.afidemglobalresource.com.ng/";
 }
 
+localStorage.setItem("ip", ip);
+localStorage.setItem("domain", domain);
+
 // VAR
 var profit_list = {};
 
@@ -594,6 +597,7 @@ function getAllTransaction() {
   })
     .then(function (res) {
       console.log(res.status);
+      console.log("RESPONSE CAME HERE " + res);
       if (res.status == 401) {
         removeSpinnerModal();
         openAuthenticationModal();
@@ -802,7 +806,8 @@ function createTransaction() {
     return 0;
   }
 
-  newObj["admin_station"] = window.parent.document.getElementById("station").value;
+  newObj["admin_station"] =
+    window.parent.document.getElementById("station").value;
   openSpinnerModal("Create Transaction");
   fetch(ip + "/api/transaction/report", {
     method: "POST",
@@ -813,7 +818,7 @@ function createTransaction() {
     },
     body: JSON.stringify({
       report_type: "MANUAL",
-      data: newObj
+      data: newObj,
     }),
   })
     .then(function (res) {
