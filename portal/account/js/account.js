@@ -286,7 +286,10 @@ function createExpense() {
   var date = changeDateFormat(document.getElementById("date").value);
 
   if (description != "" && amount != "" && date != "") {
-    openSpinnerModal("Add expense");
+    if (navigator.onLine) {
+      openSpinnerModal("Add expense");
+    }
+
     // PUSH TO API
     // warningtoast("<b>Processing ... Please wait</b>");
     fetch(ip + "/api/transaction/create-expense", {
@@ -346,7 +349,10 @@ function getAllExpense() {
     date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
   }
 
-  openSpinnerModal("Fetch expense");
+  if (navigator.onLine) {
+    openSpinnerModal("Fetch expense");
+  }
+
   fetch(ip + "/api/transaction/all-expense", {
     method: "POST",
     headers: {
@@ -436,7 +442,10 @@ function updateExpense() {
   if (description != "" && amount != "" && date != "") {
     // PUSH TO API
     // warningtoast("<b>Processing ... Please wait</b>");
-    openSpinnerModal("Update Expense");
+
+    if (navigator.onLine) {
+      openSpinnerModal("Update Expense");
+    }
     fetch(ip + "/api/transaction/edit-expense", {
       method: "POST",
       headers: {
@@ -488,7 +497,9 @@ function deleteExpense(id) {
     return 0;
   }
 
-  openSpinnerModal("Delete Expense");
+  if (navigator.onLine) {
+    openSpinnerModal("Delete Expense");
+  }
   fetch(ip + "/api/transaction/delete-expense/" + id, {
     method: "GET",
     headers: {
@@ -533,7 +544,11 @@ function uploadTransactionReport() {
   // Select your input type file and store it in a variable
 
   // This will upload the file after having read it
-  openSpinnerModal("Report Upload");
+
+  if (navigator.onLine) {
+    openSpinnerModal("Report Upload");
+  }
+
   return fetch(ip + "/api/transaction/report", {
     method: "POST",
     headers: {
@@ -582,7 +597,9 @@ function getAllTransaction() {
     date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
   }
 
-  openSpinnerModal("Fetch Transaction");
+  if (navigator.onLine) {
+    openSpinnerModal("Fetch Transaction");
+  }
   fetch(ip + "/api/transaction", {
     method: "POST",
     headers: {
@@ -770,7 +787,10 @@ function uploadProfit() {
     errortoast("No profit added");
     return 0;
   }
-  openSpinnerModal("Upload Profit");
+
+  if (navigator.onLine) {
+    openSpinnerModal("Upload Profit");
+  }
   fetch(ip + "/api/transaction/profit", {
     method: "POST",
     headers: {
@@ -808,7 +828,10 @@ function createTransaction() {
 
   newObj["admin_station"] =
     window.parent.document.getElementById("station").value;
-  openSpinnerModal("Create Transaction");
+  if (navigator.onLine) {
+    openSpinnerModal("Create Transaction");
+  }
+
   fetch(ip + "/api/transaction/report", {
     method: "POST",
     headers: {
@@ -849,7 +872,9 @@ function deleteTransaction(id) {
     return 0;
   }
 
-  openSpinnerModal("Delete Transaction");
+  if (navigator.onLine) {
+    openSpinnerModal("Delete Transaction");
+  }
   fetch(ip + "/api/transaction/delete-transaction/" + id, {
     method: "GET",
     headers: {
@@ -892,7 +917,10 @@ function getFinancialSummary() {
     date = custom_date;
   }
 
-  openSpinnerModal("Fetch Financial Summary");
+  if (navigator.onLine) {
+    openSpinnerModal("Fetch Financial Summary");
+  }
+
   fetch(ip + "/api/transaction/financial-summary", {
     method: "POST",
     headers: {

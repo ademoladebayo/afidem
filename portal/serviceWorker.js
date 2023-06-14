@@ -3,6 +3,9 @@ const INTERNAL_ENDPOINT = [
   "http://127.0.0.1:8000",
   "https://afidemglobalresource.com.ng/backend/afidem",
 ];
+
+const URLToIgnore = ["/api/transaction/report"];
+
 const assets = [
   "./",
   //   "/index.html",
@@ -139,16 +142,22 @@ self.addEventListener("fetch", (event) => {
 // }
 
 async function convertPostRequestToGet(cloneReq) {
-  const data = await cloneReq.json();
+  modifiedUrl = "";
 
-  // Convert the JSON data to query parameters
-  const params = new URLSearchParams();
-  Object.keys(data).forEach((key) => {
-    params.append(key, data[key]);
-  });
+  if (cloneReq.headers.get("Content-Type").includes("application/json")) {
+    const data = await cloneReq.json();
 
-  // Modify the request URL with the query parameters
-  const modifiedUrl = cloneReq.url + "?" + params.toString();
+    // Convert the JSON data to query parameters
+    const params = new URLSearchParams();
+    Object.keys(data).forEach((key) => {
+      params.append(key, data[key]);
+    });
+
+    // Modify the request URL with the query parameters
+    modifiedUrl = cloneReq.url + "?" + params.toString();
+  } else {
+    modifiedUrl = cloneReq.url;
+  }
 
   const modifiedRequest = new Request(cloneReq.url, {
     method: "GET",
