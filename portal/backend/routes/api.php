@@ -33,8 +33,14 @@ Route::middleware([ActivityLog::class])->group(function () {
     Route::post('signin', 'AdminController@signIn', function () {
     })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
 
+    Route::post('notify', 'NotificationController@notify', function () {
+    })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
+
+    Route::post('device-token', 'NotificationController@saveToken', function () {
+    })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
+
     Route::middleware('auth:sanctum')->group(function () {
-    
+
         // TRANSACTION {EXPENSE MANAGEMENT}
         Route::post('transaction/create-expense', 'TransactionController@createExpense', function () {
         })->middleware(Cors::class);
@@ -67,7 +73,7 @@ Route::middleware([ActivityLog::class])->group(function () {
         })->middleware(Cors::class);
 
 
-        
+
     });
 
     // =============================================================================

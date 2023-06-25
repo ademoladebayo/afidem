@@ -14,6 +14,9 @@ if (this.APP_MODE == "DEV") {
 localStorage.setItem("ip", ip);
 localStorage.setItem("domain", domain);
 
+window.addEventListener("online", () => successtoast("<b>You are online</b>"));
+window.addEventListener("offline", () => errortoast("<b>You are offline</b>"));
+
 // VAR
 var profit_list = {};
 
@@ -121,6 +124,7 @@ function signIn() {
           id = JSON.parse(localStorage["user_data"]).data.id;
           localStorage.setItem("user_id", id);
           localStorage.setItem("username", username);
+          initFirebaseMessagingRegistration();
           setTimeout(function () {
             window.location.href = "account/dashboard.html";
           }, 1000);
@@ -286,9 +290,7 @@ function createExpense() {
   var date = changeDateFormat(document.getElementById("date").value);
 
   if (description != "" && amount != "" && date != "") {
-    if (navigator.onLine) {
-      openSpinnerModal("Add expense");
-    }
+    openSpinnerModal("Add expense");
 
     // PUSH TO API
     // warningtoast("<b>Processing ... Please wait</b>");
@@ -349,9 +351,7 @@ function getAllExpense() {
     date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
   }
 
-  if (navigator.onLine) {
-    openSpinnerModal("Fetch expense");
-  }
+  openSpinnerModal("Fetch expense");
 
   fetch(ip + "/api/transaction/all-expense", {
     method: "POST",
@@ -443,9 +443,8 @@ function updateExpense() {
     // PUSH TO API
     // warningtoast("<b>Processing ... Please wait</b>");
 
-    if (navigator.onLine) {
-      openSpinnerModal("Update Expense");
-    }
+    openSpinnerModal("Update Expense");
+
     fetch(ip + "/api/transaction/edit-expense", {
       method: "POST",
       headers: {
@@ -497,9 +496,8 @@ function deleteExpense(id) {
     return 0;
   }
 
-  if (navigator.onLine) {
-    openSpinnerModal("Delete Expense");
-  }
+  openSpinnerModal("Delete Expense");
+
   fetch(ip + "/api/transaction/delete-expense/" + id, {
     method: "GET",
     headers: {
@@ -545,9 +543,7 @@ function uploadTransactionReport() {
 
   // This will upload the file after having read it
 
-  if (navigator.onLine) {
-    openSpinnerModal("Report Upload");
-  }
+  openSpinnerModal("Report Upload");
 
   return fetch(ip + "/api/transaction/report", {
     method: "POST",
@@ -597,9 +593,8 @@ function getAllTransaction() {
     date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
   }
 
-  if (navigator.onLine) {
-    openSpinnerModal("Fetch Transaction");
-  }
+  openSpinnerModal("Fetch Transaction");
+
   fetch(ip + "/api/transaction", {
     method: "POST",
     headers: {
@@ -637,7 +632,8 @@ function getAllTransaction() {
           parseInt(data.daily_stat.card_transfer) +
           parseInt(data.daily_stat.transfer) +
           parseInt(data.daily_stat.airtime) +
-          parseInt(data.daily_stat.purchase)
+          parseInt(data.daily_stat.purchase) +
+          parseInt(data.daily_stat.pos_transfer)
       );
       document.getElementById("d_withdrawal").innerHTML = formatNumber(
         parseInt(data.daily_stat.withdrawal)
@@ -658,6 +654,10 @@ function getAllTransaction() {
         data.daily_stat.purchase
       );
 
+      document.getElementById("d_pos_transfer").innerHTML = formatNumber(
+        data.daily_stat.purchase
+      );
+
       document.getElementById("d_trans_count").innerHTML = formatNumber(
         parseInt(data.daily_stat.trans_count)
       );
@@ -667,7 +667,8 @@ function getAllTransaction() {
           parseInt(data.montly_stat.card_transfer) +
           parseInt(data.montly_stat.transfer) +
           parseInt(data.montly_stat.airtime) +
-          parseInt(data.montly_stat.purchase)
+          parseInt(data.montly_stat.purchase) +
+          parseInt(data.montly_stat.pos_transfer)
       );
       document.getElementById("m_withdrawal").innerHTML = formatNumber(
         parseInt(data.montly_stat.withdrawal)
@@ -690,6 +691,10 @@ function getAllTransaction() {
 
       document.getElementById("m_trans_count").innerHTML = formatNumber(
         parseInt(data.montly_stat.trans_count)
+      );
+
+      document.getElementById("m_pos_transfer").innerHTML = formatNumber(
+        data.montly_stat.pos_transfer
       );
 
       document.getElementById("m_expense").innerHTML = formatNumber(
@@ -788,9 +793,8 @@ function uploadProfit() {
     return 0;
   }
 
-  if (navigator.onLine) {
-    openSpinnerModal("Upload Profit");
-  }
+  openSpinnerModal("Upload Profit");
+
   fetch(ip + "/api/transaction/profit", {
     method: "POST",
     headers: {
@@ -828,9 +832,7 @@ function createTransaction() {
 
   newObj["admin_station"] =
     window.parent.document.getElementById("station").value;
-  if (navigator.onLine) {
-    openSpinnerModal("Create Transaction");
-  }
+  openSpinnerModal("Create Transaction");
 
   fetch(ip + "/api/transaction/report", {
     method: "POST",
@@ -872,9 +874,8 @@ function deleteTransaction(id) {
     return 0;
   }
 
-  if (navigator.onLine) {
-    openSpinnerModal("Delete Transaction");
-  }
+  openSpinnerModal("Delete Transaction");
+
   fetch(ip + "/api/transaction/delete-transaction/" + id, {
     method: "GET",
     headers: {
@@ -917,9 +918,7 @@ function getFinancialSummary() {
     date = custom_date;
   }
 
-  if (navigator.onLine) {
-    openSpinnerModal("Fetch Financial Summary");
-  }
+  openSpinnerModal("Fetch Financial Summary");
 
   fetch(ip + "/api/transaction/financial-summary", {
     method: "POST",
@@ -1577,6 +1576,10 @@ aria-labelledby="endModalTitle" aria-hidden="true" data-backdrop="static" data-k
 }
 
 function openSpinnerModal(message) {
+  if (!navigator.onLine) {
+    return 0;
+  }
+
   modal = `<div class="modal fade" id="spinnerModal" tabindex="-1" role="dialog"
 aria-labelledby="endModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1839,3 +1842,12 @@ function getAllStudentForTable() {
     })
     .catch((err) => console.log(err));
 }
+
+// FIREBASE CLOUD MESSAGING
+
+//
+self.addEventListener("fetch", (event) => {
+  if (!navigator.onLine) {
+    errortoast("You are offline, connect to the internet.");
+  }
+});

@@ -21,6 +21,7 @@ class TransactionController extends Controller
     {
         $TransactionService = new TransactionService();
         return $TransactionService->createExpense($request);
+
     }
 
     public function editExpense(Request $request)

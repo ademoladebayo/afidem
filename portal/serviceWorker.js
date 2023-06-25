@@ -1,4 +1,5 @@
-const afidem_cache = "afidem-v1";
+const version = 5;
+const afidem_cache = `afidem-cache-${version}`;
 const INTERNAL_ENDPOINT = [
   "http://127.0.0.1:8000",
   "https://afidemglobalresource.com.ng/backend/afidem",
@@ -25,7 +26,7 @@ const assets = [
 // Install event: caching all necessary resources
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open("afidem_pages").then((cache) => {
+    caches.open(afidem_cache).then((cache) => {
       return cache.addAll(assets);
     })
   );
@@ -42,17 +43,17 @@ self.addEventListener("fetch", (event) => {
         if (!navigator.onLine) {
           return caches.match(req).then((response) => {
             if (response) {
-              console.table(response + " used cache ... ");
+              console.table("response used cache ... ");
               return response;
             }
           });
         } else {
           return fetch(event.request).then((fetchResponse) => {
             const cloneResponse = fetchResponse.clone();
-            caches.open("afidem_requests").then((cache) => {
+            caches.open(afidem_cache).then((cache) => {
               cache.put(req, cloneResponse);
             });
-            console.table(fetchResponse + " used network ... ");
+            console.table("response used network ... ");
             return fetchResponse;
           });
         }
@@ -76,7 +77,7 @@ self.addEventListener("fetch", (event) => {
           const cloneResponse = fetchResponse.clone();
 
           // Cache the fetched response
-          caches.open("afidem_requests").then((cache) => {
+          caches.open(afidem_cache).then((cache) => {
             cache.put(event.request, cloneResponse);
           });
 
@@ -87,59 +88,6 @@ self.addEventListener("fetch", (event) => {
   }
 });
 
-// ===================================================================================
-//====================================================================================
-
-// self.addEventListener("fetch", (event) => {
-//   event.respondWith(start(event));
-// });
-
-// async function start(event) {
-//   if (event.request.method === "POST") {
-//     cloneReq = event.request.clone();
-//     convertPostRequestToGet(cloneReq).then((req) => {
-//       caches.match(req).then((response) => {
-//         // Return the cached response if found
-//         if (response) {
-//           console.table(req + " AVAILABLE IN THE CACHE !");
-//           return response;
-//         } else {
-//           console.table(req + " NOT AVAILABLE IN THE CACHE !");
-//           return interceptAndCache(event.request);
-//         }
-//       });
-//     });
-//   } else {
-//     caches.match(event.request).then((response) => {
-//       // Return the cached response if found
-//       req = event.request.clone();
-//       console.table(event.request);
-//       if (response) {
-//         console.table(response);
-//         console.table(req + " AVAILABLE IN THE CACHE !");
-//         return response;
-//       } else {
-//         console.table(req + " NOT AVAILABLE IN THE CACHE !");
-//         return interceptAndCache(event.request);
-//       }
-//     });
-//   }
-// }
-
-// async function interceptAndCache(request) {
-//   // Log the request
-//   console.log("Request:", request.url);
-//   if (request.method === "POST") {
-//     cloneReq = request.clone();
-//     modifiedRequest = "";
-//     convertPostRequestToGet(cloneReq).then((req) => {
-//       modifiedRequest = req;
-//       return processCache(request, modifiedRequest);
-//     });
-//   } else {
-//     return processCache(request, null);
-//   }
-// }
 
 async function convertPostRequestToGet(cloneReq) {
   modifiedUrl = "";
@@ -171,41 +119,3 @@ async function convertPostRequestToGet(cloneReq) {
 
   return modifiedUrl;
 }
-
-// async function processCache(request, modifiedRequest) {
-//   // Fetch the request from the network
-//   const response = await fetch(request);
-
-//   // Clone the response to be able to read it twice (once for caching, once for consuming)
-//   const responseClone = response.clone();
-
-//   // Log the response
-//   console.log("Response:", responseClone);
-
-//   // Cache the response
-//   if (
-//     request.url.includes(INTERNAL_ENDPOINT[0]) ||
-//     request.url.includes(INTERNAL_ENDPOINT[1])
-//   ) {
-//     console.log("CACHED REQ :", request.url);
-
-//     caches.open("afidem_api_cache").then((cache) => {
-//       if (request.method === "POST") {
-//         console.table(modifiedRequest);
-//         cache.put(modifiedRequest, responseClone);
-//       } else {
-//         cache.put(request, responseClone);
-//       }
-//     });
-//   } else {
-//     caches.open("afidem_web_asset_cache").then((cache) => {
-//       cache.put(request, responseClone);
-//     });
-//   }
-
-//   // Return the original response
-//   return response;
-// }
-
-// ===================================================================================
-//====================================================================================

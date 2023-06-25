@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        \App\Console\Commands\ReminderCron::class,
+        \App\Console\Commands\WeeklyProfitCron::class,
     ];
 
     /**
@@ -25,6 +27,17 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        $schedule->command('test:notify')
+            ->daily();
+
+        // DAILY REPORT REMINDER
+        $schedule->command('reminder:notify')
+            ->dailyAt('19:00');
+
+        // WEEKLY PROFIT NOTIFIER
+        $schedule->command('weekly-profit:notify')
+            ->weeklyOn(1, '9:00');
     }
 
     /**
@@ -34,7 +47,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

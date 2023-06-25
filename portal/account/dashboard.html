@@ -153,8 +153,9 @@
 
                 <div class="row">
                     <div class="col-6 form-group">
-                        <input autocomplete="off" id="start_date" type="text" placeholder="START DATE" value=""
-                            class="form-control air-datepicker" data-position='bottom left' format="yyyy-MM-dd">
+                        <input onchange="alert('chnagesd')" autocomplete="off" id="start_date" type="text"
+                            placeholder="START DATE" value="" class="form-control air-datepicker"
+                            data-position='bottom left' format="yyyy-MM-dd">
                         <!-- <i class="far fa-calendar-alt"></i> -->
                     </div>
 
@@ -231,6 +232,8 @@
                                             <small>AIRTIME : ₦ </small><small id="d_airtime">0</small>
                                             <br>
                                             <small>PURCHASE : ₦ </small><small id="d_purchase">0</small>
+                                            <br>
+                                            <small>POS TRANSFER : ₦ </small><small id="d_pos_transfer">0</small>
                                         </div>
                                     </div>
                                 </div>
@@ -261,6 +264,8 @@
                                             <small>AIRTIME : ₦ </small><small id="m_airtime">0</small>
                                             <br>
                                             <small>PURCHASE : ₦ </small><small id="m_purchase">0</small>
+                                            <br>
+                                            <small>POS TRANSFER : ₦ </small><small id="m_pos_transfer">0</small>
                                         </div>
                                     </div>
                                 </div>
@@ -775,12 +780,17 @@
     <script src="../assets/js/lib/sweetalert/sweetalert.min.js"></script>
     <script src="../assets/js/lib/sweetalert/sweetalert.init.js"></script>
 
+   
+
+
 
     <script>
         document.getElementById("terminal_id").value = JSON.parse(localStorage["user_data"]).data.terminal_id;
         addToNewObject('terminal_id', JSON.parse(localStorage["user_data"]).data.terminal_id);
         addToNewObject('transaction_time', changeDateFormat(getDate().split("~")[1]) + " " + getDate().split("~")[0]);
 
+        document.getElementById("start_date").value = getDate().split("~")[1];
+        document.getElementById("end_date").value = getDate().split("~")[1];
 
 
         function resetFormInputs() {

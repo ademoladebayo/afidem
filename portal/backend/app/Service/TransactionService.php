@@ -8,6 +8,8 @@ use App\Model\TransactionModel;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\TransactionImport;
 use App\Model\AdminModel;
+use App\Http\Controllers\NotificationController;
+use App\Util\Utils;
 use Illuminate\Support\Facades\Log;
 
 class TransactionService
@@ -23,6 +25,18 @@ class TransactionService
 
         $ExpenseModel->admin_station = $request->admin_station;
         $ExpenseModel->save();
+
+        $deviceTokens = AdminModel::select('device_token')
+            ->where('role', 'SUPERADMIN')
+            ->get();
+
+        $receiver = [];
+
+        foreach ($deviceTokens as $token) {
+            $receiver[] = $token->device_token;
+        };
+
+        NotificationController::createNotification(Utils::getUserLoggedIn($request) . ' JUST ADDED A NEW EXPENSE ', $request->description . ' ₦' . number_format($request->amount), $receiver);
         return response(['success' => true, 'message' => "Expense was added successfully."]);
     }
 
@@ -69,9 +83,12 @@ class TransactionService
                     //CHECK IF TERMIAL BELONG TO THIS STATION
                     $terminal_id = AdminModel::where('id', $admin_station)->value('terminal_id');
 
-                    if (trim($row["terminal_id"]) != $terminal_id) {
-                        return response(['success' => false, 'message' => "Transactions does not belong to this terminal !"]);
+                    if (trim($row["terminal_id"]) != "") {
+                        if (trim($row["terminal_id"]) != $terminal_id) {
+                            return response(['success' => false, 'message' => "Transactions does not belong to this terminal !"]);
+                        }
                     }
+
 
                     if (TransactionModel::where('transaction_ref', trim($row["transaction_ref"]))->exists()) {
                         continue;
@@ -143,13 +160,36 @@ class TransactionService
 
 
         $daily_stat = [
-            'withdrawal' => TransactionModel::where("transaction_type", "WITHDRAWAL")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"), 'card_transfer' => TransactionModel::where("transaction_type", "CARD_TRANSFER")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"), 'transfer' => TransactionModel::where("transaction_type", "TRANSFER")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"), 'airtime' => TransactionModel::where("transaction_type", "AIRTIME")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"), 'purchase' => TransactionModel::where("transaction_type", "PURCHASE")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
+            'withdrawal' => TransactionModel::where("transaction_type", "WITHDRAWAL")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'card_transfer' => TransactionModel::where("transaction_type", "CARD_TRANSFER")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'transfer' => TransactionModel::where("transaction_type", "TRANSFER")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'airtime' => TransactionModel::where("transaction_type", "AIRTIME")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'purchase' => TransactionModel::where("transaction_type", "PURCHASE")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'pos_transfer' => TransactionModel::where("transaction_type", "POS_TRANSFER")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"),
+
             'trans_count' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->count("id")
         ];
 
         $monthly_stat = [
-            'withdrawal' => TransactionModel::where("transaction_type", "WITHDRAWAL")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->where("admin_station", $request->admin_station)->sum("profit"), 'card_transfer' => TransactionModel::where("transaction_type", "CARD_TRANSFER")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"), 'transfer' => TransactionModel::where("transaction_type", "TRANSFER")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"), 'airtime' => TransactionModel::where("transaction_type", "AIRTIME")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"), 'purchase' => TransactionModel::where("transaction_type", "PURCHASE")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"),
+            'withdrawal' => TransactionModel::where("transaction_type", "WITHDRAWAL")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'card_transfer' => TransactionModel::where("transaction_type", "CARD_TRANSFER")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'transfer' => TransactionModel::where("transaction_type", "TRANSFER")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'airtime' => TransactionModel::where("transaction_type", "AIRTIME")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'purchase' => TransactionModel::where("transaction_type", "PURCHASE")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"),
+
+            'pos_transfer' => TransactionModel::where("transaction_type", "POS_TRANSFER")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"),
+
             'expense' => ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("amount"),
+
             'trans_count' => TransactionModel::where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->count("id"),
         ];
 

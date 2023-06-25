@@ -33,7 +33,7 @@
     <meta name="theme-color" content="#051f3e">
 </head>
 
-<body style="font-family: Poppins; font-weight: bold;"   onload="">
+<body style="font-family: Poppins; font-weight: bold;" onload="">
     <div class="container-fluid">
         <div class="container">
             <div class="col-xl-10 col-lg-11 login-container">
@@ -49,7 +49,7 @@
                                 <b>
                                     <h1 style="font-weight: bold; font-family: Rowdies; color:#051f3e;">
                                         <!-- <i style="color: #051f3e;" class="fas fa-graduation-cap fa-xs"></i> -->
-                                         AFIDEM
+                                        AFIDEM
                                     </h1>
                                 </b>
 
@@ -110,6 +110,102 @@
 <script src="assets/js/lib/sweetalert/sweetalert.min.js"></script>
 <script src="assets/js/lib/sweetalert/sweetalert.init.js"></script>
 <script src="js/app.js"></script>
+
+<!-- firebase CDN -->
+<!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+<script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"></script>
+<script>
+    var ip = "";
+    var domain = "";
+    APP_MODE = "LIVE";
+    if (this.APP_MODE == "DEV") {
+        // DEVELOPMENT IP
+        ip = "http://127.0.0.1:8000";
+        domain = "http://localhost/afidem/portal";
+    } else if (this.APP_MODE == "LIVE") {
+        // LIVE IP
+        ip = "https://afidemglobalresource.com.ng/backend/afidem";
+        domain = "https://portal.afidemglobalresource.com.ng/";
+    }
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCLhWTc_4e5rGJeXV8qGCWZdZLTP0YrjCA",
+        authDomain: "dextroux-technologies.firebaseapp.com",
+        projectId: "dextroux-technologies",
+        storageBucket: "dextroux-technologies.appspot.com",
+        messagingSenderId: "1099192792266",
+        appId: "1:1099192792266:web:2da00b0f913d84ec4ef033",
+        measurementId: "G-QWNY4DPSNH",
+    };
+    const app = firebase.initializeApp(firebaseConfig)
+    const messaging = firebase.messaging();
+
+    function initFirebaseMessagingRegistration() {
+        messaging.getToken({ vapidKey: 'BCaDCU0B1hVyl5wJLgYeqoEK_H884I0EB1foOClfC-b-bg_WFFE9XQVOiiYfUl0OTvojVK9am5vQ0AlAbw_hQtc' }).then((currentToken) => {
+            // app token used for sending notifications
+            if (currentToken) {
+                console.log(currentToken);
+                //document.querySelector('body').append(currentToken)
+                sendTokenToServer(currentToken)
+            } else {
+                setTokenSentToServer(false);
+            }
+        }).catch((err) => {
+            // notifications are manually blocked, you can ask for unblock here
+            console.log('An error occurred while retrieving token. ', err);
+            setTokenSentToServer(false);
+        });
+    }
+
+
+    messaging.onMessage((payload) => {
+        // notification data receive here, use it however you want
+        // keep in mind if message receive here, it will not notify in background
+        alert(payload.notification.body)
+        console.log('in app notify ', payload);
+        const noteTitle = payload.notification.title;
+        const noteOptions = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        var notification = new Notification(noteTitle, noteOptions);
+        console.log('Notification created:', notification)
+
+    });
+
+    function sendTokenToServer(currentToken) {
+        fetch(ip + "/api/device-token", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                id: localStorage['user_id'],
+                device_token: currentToken,
+            }),
+        })
+            .then(function (res) {
+                return res.json();
+            })
+
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((err) => console.log(err));
+
+
+    }
+
+
+</script>
+
+
+
+
 
 <script>
     const togglePassword = document.querySelector('#togglePassword');
