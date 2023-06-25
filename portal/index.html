@@ -158,6 +158,8 @@
             console.log('An error occurred while retrieving token. ', err);
             setTokenSentToServer(false);
         });
+
+
     }
 
 
@@ -194,6 +196,9 @@
 
             .then((data) => {
                 console.log(data)
+                setTimeout(function () {
+                    window.location.href = "account/dashboard.html";
+                }, 1000);
             })
             .catch((err) => console.log(err));
 

@@ -125,9 +125,9 @@ function signIn() {
           localStorage.setItem("user_id", id);
           localStorage.setItem("username", username);
           initFirebaseMessagingRegistration();
-          setTimeout(function () {
-            window.location.href = "account/dashboard.html";
-          }, 1000);
+          // setTimeout(function () {
+          //   window.location.href = "account/dashboard.html";
+          // }, 1000);
         } else {
           errortoast("<b>" + data.message + "</b>");
         }

@@ -170,7 +170,7 @@ class TransactionService
 
             'purchase' => TransactionModel::where("transaction_type", "PURCHASE")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
 
-            'pos_transfer' => TransactionModel::where("transaction_type", "POS_TRANSFER")->where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("profit"),
+            'pos_transfer' => TransactionModel::where("transaction_type", "POS_TRANSFER")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
 
             'trans_count' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->count("id")
         ];
