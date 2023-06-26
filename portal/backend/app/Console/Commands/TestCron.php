@@ -46,7 +46,7 @@ class TestCron extends Command
     {
         log::alert("TEST CRON ::::::::::::::::::::::::::");
         $deviceTokens = AdminModel::select('device_token', 'username')
-            ->whereNotIn('device_token', null)
+            ->whereNotIn('device_token', [null])
             ->get();
 
 

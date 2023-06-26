@@ -46,7 +46,7 @@ class WeeklyProfitCron extends Command
     {
         log::alert("WEEKLY PROFIT CRON ::::::::::::::::::::::::::");
         $deviceTokens = AdminModel::select('device_token', 'username')
-            ->where('role', 'ADMIN')->whereNotIn('device_token', null)
+            ->where('role', 'ADMIN')->whereNotIn('device_token', [null])
             ->get();
 
         $receiver = [];

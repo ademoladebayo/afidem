@@ -42,7 +42,7 @@ class ReminderCron extends Command
     {
         log::alert("REMINDER CRON ::::::::::::::::::::::::::");
         $deviceTokens = AdminModel::select('device_token', 'username')
-            ->where('role', 'ADMIN')->whereNotIn('device_token', null)
+            ->where('role', 'ADMIN')->whereNotIn('device_token', [null])
             ->get();
 
         $receiver = [];
