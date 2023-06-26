@@ -166,7 +166,7 @@
     messaging.onMessage((payload) => {
         // notification data receive here, use it however you want
         // keep in mind if message receive here, it will not notify in background
-        alert(payload.notification.body)
+        alert(payload.data.body)
         console.log('in app notify ', payload);
         const notificationTitle = payload.data.title;
         const notificationOptions = {
