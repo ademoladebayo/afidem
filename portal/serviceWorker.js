@@ -1,4 +1,4 @@
-const version = 5;
+const version = 1;
 const afidem_cache = `afidem-cache-${version}`;
 const INTERNAL_ENDPOINT = [
   "http://127.0.0.1:8000",

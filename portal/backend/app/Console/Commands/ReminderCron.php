@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Http\Controllers\NotificationController;
 use App\Model\AdminModel;
+use Illuminate\Support\Facades\Log;
 
 class ReminderCron extends Command
 {
@@ -39,8 +40,9 @@ class ReminderCron extends Command
      */
     public function handle()
     {
+        log::alert("REMINDER CRON ::::::::::::::::::::::::::");
         $deviceTokens = AdminModel::select('device_token', 'username')
-            ->where('role', 'ADMIN')
+            ->where('role', 'ADMIN')->whereNotIn('device_token', null)
             ->get();
 
         $receiver = [];

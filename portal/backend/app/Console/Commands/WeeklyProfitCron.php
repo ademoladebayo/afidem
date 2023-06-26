@@ -9,6 +9,7 @@ use App\Model\AdminModel;
 use App\Model\TransactionModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class WeeklyProfitCron extends Command
 {
@@ -43,8 +44,9 @@ class WeeklyProfitCron extends Command
      */
     public function handle()
     {
+        log::alert("WEEKLY PROFIT CRON ::::::::::::::::::::::::::");
         $deviceTokens = AdminModel::select('device_token', 'username')
-            ->where('role', 'ADMIN')
+            ->where('role', 'ADMIN')->whereNotIn('device_token', null)
             ->get();
 
         $receiver = [];

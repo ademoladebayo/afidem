@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         //
         \App\Console\Commands\ReminderCron::class,
         \App\Console\Commands\WeeklyProfitCron::class,
+        \App\Console\Commands\TestCron::class,
     ];
 
     /**
@@ -29,7 +30,10 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command('test:notify')
-            ->daily();
+            ->dailyAt('21:30');
+
+        $schedule->command('weekly-profit:notify')
+            ->dailyAt('21:30');
 
         // DAILY REPORT REMINDER
         $schedule->command('reminder:notify')

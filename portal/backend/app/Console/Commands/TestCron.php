@@ -9,6 +9,7 @@ use App\Model\AdminModel;
 use App\Model\TransactionModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TestCron extends Command
 {
@@ -43,8 +44,9 @@ class TestCron extends Command
      */
     public function handle()
     {
+        log::alert("TEST CRON ::::::::::::::::::::::::::");
         $deviceTokens = AdminModel::select('device_token', 'username')
-            ->where('role', 'SUPERADMIN')
+            ->whereNotIn('device_token', null)
             ->get();
 
 

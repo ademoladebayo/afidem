@@ -14,8 +14,15 @@ if (this.APP_MODE == "DEV") {
 localStorage.setItem("ip", ip);
 localStorage.setItem("domain", domain);
 
-window.addEventListener("online", () => successtoast("<b>You are online</b>"));
-window.addEventListener("offline", () => errortoast("<b>You are offline</b>"));
+window.addEventListener("online", () => {
+  toastr.remove();
+  successtoast("<b>You are online</b>");
+});
+
+window.addEventListener("offline", () => {
+  toastr.remove();
+  errortoast("<b>You are offline</b>");
+});
 
 // VAR
 var profit_list = {};
@@ -1846,8 +1853,9 @@ function getAllStudentForTable() {
 // FIREBASE CLOUD MESSAGING
 
 //
-self.addEventListener("fetch", (event) => {
+window.addEventListener("fetch", function (event) {
   if (!navigator.onLine) {
+    toastr.remove();
     errortoast("You are offline, connect to the internet.");
   }
 });
