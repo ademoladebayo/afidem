@@ -50,7 +50,7 @@ class TestCron extends Command
 
         foreach ($deviceTokens as $user) {
             // $receiver[] = $token->device_token;
-            NotificationController::createNotification("NEW DAY MOTIVATION", "Hi " . $user->username . " Keep pushing hustle go pay !", $user->device_token);
+            NotificationController::createNotification("NEW DAY MOTIVATION", "Hi " . $user->username . " Keep pushing hustle go pay !", [$user->device_token]);
         };
     }
 }

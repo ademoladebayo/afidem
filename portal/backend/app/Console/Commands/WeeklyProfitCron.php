@@ -61,7 +61,7 @@ class WeeklyProfitCron extends Command
 
         foreach ($deviceTokens as $user) {
             // $receiver[] = $token->device_token;
-            NotificationController::createNotification("LAST WEEK PROFIT UPDATE", "Hi " . $user->username . " last week profit was ₦" . number_format($profit), $user->device_token);
+            NotificationController::createNotification("LAST WEEK PROFIT UPDATE", "Hi " . $user->username . " last week profit was ₦" . number_format($profit), [$user->device_token]);
         };
     }
 }

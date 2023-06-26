@@ -651,11 +651,11 @@ function getAllTransaction() {
       );
 
       document.getElementById("d_purchase").innerHTML = formatNumber(
-        data.daily_stat.purchase
+        parseInt(data.daily_stat.purchase)
       );
 
       document.getElementById("d_pos_transfer").innerHTML = formatNumber(
-        data.daily_stat.purchase
+        parseInt(data.daily_stat.purchase)
       );
 
       document.getElementById("d_trans_count").innerHTML = formatNumber(
@@ -694,7 +694,7 @@ function getAllTransaction() {
       );
 
       document.getElementById("m_pos_transfer").innerHTML = formatNumber(
-        data.montly_stat.pos_transfer
+        parseInt(data.montly_stat.pos_transfer)
       );
 
       document.getElementById("m_expense").innerHTML = formatNumber(

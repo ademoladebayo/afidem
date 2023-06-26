@@ -168,10 +168,10 @@
         // keep in mind if message receive here, it will not notify in background
         alert(payload.notification.body)
         console.log('in app notify ', payload);
-        const noteTitle = payload.notification.title;
-        const noteOptions = {
-            body: payload.notification.body,
-            icon: payload.notification.icon,
+        const notificationTitle = payload.data.title;
+        const notificationOptions = {
+            body: payload.data.body,
+            icon: payload.data.icon,
         };
         var notification = new Notification(noteTitle, noteOptions);
         console.log('Notification created:', notification)

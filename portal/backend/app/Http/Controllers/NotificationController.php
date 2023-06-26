@@ -57,7 +57,7 @@ class NotificationController extends Controller
 
         $data = [
             "registration_ids" => $reciever,
-            "notification" => [
+            "data" => [
                 "title" => $title,
                 "body" => $message,
                 "content_available" => true,

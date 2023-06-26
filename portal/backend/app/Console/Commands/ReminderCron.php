@@ -47,7 +47,7 @@ class ReminderCron extends Command
 
         foreach ($deviceTokens as $user) {
             // $receiver[] = $token->device_token;
-            NotificationController::createNotification("REMINDER !!!", "Hi " . $user->username . " do not forget to upload your report for today. ", $user->device_token);
+            NotificationController::createNotification("REMINDER !!!", "Hi " . $user->username . " do not forget to upload your report for today. ", [$user->device_token]);
         };
     }
 }
