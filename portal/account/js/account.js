@@ -527,6 +527,7 @@ function deleteExpense(id) {
       toastr.remove();
       if (data.success) {
         successtoast("<b>" + data.message + "</b>");
+        getAllTransaction();
         getAllExpense();
       } else {
         errortoast("<b>" + data.message + "</b>");

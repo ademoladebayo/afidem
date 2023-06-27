@@ -30,10 +30,10 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command('test:notify')
-            ->dailyAt('21:50');
+            ->dailyAt('5:25');
 
         $schedule->command('weekly-profit:notify')
-            ->dailyAt('21:50');
+            ->dailyAt('5:30');
 
         // DAILY REPORT REMINDER
         $schedule->command('reminder:notify')
