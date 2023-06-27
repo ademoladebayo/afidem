@@ -46,7 +46,7 @@ class WeeklyProfitCron extends Command
     {
         log::alert("WEEKLY PROFIT CRON ::::::::::::::::::::::::::");
         $deviceTokens = AdminModel::select('device_token', 'username')
-            ->where('role', 'ADMIN')->whereNotIn('device_token', [null])
+            ->where('role', 'SUPERADMIN')->whereNotNull('device_token')
             ->get();
 
         $receiver = [];
@@ -55,7 +55,7 @@ class WeeklyProfitCron extends Command
         $currentDate = Carbon::now();
 
         // Calculate the date 7 days ago
-        $sevenDaysAgo = $currentDate->subDays(7)->toDateString();
+        $sevenDaysAgo = $currentDate->subDays(3)->toDateString();
 
         // Retrieve records where the date is within the last 7 days
         //$profit = TransactionModel::where('transaction_time', '>=', $sevenDaysAgo)->where("admin_station", $request->admin_station)->sum("profit");
