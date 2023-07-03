@@ -223,11 +223,11 @@ class TransactionService
 
         foreach ($stations as $station) {
             $m_income = TransactionModel::where('transaction_time', 'like', $month . '%')->where("admin_station", $station->id)->sum("profit");
-            $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $request->admin_station)->sum("amount");
+            $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station",  $station->id)->sum("amount");
             $m_gross_profit = $m_income - $m_expense;
 
             $y_income = TransactionModel::where('transaction_time', 'like', $year . '%')->where("admin_station", $station->id)->sum("profit");
-            $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $request->admin_station)->sum("amount");
+            $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station",  $station->id)->sum("amount");
             $y_gross_profit = $y_income - $y_expense;
 
             $data = [
