@@ -985,7 +985,7 @@ function getFinancialSummary() {
               <td></td>
               <td> <a onclick="getBreakdown('${date}','${
             data[i].station_id
-          }')" data-bs-toggle="modal"
+          }', '${data[i].station_name}')" data-bs-toggle="modal"
                   data-bs-target="#viewModal" href="#">${formatNumber(
                     data[i].monthly.gross_profit
                   )}</a></td>
@@ -1103,9 +1103,7 @@ function getBreakdown(date, station_id, station_name) {
 
       document.getElementById("pd_label").innerHTML =
         station_name +
-        "'s " +
-        document.getElementById("pd_label").innerHTML +
-        " FOR " +
+        "'s TRANSACTION BREAKDOWN FOR " +
         month.toUpperCase() +
         " " +
         year;
@@ -1118,7 +1116,7 @@ function getBreakdown(date, station_id, station_name) {
             <td>${c}.</td>
             <td>${dateToWord(transaction.day)}</td>
             <td>${transaction.count}</td>
-            <td>₦${formatNumber(transaction.profit)}</td>
+            <td>₦${formatNumber(parseInt(transaction.profit))}</td>
         </tr>
         `;
           total_profit += parseInt(transaction.profit);
@@ -1134,7 +1132,7 @@ function getBreakdown(date, station_id, station_name) {
           document.getElementById("expense_table").innerHTML += `<tr>
             <td>${c}.</td>
             <td>${expense.description}</td>
-            <td>₦${formatNumber(expense.amount)}</td>
+            <td>₦${formatNumber(parseInt(expense.amount))}</td>
             <td>${expense.date}</td>
         </tr>
         `;
