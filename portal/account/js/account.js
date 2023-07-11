@@ -1,6 +1,6 @@
 var ip = "";
 var domain = "";
-APP_MODE = "DEV";
+APP_MODE = "LIVE";
 if (this.APP_MODE == "DEV") {
   // DEVELOPMENT IP
   ip = "http://127.0.0.1:8000";
