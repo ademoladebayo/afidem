@@ -1108,7 +1108,7 @@ function getBreakdown(date, station_id, station_name) {
         " FOR " +
         month.toUpperCase() +
         " " +
-        year.toUpperCase();
+        year;
 
       if (data.transaction.length > 0) {
         c = 1;
