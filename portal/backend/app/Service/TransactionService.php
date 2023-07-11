@@ -253,21 +253,21 @@ class TransactionService
 
     public function getBreakdown(Request $request)
     {
+        $date = $request->date;
         $expense = ExpenseModel::where('date', 'like', $request->date . '%')->where("admin_station",  $request->station_id)->get();
-
         $transaction = DB::table('transaction_history')
             ->select(
                 DB::raw("SUBSTRING(transaction_time, 1, 10) AS day"),
                 DB::raw("SUM(profit) AS profit"),
                 DB::raw("COUNT(profit) AS count")
             )
-            ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query, $request) {
+            ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query) use ($date){
                 $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 10)"))
                     ->from('transaction_history')
-                    ->where('transaction_time', 'like', $request->date);
+                    ->where('transaction_time', 'like', $date.'%');
             })
             ->where('admin_station', $request->station_id)
-            ->groupBy('date')
+            ->groupBy('day')
             ->get();
 
         return ['transaction' => $transaction, 'expense' => $expense];
