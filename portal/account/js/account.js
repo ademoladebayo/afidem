@@ -982,13 +982,12 @@ function getFinancialSummary() {
               <td>${formatNumber(data[i].monthly.income)}</td>
               <td></td>
               <td>${formatNumber(data[i].monthly.expense)}</td>
-              <td></td>
-              <a onclick="getBreakdown('${date}','${
+              <td> <a onclick="getBreakdown('${date}','${
             data[i].station_id
           }')" data-bs-toggle="modal"
-              data-bs-target="#viewModal"> href="#">${formatNumber(
-                data[i].monthly.gross_profit
-              )}</a>
+                  data-bs-target="#viewModal" href="#">${formatNumber(
+                    data[i].monthly.gross_profit
+                  )}</a></td>
              </tr>
               `;
 
@@ -1070,7 +1069,7 @@ function getFinancialSummary() {
 
 function getBreakdown(date, station_id, station_name) {
   openSpinnerModal("Transaction Breakdown");
-  fetch(ip + "/api/transaction/breakdown", {
+  fetch(ip + "/api/transaction/financial-summary/breakdown", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -1118,7 +1117,7 @@ function getBreakdown(date, station_id, station_name) {
             <td>${c}.</td>
             <td>${dateToWord(transaction.day)}</td>
             <td>${transaction.count}</td>
-            <td>${transaction.profit}</td>
+            <td>₦${formatNumber(transaction.profit)}</td>
         </tr>
         `;
           total_profit += parseInt(transaction.profit);
@@ -1134,7 +1133,7 @@ function getBreakdown(date, station_id, station_name) {
           document.getElementById("expense_table").innerHTML += `<tr>
             <td>${c}.</td>
             <td>${expense.description}</td>
-            <td>${expense.amount}</td>
+            <td>₦${formatNumber(expense.amount)}</td>
             <td>${expense.date}</td>
         </tr>
         `;
@@ -1144,12 +1143,13 @@ function getBreakdown(date, station_id, station_name) {
       }
 
       document.getElementById("total_expense").innerHTML =
-        formatNumber(total_expense);
+        "₦" + formatNumber(total_expense);
       document.getElementById("total_income").innerHTML =
-        formatNumber(total_profit);
-      document.getElementById("gross_profit").innerHTML = formatNumber(
-        total_profit - total_expense
-      );
+        "₦" + formatNumber(total_profit);
+      document.getElementById("transaction_count").innerHTML =
+        formatNumber(total_trans_count);
+      document.getElementById("gross_profit").innerHTML =
+        "₦" + formatNumber(total_profit - total_expense);
     })
     .catch((err) => console.log(err));
 }
