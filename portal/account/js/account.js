@@ -982,6 +982,7 @@ function getFinancialSummary() {
               <td>${formatNumber(data[i].monthly.income)}</td>
               <td></td>
               <td>${formatNumber(data[i].monthly.expense)}</td>
+              <td></td>
               <td> <a onclick="getBreakdown('${date}','${
             data[i].station_id
           }')" data-bs-toggle="modal"

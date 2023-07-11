@@ -70,4 +70,10 @@ class TransactionController extends Controller
         $TransactionService = new TransactionService();
         return $TransactionService->getFinancialSummary($request);
     }
+
+    public function getBreakdown(Request $request)
+    {
+        $TransactionService = new TransactionService();
+        return $TransactionService->getBreakdown($request);
+    }
 }
