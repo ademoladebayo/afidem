@@ -11,6 +11,7 @@ use App\Model\AdminModel;
 use App\Http\Controllers\NotificationController;
 use App\Util\Utils;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
@@ -231,6 +232,7 @@ class TransactionService
             $y_gross_profit = $y_income - $y_expense;
 
             $data = [
+                "station_id" => $station->id,
                 "station_name" => $station->username,
                 "monthly" => [
                     "income" => intval($m_income),
@@ -247,5 +249,27 @@ class TransactionService
         }
 
         return $financial_summary;
+    }
+
+    public function getBreakdown(Request $request)
+    {
+        $expense = ExpenseModel::where('date', 'like', $request->date . '%')->where("admin_station",  $request->station_id)->get();
+
+        $transaction = DB::table('transaction_history')
+            ->select(
+                DB::raw("SUBSTRING(transaction_time, 1, 10) AS day"),
+                DB::raw("SUM(profit) AS profit"),
+                DB::raw("COUNT(profit) AS count")
+            )
+            ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query, $request) {
+                $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 10)"))
+                    ->from('transaction_history')
+                    ->where('transaction_time', 'like', $request->date);
+            })
+            ->where('admin_station', $request->station_id)
+            ->groupBy('date')
+            ->get();
+
+        return ['transaction' => $transaction, 'expense' => $expense];
     }
 }

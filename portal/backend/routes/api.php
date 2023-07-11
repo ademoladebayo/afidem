@@ -72,6 +72,9 @@ Route::middleware([ActivityLog::class])->group(function () {
         Route::post('transaction/financial-summary', 'TransactionController@getFinancialSummary', function () {
         })->middleware(Cors::class);
 
+        Route::post('transaction/financial-summary/breakdown', 'TransactionController@getBreakdown', function () {
+        })->middleware(Cors::class);
+
 
 
     });

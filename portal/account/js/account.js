@@ -1,6 +1,6 @@
 var ip = "";
 var domain = "";
-APP_MODE = "LIVE";
+APP_MODE = "DEV";
 if (this.APP_MODE == "DEV") {
   // DEVELOPMENT IP
   ip = "http://127.0.0.1:8000";
@@ -983,7 +983,12 @@ function getFinancialSummary() {
               <td></td>
               <td>${formatNumber(data[i].monthly.expense)}</td>
               <td></td>
-              <td>${formatNumber(data[i].monthly.gross_profit)}</td>
+              <a onclick="getBreakdown('${date}','${
+            data[i].station_id
+          }')" data-bs-toggle="modal"
+              data-bs-target="#viewModal"> href="#">${formatNumber(
+                data[i].monthly.gross_profit
+              )}</a>
              </tr>
               `;
 
@@ -1063,6 +1068,92 @@ function getFinancialSummary() {
     .catch((err) => console.log(err));
 }
 
+function getBreakdown(date, station_id, station_name) {
+  openSpinnerModal("Transaction Breakdown");
+  fetch(ip + "/api/transaction/breakdown", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      date: date,
+      station_id: station_id,
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+      removeSpinnerModal();
+      total_expense = 0;
+      total_trans_count = 0;
+      total_profit = 0;
+
+      const date = new Date(date);
+      const year = date.getFullYear();
+      const month = date.toLocaleDateString("en-US", { month: "long" });
+
+      document.getElementById("pd_label").innerHTML =
+        station_name +
+        "'s " +
+        document.getElementById("pd_label").innerHTML +
+        " FOR " +
+        month.toUpperCase() +
+        " " +
+        year.toUpperCase();
+
+      if (data.transaction.length > 0) {
+        c = 1;
+        document.getElementById("daily_profit").innerHTML = ``;
+        data.transaction.forEach((transaction) => {
+          document.getElementById("daily_profit").innerHTML += `<tr>
+            <td>${c}.</td>
+            <td>${dateToWord(transaction.day)}</td>
+            <td>${transaction.count}</td>
+            <td>${transaction.profit}</td>
+        </tr>
+        `;
+          total_profit += parseInt(transaction.profit);
+          total_trans_count += parseInt(transaction.count);
+          c = c + 1;
+        });
+      }
+
+      if (data.expense.length > 0) {
+        c = 1;
+        document.getElementById("expense_table").innerHTML = ``;
+        data.expense.forEach((expense) => {
+          document.getElementById("expense_table").innerHTML += `<tr>
+            <td>${c}.</td>
+            <td>${expense.description}</td>
+            <td>${expense.amount}</td>
+            <td>${expense.date}</td>
+        </tr>
+        `;
+          total_expense += parseInt(expense.amount);
+          c = c + 1;
+        });
+      }
+
+      document.getElementById("total_expense").innerHTML =
+        formatNumber(total_expense);
+      document.getElementById("total_income").innerHTML =
+        formatNumber(total_profit);
+      document.getElementById("gross_profit").innerHTML = formatNumber(
+        total_profit - total_expense
+      );
+    })
+    .catch((err) => console.log(err));
+}
+
 function addToNewObject(name, value) {
   newObj[name] = value;
   console.log(newObj);
@@ -1078,6 +1169,17 @@ function getDate() {
   date = dd + "/" + mm + "/" + yyyy;
 
   return time + "~" + date;
+}
+
+function dateToWord(date) {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const formattedDate = new Date(date).toLocaleDateString("en-US", options);
+  return formattedDate;
 }
 
 // DEBOUNCER
