@@ -1097,9 +1097,9 @@ function getBreakdown(date, station_id, station_name) {
       total_trans_count = 0;
       total_profit = 0;
 
-      const date = new Date(date);
-      const year = date.getFullYear();
-      const month = date.toLocaleDateString("en-US", { month: "long" });
+      const dat = new Date(date);
+      const year = dat.getFullYear();
+      const month = dat.toLocaleDateString("en-US", { month: "long" });
 
       document.getElementById("pd_label").innerHTML =
         station_name +
