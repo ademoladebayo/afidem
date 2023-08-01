@@ -104,7 +104,7 @@
 <script src="asset/plugins/scroll-fixed/jquery-scrolltofixed-min.js"></script>
 <script src="asset/js/script.js"></script>
 <script src="common-library.js"></script>
-<script src="account/js/account.js"></script>
+<script src="account/js/account.js?v=1"></script>
 <script src="assets/js/lib/toastr/toastr.min.js"></script>
 <script src="assets/js/lib/toastr/toastr.init.js"></script>
 <script src="assets/js/lib/sweetalert/sweetalert.min.js"></script>
@@ -130,6 +130,9 @@
         ip = "https://afidemglobalresource.com.ng/backend/afidem";
         domain = "https://portal.afidemglobalresource.com.ng/";
     }
+
+    localStorage.setItem("ip", ip);
+    localStorage.setItem("domain",domain);
 
     const firebaseConfig = {
         apiKey: "AIzaSyCLhWTc_4e5rGJeXV8qGCWZdZLTP0YrjCA",

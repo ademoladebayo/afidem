@@ -1,18 +1,5 @@
-var ip = "";
-var domain = "";
-APP_MODE = "LIVE";
-if (this.APP_MODE == "DEV") {
-  // DEVELOPMENT IP
-  ip = "http://127.0.0.1:8000";
-  domain = "http://localhost/afidem/portal";
-} else if (this.APP_MODE == "LIVE") {
-  // LIVE IP
-  ip = "https://afidemglobalresource.com.ng/backend/afidem";
-  domain = "https://portal.afidemglobalresource.com.ng/";
-}
-
-localStorage.setItem("ip", ip);
-localStorage.setItem("domain", domain);
+var ip = localStorage["ip"];
+var domain = localStorage["domain"];
 
 window.addEventListener("online", () => {
   toastr.remove();
@@ -138,10 +125,11 @@ function signIn() {
         } else {
           errortoast("<b>" + data.message + "</b>");
         }
-
-        document.getElementById("signin").innerHTML = `Sign In`;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        document.getElementById("signin").innerHTML = `Sign in`;
+        errortoast("Error occurred please try again");
+      });
   } else {
     warningtoast("<b>Please check that no field is empty.</b>");
   }
@@ -641,7 +629,8 @@ function getAllTransaction() {
           parseInt(data.daily_stat.transfer) +
           parseInt(data.daily_stat.airtime) +
           parseInt(data.daily_stat.purchase) +
-          parseInt(data.daily_stat.pos_transfer)
+          parseInt(data.daily_stat.pos_transfer) +
+          parseInt(data.daily_stat.bill_payment)
       );
       document.getElementById("d_withdrawal").innerHTML = formatNumber(
         parseInt(data.daily_stat.withdrawal)
@@ -666,6 +655,10 @@ function getAllTransaction() {
         parseInt(data.daily_stat.purchase)
       );
 
+      document.getElementById("d_bill_payment").innerHTML = formatNumber(
+        parseInt(data.daily_stat.bill_payment)
+      );
+
       document.getElementById("d_trans_count").innerHTML = formatNumber(
         parseInt(data.daily_stat.trans_count)
       );
@@ -676,7 +669,8 @@ function getAllTransaction() {
           parseInt(data.montly_stat.transfer) +
           parseInt(data.montly_stat.airtime) +
           parseInt(data.montly_stat.purchase) +
-          parseInt(data.montly_stat.pos_transfer)
+          parseInt(data.montly_stat.pos_transfer) +
+          parseInt(data.montly_stat.bill_payment)
       );
       document.getElementById("m_withdrawal").innerHTML = formatNumber(
         parseInt(data.montly_stat.withdrawal)
@@ -703,6 +697,10 @@ function getAllTransaction() {
 
       document.getElementById("m_pos_transfer").innerHTML = formatNumber(
         parseInt(data.montly_stat.pos_transfer)
+      );
+
+      document.getElementById("m_bill_payment").innerHTML = formatNumber(
+        parseInt(data.montly_stat.bill_payment)
       );
 
       document.getElementById("m_expense").innerHTML = formatNumber(
@@ -1069,6 +1067,7 @@ function getFinancialSummary() {
 }
 
 function getBreakdown(date, station_id, station_name) {
+  resetBreakdownTable();
   openSpinnerModal("Transaction Breakdown");
   fetch(ip + "/api/transaction/financial-summary/breakdown", {
     method: "POST",
@@ -1151,6 +1150,20 @@ function getBreakdown(date, station_id, station_name) {
         "₦" + formatNumber(total_profit - total_expense);
     })
     .catch((err) => console.log(err));
+}
+
+function resetBreakdownTable() {
+  document.getElementById("total_expense").innerHTML = "₦" + formatNumber(0);
+  document.getElementById("total_income").innerHTML = "₦" + formatNumber(0);
+  document.getElementById("transaction_count").innerHTML = formatNumber(0);
+  document.getElementById("gross_profit").innerHTML = "₦" + formatNumber(0);
+  document.getElementById("daily_profit").innerHTML = `
+      <tr>
+          <td colspan="12">
+              <center>No data yet</center>
+          </td>
+
+      </tr>`;
 }
 
 function addToNewObject(name, value) {
@@ -1952,12 +1965,20 @@ function getAllStudentForTable() {
     .catch((err) => console.log(err));
 }
 
-// FIREBASE CLOUD MESSAGING
-
-//
 window.addEventListener("fetch", function (event) {
   if (!navigator.onLine) {
     toastr.remove();
     errortoast("You are offline, connect to the internet.");
   }
 });
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    const data = event.data;
+    if (data.success) {
+      successtoast(data.message);
+    } else {
+      errortoast(data.message);
+    }
+  });
+}

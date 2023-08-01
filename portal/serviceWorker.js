@@ -1,5 +1,6 @@
-const version = 1;
-const afidem_cache = `afidem-cache-${version}`;
+// const version = 1.0;
+// const afidem_cache = `afidem-cache-${version}`;
+const afidem_cache = `afidem-cache`;
 const INTERNAL_ENDPOINT = [
   "http://127.0.0.1:8000",
   "https://afidemglobalresource.com.ng/backend/afidem",
@@ -7,29 +8,8 @@ const INTERNAL_ENDPOINT = [
 
 const URLToIgnore = ["/api/transaction/report"];
 
-const assets = [
-  "./",
-  //   "/index.html",
-  //   "/css/style.css",
-  //   "/js/app.js",
-  //   "/images/coffee1.png",
-  //   "/images/coffee2.png",
-  //   "/images/coffee3.png",
-  //   "/images/coffee4.png",
-  //   "/images/coffee5.png",
-  //   "/images/coffee6.png",
-  //   "/images/coffee7.png",
-  //   "/images/coffee8.png",
-  //   "/images/coffee9.png"
-];
-
 // Install event: caching all necessary resources
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(afidem_cache).then((cache) => {
-      return cache.addAll(assets);
-    })
-  );
   self.skipWaiting();
 });
 
@@ -41,11 +21,19 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       convertPostRequestToGet(cloneReq).then((req) => {
         if (!navigator.onLine) {
-          return caches.match(req).then((response) => {
-            if (response) {
-              console.table("response used cache ... ");
-              return response;
-            }
+          caches.open(afidem_cache).then((cache) => {
+            return cache.match(req).then((response) => {
+              if (response) {
+                console.table("response used cache ... ");
+                return response;
+              } else {
+                data = {
+                  success: false,
+                  message: "Please connect to the internet to continue.",
+                };
+                sendMessage(data, event.clientId);
+              }
+            });
           });
         } else {
           return fetch(event.request).then((fetchResponse) => {
@@ -61,14 +49,20 @@ self.addEventListener("fetch", (event) => {
     );
   } else {
     if (!navigator.onLine) {
-      event.respondWith(
-        caches.match(event.request).then((response) => {
-          // Return the cached response if found
+      caches.open(afidem_cache).then((cache) => {
+        return cache.match(event.request).then((response) => {
           if (response) {
+            console.table("response used cache ... ");
             return response;
+          } else {
+            data = {
+              success: false,
+              message: "Please connect to the internet to continue.",
+            };
+            sendMessage(data, event.clientId);
           }
-        })
-      );
+        });
+      });
     } else {
       event.respondWith(
         // Otherwise, fetch the request from the network
@@ -87,7 +81,6 @@ self.addEventListener("fetch", (event) => {
     }
   }
 });
-
 
 async function convertPostRequestToGet(cloneReq) {
   modifiedUrl = "";
@@ -119,3 +112,19 @@ async function convertPostRequestToGet(cloneReq) {
 
   return modifiedUrl;
 }
+
+const sendMessage = async (msg, clientId) => {
+  let allClients = [];
+  if (clientId) {
+    let client = await clients.get(clientId);
+    allClients.push(client);
+  } else {
+    allClients = await clients.matchAll({ includeUncontrolled: true });
+  }
+  return Promise.all(
+    allClients.map((client) => {
+      // console.log('postMessage', msg, 'to', client.id);
+      return client.postMessage(msg);
+    })
+  );
+};
