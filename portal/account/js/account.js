@@ -1164,6 +1164,14 @@ function resetBreakdownTable() {
           </td>
 
       </tr>`;
+
+  document.getElementById("expense_table").innerHTML = `
+      <tr>
+          <td colspan="12">
+              <center>No data yet</center>
+          </td>
+
+      </tr>`;
 }
 
 function addToNewObject(name, value) {
