@@ -1,4 +1,4 @@
-const version = "1.3"; // Change this to a new value whenever you update the service worker
+const version = "1.4"; // Change this to a new value whenever you update the service worker
 
 if ("serviceWorker" in navigator) {
   // UNREGISTER OLD SERVICE WORKER
