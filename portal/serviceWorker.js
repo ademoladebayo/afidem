@@ -32,8 +32,6 @@ self.addEventListener("fetch", (event) => {
             const response = await cache.match(req);
             if (response) {
               console.table("response used cache ... ");
-              console.table(req);
-              console.table(response);
               return response;
             } else {
               data = {
@@ -61,8 +59,6 @@ self.addEventListener("fetch", (event) => {
         const response = await cache.match(event.request);
         if (response) {
           console.table("response used cache ... ");
-          console.table(req);
-          console.table(response);
           return response;
         } else {
           data = {
