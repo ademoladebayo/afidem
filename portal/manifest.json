@@ -1,12 +1,12 @@
 {
     "name": "AFIDEM",
     "short_name": "AFIDEM",
-    "start_url": "index.html",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#051f3e",
     "theme_color": "#051f3e",
     "orientation": "portrait-primary",
-    "splash_screen": "splash-screen.png",
+    "splash_screen": "splash_screen.png",
     "icons": [
       {
         "src": "./icons/afidem-72_x_72.png",

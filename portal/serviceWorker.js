@@ -57,19 +57,21 @@ self.addEventListener("fetch", (event) => {
     );
   } else {
     if (!navigator.onLine) {
-      return caches.open(afidem_cache).then(async (cache) => {
-        const response = await cache.match(event.request);
-        if (response) {
-          console.table("response used cache ... ");
-          return response;
-        } else {
-          data = {
-            success: false,
-            message: "Please connect to the internet to continue.",
-          };
-          sendMessage(data, event.clientId);
-        }
-      });
+      event.respondWith(
+        caches.open(afidem_cache).then(async (cache) => {
+          const response = await cache.match(event.request);
+          if (response) {
+            console.table("response used cache ... ");
+            return response;
+          } else {
+            data = {
+              success: false,
+              message: "Please connect to the internet to continue.",
+            };
+            sendMessage(data, event.clientId);
+          }
+        })
+      );
     } else {
       event.respondWith(
         // Otherwise, fetch the request from the network
