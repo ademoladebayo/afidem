@@ -8,7 +8,7 @@ const INTERNAL_ENDPOINT = [
 
 const URLToIgnore = ["/api/transaction/report"];
 
-const assets = ["./"];
+const assets = ["/"];
 
 // Install event: caching all necessary resources
 self.addEventListener("install", (event) => {
