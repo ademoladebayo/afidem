@@ -21,19 +21,18 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       convertPostRequestToGet(cloneReq).then((req) => {
         if (!navigator.onLine) {
-          caches.open(afidem_cache).then((cache) => {
-            return cache.match(req).then((response) => {
-              if (response) {
-                console.table("response used cache ... ");
-                return response;
-              } else {
-                data = {
-                  success: false,
-                  message: "Please connect to the internet to continue.",
-                };
-                sendMessage(data, event.clientId);
-              }
-            });
+          caches.open(afidem_cache).then(async (cache) => {
+            const response = await cache.match(req);
+            if (response) {
+              console.table("response used cache ... ");
+              return response;
+            } else {
+              data = {
+                success: false,
+                message: "Please connect to the internet to continue.",
+              };
+              sendMessage(data, event.clientId);
+            }
           });
         } else {
           return fetch(event.request).then((fetchResponse) => {
@@ -49,19 +48,18 @@ self.addEventListener("fetch", (event) => {
     );
   } else {
     if (!navigator.onLine) {
-      caches.open(afidem_cache).then((cache) => {
-        return cache.match(event.request).then((response) => {
-          if (response) {
-            console.table("response used cache ... ");
-            return response;
-          } else {
-            data = {
-              success: false,
-              message: "Please connect to the internet to continue.",
-            };
-            sendMessage(data, event.clientId);
-          }
-        });
+      caches.open(afidem_cache).then(async (cache) => {
+        const response = await cache.match(event.request);
+        if (response) {
+          console.table("response used cache ... ");
+          return response;
+        } else {
+          data = {
+            success: false,
+            message: "Please connect to the internet to continue.",
+          };
+          sendMessage(data, event.clientId);
+        }
       });
     } else {
       event.respondWith(
