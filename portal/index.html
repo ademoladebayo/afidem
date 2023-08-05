@@ -134,7 +134,7 @@
     }
 
     localStorage.setItem("ip", ip);
-    localStorage.setItem("domain",domain);
+    localStorage.setItem("domain", domain);
 
     const firebaseConfig = {
         apiKey: "AIzaSyCLhWTc_4e5rGJeXV8qGCWZdZLTP0YrjCA",
@@ -153,15 +153,14 @@
             // app token used for sending notifications
             if (currentToken) {
                 console.log(currentToken);
-                //document.querySelector('body').append(currentToken)
                 sendTokenToServer(currentToken)
             } else {
-                setTokenSentToServer(false);
+                couldNotGetToken();
             }
         }).catch((err) => {
             // notifications are manually blocked, you can ask for unblock here
             console.log('An error occurred while retrieving token. ', err);
-            setTokenSentToServer(false);
+            couldNotGetToken();
         });
 
 
@@ -210,6 +209,13 @@
 
     }
 
+    function couldNotGetToken() {
+        console.log("Could not retrieve token ... ");
+        // but we proceed
+        setTimeout(function () {
+            window.location.href = "account/dashboard.html";
+        }, 1000);
+    }
 
 </script>
 
