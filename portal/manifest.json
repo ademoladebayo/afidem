@@ -6,6 +6,7 @@
     "background_color": "#051f3e",
     "theme_color": "#051f3e",
     "orientation": "portrait-primary",
+    "splash_screen": "splash-screen.png",
     "icons": [
       {
         "src": "./icons/afidem-72_x_72.png",

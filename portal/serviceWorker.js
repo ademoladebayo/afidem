@@ -8,16 +8,18 @@ const INTERNAL_ENDPOINT = [
 
 const URLToIgnore = ["/api/transaction/report"];
 
-const assets = ["/"];
+const assets = ["/", "./", "index.html"];
 
 // Install event: caching all necessary resources
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(afidem_cache).then((cache) => {
-      return cache.addAll(assets);
-    })
+    caches
+      .open(afidem_cache)
+      .then((cache) => {
+        return cache.addAll(assets);
+      })
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
 // Fetch event: intercepting network requests
