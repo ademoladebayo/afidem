@@ -8,8 +8,15 @@ const INTERNAL_ENDPOINT = [
 
 const URLToIgnore = ["/api/transaction/report"];
 
+const assets = ["./"];
+
 // Install event: caching all necessary resources
 self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(afidem_cache).then((cache) => {
+      return cache.addAll(assets);
+    })
+  );
   self.skipWaiting();
 });
 
@@ -23,18 +30,18 @@ self.addEventListener("fetch", (event) => {
         if (!navigator.onLine) {
           return caches.open(afidem_cache).then(async (cache) => {
             const response = await cache.match(req);
-              if (response) {
-                console.table("response used cache ... ");
-                console.table(req);
-                console.table(response);
-                return response;
-              } else {
-                data = {
-                  success: false,
-                  message: "Please connect to the internet to continue.",
-                };
-                sendMessage(data, event.clientId);
-              }
+            if (response) {
+              console.table("response used cache ... ");
+              console.table(req);
+              console.table(response);
+              return response;
+            } else {
+              data = {
+                success: false,
+                message: "Please connect to the internet to continue.",
+              };
+              sendMessage(data, event.clientId);
+            }
           });
         } else {
           return fetch(event.request).then((fetchResponse) => {
@@ -52,18 +59,18 @@ self.addEventListener("fetch", (event) => {
     if (!navigator.onLine) {
       return caches.open(afidem_cache).then(async (cache) => {
         const response = await cache.match(event.request);
-          if (response) {
-            console.table("response used cache ... ");
-            console.table(req);
-            console.table(response);
-            return response;
-          } else {
-            data = {
-              success: false,
-              message: "Please connect to the internet to continue.",
-            };
-            sendMessage(data, event.clientId);
-          }
+        if (response) {
+          console.table("response used cache ... ");
+          console.table(req);
+          console.table(response);
+          return response;
+        } else {
+          data = {
+            success: false,
+            message: "Please connect to the internet to continue.",
+          };
+          sendMessage(data, event.clientId);
+        }
       });
     } else {
       event.respondWith(
