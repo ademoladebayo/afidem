@@ -272,6 +272,7 @@ class TransactionService
             })
             ->where('admin_station', $request->station_id)
             ->groupBy('day')
+            ->orderBy('day','ASC')
             ->get();
 
         return ['transaction' => $transaction, 'expense' => $expense];
