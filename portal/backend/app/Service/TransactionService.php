@@ -35,7 +35,8 @@ class TransactionService
 
         foreach ($deviceTokens as $token) {
             $receiver[] = $token->device_token;
-        };
+        }
+        ;
 
         NotificationController::createNotification(Utils::getUserLoggedIn($request) . ' JUST ADDED A NEW EXPENSE ', $request->description . ' ₦' . number_format($request->amount), $receiver);
         return response(['success' => true, 'message' => "Expense was added successfully."]);
@@ -83,9 +84,10 @@ class TransactionService
 
                     //CHECK IF TERMIAL BELONG TO THIS STATION
                     $terminal_id = AdminModel::where('id', $admin_station)->value('terminal_id');
+                    $terminal_ids = explode(",", $terminal_id);
 
                     if (trim($row["terminal_id"]) != "") {
-                        if (trim($row["terminal_id"]) != $terminal_id) {
+                        if (!in_array(trim($row["terminal_id"]), $terminal_ids)) {
                             return response(['success' => false, 'message' => "Transactions does not belong to this terminal !"]);
                         }
                     }
@@ -198,7 +200,7 @@ class TransactionService
             'trans_count' => TransactionModel::where('transaction_time', 'like', $month . '%')->where("admin_station", $request->admin_station)->count("id"),
         ];
 
-        return ['ALLOWED_REPORT_TYPE' => $ALLOWED_REPORT_TYPE,  'daily_stat' => $daily_stat, 'montly_stat' => $monthly_stat, 'transaction_history' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->orderBy("id", "DESC")->get()];
+        return ['ALLOWED_REPORT_TYPE' => $ALLOWED_REPORT_TYPE, 'daily_stat' => $daily_stat, 'montly_stat' => $monthly_stat, 'transaction_history' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->orderBy("id", "DESC")->get()];
     }
 
 
@@ -228,11 +230,11 @@ class TransactionService
 
         foreach ($stations as $station) {
             $m_income = TransactionModel::where('transaction_time', 'like', $month . '%')->where("admin_station", $station->id)->sum("profit");
-            $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station",  $station->id)->sum("amount");
+            $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $station->id)->sum("amount");
             $m_gross_profit = $m_income - $m_expense;
 
             $y_income = TransactionModel::where('transaction_time', 'like', $year . '%')->where("admin_station", $station->id)->sum("profit");
-            $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station",  $station->id)->sum("amount");
+            $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
             $y_gross_profit = $y_income - $y_expense;
 
             $data = [
@@ -240,12 +242,12 @@ class TransactionService
                 "station_name" => $station->username,
                 "monthly" => [
                     "income" => intval($m_income),
-                    "expense" =>  intval($m_expense),
+                    "expense" => intval($m_expense),
                     "gross_profit" => intval($m_gross_profit)
                 ],
                 "yearly" => [
                     "income" => intval($y_income),
-                    "expense" =>  intval($y_expense),
+                    "expense" => intval($y_expense),
                     "gross_profit" => intval($y_gross_profit)
                 ]
             ];
@@ -258,21 +260,21 @@ class TransactionService
     public function getBreakdown(Request $request)
     {
         $date = $request->date;
-        $expense = ExpenseModel::where('date', 'like', $request->date . '%')->where("admin_station",  $request->station_id)->get();
+        $expense = ExpenseModel::where('date', 'like', $request->date . '%')->where("admin_station", $request->station_id)->get();
         $transaction = DB::table('transaction_history')
             ->select(
                 DB::raw("SUBSTRING(transaction_time, 1, 10) AS day"),
                 DB::raw("SUM(profit) AS profit"),
                 DB::raw("COUNT(profit) AS count")
             )
-            ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query) use ($date){
+            ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query) use ($date) {
                 $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 10)"))
                     ->from('transaction_history')
-                    ->where('transaction_time', 'like', $date.'%');
+                    ->where('transaction_time', 'like', $date . '%');
             })
             ->where('admin_station', $request->station_id)
             ->groupBy('day')
-            ->orderBy('day','ASC')
+            ->orderBy('day', 'ASC')
             ->get();
 
         return ['transaction' => $transaction, 'expense' => $expense];
