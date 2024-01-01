@@ -22,12 +22,22 @@ function loadSideNav(page) {
   document.getElementById("side_nav").innerHTML = `
     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
     <li class="nav-item">
-        <a  id="index" href="dashboard.html?#dashboard" class="nav-link"><i
-                class="flaticon-dashboard"></i><span>Dashboard</span></a>
+      <a  id="index" href="dashboard.html?#dashboard" class="nav-link"><i class="fas fa-credit-card"></i><span>POS</span></a>
+      <!-- <ul>
+        <li class="nav-item">
+          <a id="transaction-history" href="dashboard.html?#paginate0" class="nav-link"><i class="fas fa-hand-holding-usd"></i><span>Transaction History</span></a>
+        </li>
+      </ul> -->
+    </li>
+
+    
+
+    <li class="nav-item">
+      <a   id="ajo" href="ajo.html" class="nav-link"><i class="fas fa-piggy-bank"></i><span>Ajo</span></a>
     </li>
 
     <li class="nav-item">
-        <a    id="transaction-history" href="dashboard.html?#paginate0" class="nav-link"><i class="fas fa-hand-holding-usd"></i><span>Transaction History</span></a>
+      <a   id="loan" href="loan.html" class="nav-link"><i class="fas fa-handshake"></i><span>Loan</span></a>
     </li>
 
     <li class="nav-item">
@@ -1064,6 +1074,10 @@ function getFinancialSummary() {
       }
     })
     .catch((err) => console.log(err));
+}
+
+function getAjo() {
+
 }
 
 function getBreakdown(date, station_id, station_name) {
