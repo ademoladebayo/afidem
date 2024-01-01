@@ -80,7 +80,7 @@ class TransactionService
             $c = 0;
             $day = "";
             foreach ($sheetData as $row) {
-                if (trim($row["status"] == "COMPLETED")) {
+                if (trim($row["Transaction Status"] == "COMPLETED")) {
 
                     //CHECK IF TERMIAL BELONG TO THIS STATION
                     $terminal_id = AdminModel::where('id', $admin_station)->value('terminal_id');
