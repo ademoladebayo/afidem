@@ -74,53 +74,54 @@ class TransactionService
             // Get the first sheet from the imported data
             $sheetData = $importedData[0];
 
-            // Iterate over the rows in the sheet
+            // Assuming the row index you want to use as headers is 6
+            $headerRow = $sheetData[6]; // Index is 6 because array indexes start from 0
+
+            // Iterate over the rows in the sheet starting from the 6th row (index 5)
             $c = 0;
-            $day = "";
-            $rowNumber = 0;
-            foreach ($sheetData as $row) {
-                $rowNumber++;
+            for ($i = 7; $i < count($sheetData); $i++) {
+                $row = $sheetData[$i];
 
-                // Skip the first 5 rows
-                if ($rowNumber <= 8) {
-                    continue;
-                }
+                // Create an associative array mapping column names to their respective values
+                $rowData = array_combine($headerRow, $row);
+                Log::debug($rowData);
 
-                // Check the condition for rows after the 5th row
-                if (trim($row["Transaction Status"]) == "COMPLETED") {
+                if (trim($rowData["Transaction Status"]) == "COMPLETED") {
 
                     //CHECK IF TERMIAL BELONG TO THIS STATION
                     $terminal_id = AdminModel::where('id', $admin_station)->value('terminal_id');
                     $terminal_ids = explode(",", $terminal_id);
 
-                    if (trim($row["terminal_id"]) != "") {
-                        if (!in_array(trim($row["terminal_id"]), $terminal_ids)) {
+                    if (trim($rowData["Terminal ID"]) != "") {
+                        if (!in_array(trim($rowData["Terminal ID"]), $terminal_ids)) {
                             return response(['success' => false, 'message' => "Transactions does not belong to this terminal !"]);
                         }
                     }
 
-                    if (TransactionModel::where('transaction_ref', trim($row["transaction_ref"]))->exists()) {
+                    if (TransactionModel::where('transaction_ref', trim($rowData["Transaction Ref"]))->exists()) {
                         continue;
                     }
 
                     $transaction = new TransactionModel();
-                    $day = explode(" ", trim($row["transaction_time"]))[0];
-                    $transaction->transaction_type = trim($row["transaction_type"]);
-                    $transaction->amount = trim($row["amount"]);
-                    $transaction->status = trim($row["status"]);
-                    $transaction->payer = trim($row["payer"]);
-                    $transaction->payer_fi = trim($row["payer_fi"]);
-                    $transaction->payee = trim($row["payee"]);
-                    $transaction->payee_fi = trim($row["payee_fi"]);
-                    $transaction->transaction_time = trim($row["transaction_time"]);
-                    $transaction->transaction_ref = trim($row["transaction_ref"]);
-                    $transaction->earnings = trim($row["earnings"]);
-                    $transaction->terminal_id = trim($row["terminal_id"]);
+                    $day = $this->excelDateTimeToUnix(trim($rowData["Date"]));
+                    $transaction->transaction_type = trim($rowData["Transaction Type"]);
+                    $transaction->amount = trim($rowData["Transaction Amount (NGN)"]);
+                    $transaction->status = trim($rowData["Transaction Status"]);
+                    $transaction->payer = trim($rowData["Source"]);
+                    $transaction->payer_fi = trim($rowData["Source Institution"]);
+                    $transaction->payee = trim($rowData["Beneficiary"]);
+                    $transaction->payee_fi = trim($rowData["Beneficiary Institution"]);
+                    $transaction->transaction_time = $day;
+                    $transaction->transaction_ref = trim($rowData["Transaction Ref"]);
+                    $transaction->earnings = trim($rowData["Settlement Debit (NGN)"]) == 0 ? 'CR ' . trim($rowData["Settlement Credit (NGN)"]) : 'DR ' . trim($rowData["Settlement Debit (NGN)"]);
+                    $transaction->terminal_id = trim($rowData["Terminal ID"]);
                     $transaction->comment = "NO COMMENT";
                     $transaction->report_type = "UPLOAD";
                     $transaction->admin_station = $admin_station;
                     $transaction->save();
                     $c = $c + 1;
+
+                    $day = explode(' ', $day)[0];
                 }
             }
 
@@ -130,6 +131,20 @@ class TransactionService
                 return response(['success' => false, 'message' => "Transactions has been uploaded before."]);
             }
         }
+    }
+
+    public function excelDateTimeToUnix($excelDate)
+    {
+        // Convert Excel date to Unix timestamp
+        $unixTimestamp = ($excelDate - 25569) * 86400;
+
+        // Create a DateTime object from the Unix timestamp
+        $date = new \DateTime("@$unixTimestamp");
+
+        // Format the date as needed
+        $formattedDate = $date->format('Y-m-d H:i:s');
+
+        return $formattedDate;
     }
 
     public function deleteTransaction($id)
