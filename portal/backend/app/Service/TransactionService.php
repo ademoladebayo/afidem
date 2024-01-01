@@ -2,16 +2,16 @@
 
 namespace App\Service;
 
-use Illuminate\Http\Request;
-use App\Model\ExpenseModel;
-use App\Model\TransactionModel;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\NotificationController;
 use App\Imports\TransactionImport;
 use App\Model\AdminModel;
-use App\Http\Controllers\NotificationController;
+use App\Model\ExpenseModel;
+use App\Model\TransactionModel;
 use App\Util\Utils;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionService
 {
@@ -58,7 +58,6 @@ class TransactionService
         return response(['success' => true, 'message' => "Expense was deleted successfully."]);
     }
 
-
     public function uploadReport(Request $request)
     {
 
@@ -75,12 +74,20 @@ class TransactionService
             // Get the first sheet from the imported data
             $sheetData = $importedData[0];
 
-
             // Iterate over the rows in the sheet
             $c = 0;
             $day = "";
+            $rowNumber = 0;
             foreach ($sheetData as $row) {
-                if (trim($row["Transaction Status"] == "COMPLETED")) {
+                $rowNumber++;
+
+                // Skip the first 5 rows
+                if ($rowNumber <= 8) {
+                    continue;
+                }
+
+                // Check the condition for rows after the 5th row
+                if (trim($row["Transaction Status"]) == "COMPLETED") {
 
                     //CHECK IF TERMIAL BELONG TO THIS STATION
                     $terminal_id = AdminModel::where('id', $admin_station)->value('terminal_id');
@@ -92,11 +99,9 @@ class TransactionService
                         }
                     }
 
-
                     if (TransactionModel::where('transaction_ref', trim($row["transaction_ref"]))->exists()) {
                         continue;
                     }
-
 
                     $transaction = new TransactionModel();
                     $day = explode(" ", trim($row["transaction_time"]))[0];
@@ -133,7 +138,6 @@ class TransactionService
         return response(['success' => true, 'message' => "Transaction was deleted successfully."]);
     }
 
-
     public function uploadReportManual(Request $request)
     {
         $data = $request->data;
@@ -161,7 +165,6 @@ class TransactionService
             $ALLOWED_REPORT_TYPE = "ANY";
         }
 
-
         $daily_stat = [
             'withdrawal' => TransactionModel::where("transaction_type", "WITHDRAWAL")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
 
@@ -177,7 +180,7 @@ class TransactionService
 
             'bill_payment' => TransactionModel::where("transaction_type", "BILL_PAYMENT")->whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->sum("profit"),
 
-            'trans_count' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->count("id")
+            'trans_count' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->count("id"),
         ];
 
         $monthly_stat = [
@@ -202,8 +205,6 @@ class TransactionService
 
         return ['ALLOWED_REPORT_TYPE' => $ALLOWED_REPORT_TYPE, 'daily_stat' => $daily_stat, 'montly_stat' => $monthly_stat, 'transaction_history' => TransactionModel::whereBetween('transaction_time', [$start_date, $end_date])->where("admin_station", $request->admin_station)->orderBy("id", "DESC")->get()];
     }
-
-
 
     public function uploadProfit(Request $request)
     {
@@ -243,13 +244,13 @@ class TransactionService
                 "monthly" => [
                     "income" => intval($m_income),
                     "expense" => intval($m_expense),
-                    "gross_profit" => intval($m_gross_profit)
+                    "gross_profit" => intval($m_gross_profit),
                 ],
                 "yearly" => [
                     "income" => intval($y_income),
                     "expense" => intval($y_expense),
-                    "gross_profit" => intval($y_gross_profit)
-                ]
+                    "gross_profit" => intval($y_gross_profit),
+                ],
             ];
             array_push($financial_summary, $data);
         }
