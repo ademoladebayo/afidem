@@ -727,6 +727,7 @@ function getAllTransaction() {
       if (data.transaction_history.length > 0) {
         document.getElementById("transaction_table").innerHTML = ``;
         for (i in data.transaction_history) {
+          earnings = data.transaction_history[i].earnings.split(" ");
           document.getElementById("transaction_table").innerHTML += `
               <tr>
       
@@ -743,9 +744,8 @@ function getAllTransaction() {
               <td>${formatNumber(
                 parseInt(data.transaction_history[i].amount)
               )}</td>
-              <td>${formatNumber(
-                parseInt(data.transaction_history[i].earnings)
-              )}</td>
+              <td style='color: ${earnings[0] == 'DR' ? `red` : `green`}'><b>${formatNumber(parseInt(earnings[1]))
+              }</b></td>
               <td class="allownumeric" style="font-style:bold; font-size: 18px; color: ${
                 data.transaction_history[i].profit == 0 ? "red" : "green"
               }" oninput=" addToProfitList('${
@@ -1076,9 +1076,7 @@ function getFinancialSummary() {
     .catch((err) => console.log(err));
 }
 
-function getAjo() {
-
-}
+function getAjo() {}
 
 function getBreakdown(date, station_id, station_name) {
   resetBreakdownTable();
