@@ -41,6 +41,10 @@ Route::middleware([ActivityLog::class])->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
 
+        // USERS
+        Route::post('users/{service}', 'AdminController@getUsers', function () {
+        })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
+
         // TRANSACTION {EXPENSE MANAGEMENT}
         Route::post('transaction/create-expense', 'TransactionController@createExpense', function () {
         })->middleware(Cors::class);
@@ -74,6 +78,37 @@ Route::middleware([ActivityLog::class])->group(function () {
 
         Route::post('transaction/financial-summary/breakdown', 'TransactionController@getBreakdown', function () {
         })->middleware(Cors::class);
+
+
+
+
+
+        // =============================================================================
+        //               BEGINNING OF AJO ROUTE
+        // =============================================================================
+
+        Route::post('ajo/transaction', 'AjoController@createTransaction', function () {
+        })->middleware(Cors::class);
+
+        Route::get('ajo/transaction/{from}/{to}', 'AjoController@fetchTransaction', function () {
+        })->middleware(Cors::class);
+
+
+
+
+
+
+
+        Route::get('ajo/delete-expense/{expense_id}', 'AjoController@deleteExpense', function () {
+        })->middleware(Cors::class);
+
+        Route::post('ajo/all-expense', 'AjoController@allExpense', function () {
+        })->middleware(Cors::class);
+
+
+        // =============================================================================
+        //               END OF AJO ROUTE
+        // =============================================================================
 
 
 
