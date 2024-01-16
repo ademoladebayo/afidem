@@ -67,7 +67,7 @@ class AjoService
         $start_date = $from . " 00:00:00";
         $end_date = $to . " 23:59:00";
         $user_id = $user_id == '-' ? null : $user_id;
-        
+
         if ($user_id) {
             $ajoTxn = AjoModel::with('user')->where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date]);
         } else {
@@ -103,7 +103,7 @@ class AjoService
     public function isFirstDepositOfTheMonth($user_id, $date, $amount)
     {
         $month = explode("-", $date)[0] . "-" . explode("-", $date)[1];
-        $ajoTxn = AjoModel::where('user_id', $user_id)->where('date', 'like', $month . '%');
+        $ajoTxn = AjoModel::where('user_id', $user_id)->where('date', 'like', $month . '%')->get();
 
         if (!$ajoTxn) {
             return true;
@@ -115,7 +115,7 @@ class AjoService
     public function isAmountSameOfTheMonth($user_id, $date, $amount)
     {
         $month = explode("-", $date)[0] . "-" . explode("-", $date)[1];
-        $ajoTxn = AjoModel::where('user_id', $user_id)->where('date', 'like', $month . '%');
+        $ajoTxn = AjoModel::where('user_id', $user_id)->where('date', 'like', $month . '%')->get();
 
         if ($ajoTxn) {
             $ajoTxn = $ajoTxn->first();
