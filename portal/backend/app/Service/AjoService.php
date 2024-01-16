@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Http\Controllers\NotificationController;
 use App\Model\AjoModel;
+use App\Model\AdminModel;
 use App\Model\ExpenseModel;
 use App\Model\TransactionModel;
 use App\Util\Utils;
@@ -79,7 +80,7 @@ class AjoService
         $contributedToday = $ajoTxn->count();
         $totalCredit = $ajoTxn->where(['txn_type' => 'CREDIT'])->sum('amount');
         $totalDebit = $ajoTxn->where('txn_type', 'DEBIT')->sum('amount');
-        $totalCharge = $ajoTxn->where(['is_charge' => true])->sum('amount');
+        $totalCharge = $ajoTxn->where(['is_charge' => 1])->sum('amount');
         $balance = $totalCredit - $totalDebit;
         $availableBalance = $balance - $totalCharge;
 
@@ -137,7 +138,7 @@ class AjoService
         $accountStatement = AjoModel::where('user_id', $user_id);
         $totalCredit = $accountStatement->where(['txn_type' => 'CREDIT'])->sum('amount');
         $totalDebit = $accountStatement->where('txn_type', 'DEBIT')->sum('amount');
-        $totalCharge = $accountStatement->where(['is_charge' => true])->sum('amount');
+        $totalCharge = $accountStatement->where(['is_charge' => 1])->sum('amount');
         $balance = $totalCredit - $totalDebit;
         $availableBalance = $balance - $totalCharge;
 
