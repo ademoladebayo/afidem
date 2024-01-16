@@ -1178,8 +1178,8 @@ function getAllUsers(element,service){
 /* AJO SECTION */
 function createAjoTransaction() { 
   ajoUser = document.getElementById('ajo_user_2').value;
-  transactionType = document.getElementById('transactionType').value;
-  transactionDate = document.getElementById('transactionDate').value;
+  transactionType = document.getElementById('transaction_type').value;
+  transactionDate = document.getElementById('transaction_date').value;
   amount = document.getElementById('amount').value;
 
   if(ajoUser != '' && transactionType != '' && transactionDate != '' && amount != ''){
