@@ -105,7 +105,7 @@ class AjoService
         $month = explode("-", $date)[0] . "-" . explode("-", $date)[1];
         $ajoTxn = AjoModel::where('user_id', $user_id)->where('date', 'like', $month . '%')->get();
 
-        if (!$ajoTxn) {
+        if (count($ajoTxn) == 0) {
             return true;
         }
         return false;
@@ -117,7 +117,7 @@ class AjoService
         $month = explode("-", $date)[0] . "-" . explode("-", $date)[1];
         $ajoTxn = AjoModel::where('user_id', $user_id)->where('date', 'like', $month . '%')->get();
 
-        if ($ajoTxn) {
+        if (count($ajoTxn) > 0) {
             $ajoTxn = $ajoTxn->first();
             if ($ajoTxn->amount == $amount) {
                 return true;
