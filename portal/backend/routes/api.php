@@ -42,7 +42,7 @@ Route::middleware([ActivityLog::class])->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
         // USERS
-        Route::post('users/{service}', 'AdminController@getUsers', function () {
+        Route::get('users/{service}', 'AdminController@getUsers', function () {
         })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
 
         // TRANSACTION {EXPENSE MANAGEMENT}
