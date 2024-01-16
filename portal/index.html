@@ -60,14 +60,11 @@
 
                             <label for=""><i class="fas fa-user"></i> Staff ID</label>
                             <div class="login-row row no-margin">
-                                <input oninput="this.value = this.value.toUpperCase()" value="" id="id" type="text"
-                                    placeholder="USERNAME" class="form-control form-control-sm">
+                                <input oninput="this.value = this.value.toUpperCase()" value="" id="id" type="text" placeholder="USERNAME" class="form-control form-control-sm">
                             </div>
                             <label for=""><i class="fas fa-unlock-alt"></i> Password</label>
                             <div class="login-row row no-margin">
-                                <input id="password" type="password" value="" class="form-control form-control-sm"><i
-                                    id="togglePassword" class="fas fa-eye"
-                                    style="margin-left: -35px; cursor: pointer; margin-bottom: 15px"></i>
+                                <input id="password" type="password" value="" class="form-control form-control-sm"><i id="togglePassword" class="fas fa-eye" style="margin-left: -35px; cursor: pointer; margin-bottom: 15px"></i>
                             </div>
                             <br>
                             <a style="float: right; color: blue;" href="index.html">Switch User</a>
@@ -149,7 +146,9 @@
     const messaging = firebase.messaging();
 
     function initFirebaseMessagingRegistration() {
-        messaging.getToken({ vapidKey: 'BCaDCU0B1hVyl5wJLgYeqoEK_H884I0EB1foOClfC-b-bg_WFFE9XQVOiiYfUl0OTvojVK9am5vQ0AlAbw_hQtc' }).then((currentToken) => {
+        messaging.getToken({
+            vapidKey: 'BCaDCU0B1hVyl5wJLgYeqoEK_H884I0EB1foOClfC-b-bg_WFFE9XQVOiiYfUl0OTvojVK9am5vQ0AlAbw_hQtc'
+        }).then((currentToken) => {
             // app token used for sending notifications
             if (currentToken) {
                 console.log(currentToken);
@@ -184,24 +183,24 @@
 
     function sendTokenToServer(currentToken) {
         fetch(ip + "/api/device-token", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-type": "application/json",
-            },
-            body: JSON.stringify({
-                id: localStorage['user_id'],
-                device_token: currentToken,
-            }),
-        })
-            .then(function (res) {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: localStorage['user_id'],
+                    device_token: currentToken,
+                }),
+            })
+            .then(function(res) {
                 return res.json();
             })
 
-            .then((data) => {
+        .then((data) => {
                 console.log(data)
-                setTimeout(function () {
-                    window.location.href = "account/dashboard.html";
+                setTimeout(function() {
+                    window.location.href = "business/dashboard.html";
                 }, 1000);
             })
             .catch((err) => console.log(err));
@@ -212,11 +211,10 @@
     function couldNotGetToken() {
         console.log("Could not retrieve token ... ");
         // but we proceed
-        setTimeout(function () {
+        setTimeout(function() {
             window.location.href = "account/dashboard.html";
         }, 1000);
     }
-
 </script>
 
 
@@ -227,7 +225,7 @@
     const togglePassword = document.querySelector('#togglePassword');
     const password = document.querySelector('#password');
 
-    togglePassword.addEventListener('click', function (e) {
+    togglePassword.addEventListener('click', function(e) {
         // toggle the type attribute
         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
         password.setAttribute('type', type);
