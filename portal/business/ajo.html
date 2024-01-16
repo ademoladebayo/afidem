@@ -42,7 +42,7 @@
     <script src="../js/modernizr-3.6.0.min.js"></script>
 </head>
 
-<body style="font-family: Poppins; font-weight: bold;" onload="loadSideNav('ajo'); getAllUsersd('ajo_user_1','AJO'); getAjo();  loadDashBoardInformation();">
+<body style="font-family: Poppins; font-weight: bold;" onload="loadSideNav('ajo'); getAllUsers('ajo_user_1','AJO'); getAjo();  loadDashBoardInformation();">
     <!-- Preloader Start Here -->
     <div id="preloader"></div>
     <!-- Preloader End Here -->
@@ -159,7 +159,7 @@
 
                     <div class="col-12 form-group">
                         <select onchange="" id="ajo_user_1" class="select2">
-                            <option>SELECT AJO USER</option>
+                            <option value="-">SELECT AJO USER</option>
                         </select>
                     </div>
 
@@ -204,9 +204,9 @@
                                                 Transactions</div>
                                             <div style="font-family: Poppins; color: black;"><span id="d_profit"></span>
                                                 <!-- <br> -->
-                                                <small>Total Credit : ₦ </small><small id="total_credit">0</small>
+                                                <small>Total Credit : <br>₦ </small><small id="total_credit">0</small>
                                                 <br>
-                                                <small>Total Debit : ₦ </small><small id="total_debit">0</small>
+                                                <small>Total Debit : <br>₦ </small><small id="total_debit">0</small>
                                                 <!-- <br>
                                             <small>WITHDRAWAL : ₦ </small><small id="d_withdrawal">0</small>
                                             <br>
@@ -241,7 +241,7 @@
                                             </div>
                                             <div style="font-family: Poppins; color: black;"><span id="profit">0</span>
                                                 <br>
-                                                <small>Total Bal :<br> ₦ </small><small id="total_credit">22320</small>
+                                                <small>Total Bal :<br> ₦ </small><small id="total_credit">0</small>
                                                 <br>
                                                 <small>Total Avail Bal :<br> ₦ </small><small id="total_debit">0</small>
                                                 <!-- <br>

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Model\UserModel;
 
 class AjoModel extends Authenticatable
 {
@@ -14,8 +15,8 @@ class AjoModel extends Authenticatable
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    // public function pay_by()
-    // {
-    //     return $this->hasOne(ClassModel::class, 'id', 'class');
-    // }
+    public function user()
+    {
+        return $this->hasOne(UserModel::class, 'id', 'user_id');
+    }
 }

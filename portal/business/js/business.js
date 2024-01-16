@@ -1226,6 +1226,8 @@ function createAjoTransaction() {
 function getAjoTransaction() {
   start_date = document.getElementById("start_date").value;
   end_date = document.getElementById("end_date").value;
+  ajoUser = document.getElementById('ajo_user_2').value;
+
   date = "";
   if (start_date == "") {
       // START AND END DATE DEFAULF AS TODAY
@@ -1239,7 +1241,7 @@ function getAjoTransaction() {
 
   openSpinnerModal("Fetch Ajo Transaction");
 
-  fetch(ip + "/api/ajo/transaction/"+start_date+"/"+end_date, {
+  fetch(ip + "/api/ajo/transaction/"+start_date+"/"+end_date+"/"+ajoUser, {
           method: "GET",
           headers: {
               Accept: "application/json",
@@ -1258,40 +1260,22 @@ function getAjoTransaction() {
   .then((data) => {
 
               // POPULATE CHART
-              document.getElementById("d_profit").innerHTML = formatNumber(
+              document.getElementById("total_user").innerHTML = formatNumber(parseInt(data.total_user)
               );
-              document.getElementById("d_withdrawal").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.withdrawal)
+              document.getElementById("contributed_today").innerHTML = formatNumber(
+                  parseInt(data.contributed_today)
               );
-              document.getElementById("d_card_transfer").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.card_transfer)
-              );
-
-              document.getElementById("d_transfer").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.transfer)
+              document.getElementById("total_credit").innerHTML = formatNumber(
+                  parseInt(data.total_credit)
               );
 
-              document.getElementById("d_airtime").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.airtime)
+              document.getElementById("total_debit").innerHTML = formatNumber(
+                  parseInt(data.total_debit)
               );
 
-              document.getElementById("d_purchase").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.purchase)
+              document.getElementById("profit").innerHTML = formatNumber(
+                  parseInt(data.profit)
               );
-
-              document.getElementById("d_pos_transfer").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.purchase)
-              );
-
-              document.getElementById("d_bill_payment").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.bill_payment)
-              );
-
-              document.getElementById("d_trans_count").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.trans_count)
-              );
-
-            
 
               c = 1;
               // Destroy the existing DataTable
@@ -1299,40 +1283,26 @@ function getAjoTransaction() {
                   $("#paginate0").DataTable().destroy();
               }
 
-              if (data.transaction_history.length > 0) {
+              if (data.txn_history.length > 0) {
                   document.getElementById("transaction_table").innerHTML = ``;
-                  for (i in data.transaction_history) {
-                      earnings = data.transaction_history[i].earnings.split(" ");
+                  for (i in data.txn_history) {
                       document.getElementById("transaction_table").innerHTML += `
             <tr>
     
             <td>${c}.</td>
-            <td>${data.transaction_history[i].payer} <b>|</b> ${data.transaction_history[i].payee
-          }</td>
-            <td>${data.transaction_history[i].payer_fi} <b>|</b> ${data.transaction_history[i].payee_fi
-          }</td>
-            <td>${data.transaction_history[i].terminal_id}</td>
-            <td>${data.transaction_history[i].transaction_time}</td>
-            <td>${data.transaction_history[i].transaction_type}</td>
-            <td>${formatNumber(
-            parseInt(data.transaction_history[i].amount)
-          )}</td>
-            <td style='color: ${earnings[0] == 'DR' ? `red` : `green`}'><b>${formatNumber(parseInt(earnings[1]))
-          }</b></td>
-            <td class="allownumeric" style="font-style:bold; font-size: 18px; color: ${data.transaction_history[i].profit == 0 ? "red" : "green"
-          }" oninput=" addToProfitList('${data.transaction_history[i].id
-          }','profit',parseInt(this.innerHTML))" contenteditable="true">${data.transaction_history[i].profit
-          }</td>
-        <td id="allowKeyboard"  oninput="addToProfitList('${data.transaction_history[i].id
-          }','comment',this.innerHTML)" contenteditable="true">${data.transaction_history[i].comment
-          }</td>
-        <td>
-        <a ${data.transaction_history[i].report_type != "MANUAL" ? `hidden` : ``
-          }   onclick="deleteTransaction(${data.transaction_history[i].id
-          })" href="#" class="btn btn-danger"><i
-                class="fas fa-trash"></i>
-            Delete</a>
-            </td>
+            <td>${data.txn_history[i].user.first_name + " " + data.txn_history[i].user.last_name}</td>
+            <td style='color: ${data.txn_history[i].txn_type == 'DEBIT' ? `red` : ``}'><b>${data.txn_history[i].txn_type == 'DEBIT' ? `-` : ``} 
+            ${formatNumber(parseInt(data.txn_history[i].amount))
+            }</b></td>
+
+            <td style='color: ${data.txn_history[i].txn_type == 'CREDIT' ? `green` : ``}'><b>${data.txn_history[i].txn_type == 'CREDIT' ? `+` : ``} 
+            ${formatNumber(parseInt(data.txn_history[i].amount))
+            }</b></td>
+
+            <td>${data.txn_history[i].bal_before}</td>
+            <td>${data.txn_history[i].bal_before}</td>
+            <td>${data.txn_history[i].date}</td>
+           
            </tr>
             `;
         c = c + 1;
