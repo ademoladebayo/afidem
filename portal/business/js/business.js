@@ -1157,7 +1157,7 @@ function getAllUsers(element,service){
           document.getElementById(element).innerHTML +=  ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
         });
 
-        
+
         if(service == "AJO"){
           data.forEach( user => {
             document.getElementById('ajo_user_2').innerHTML +=  ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
@@ -1177,13 +1177,13 @@ function getAllUsers(element,service){
 
 /* AJO SECTION */
 function createAjoTransaction() { 
-  ajoUser = document.getElementById('ajoUser').value;
+  ajoUser = document.getElementById('ajo_user_2').value;
   transactionType = document.getElementById('transactionType').value;
   transactionDate = document.getElementById('transactionDate').value;
   amount = document.getElementById('amount').value;
 
   if(ajoUser != '' && transactionType != '' && transactionDate != '' && amount != ''){
-    openSpinnerModal("Create Transaction");
+    openSpinnerModal("Create Ajo Transaction");
 
     fetch(ip + "/api/ajo/transaction", {
       method: "POST",
@@ -1193,9 +1193,9 @@ function createAjoTransaction() {
         Authorization: "Bearer " + localStorage["token"],
       },
       body: JSON.stringify({
-        ajoUser: ajoUser,
-        transactionType: transactionType,
-        transactionDate: transactionDate,
+        user_id: ajoUser,
+        txn_type: transactionType,
+        date: transactionDate,
         amount: amount,
       }),
     })
@@ -1248,8 +1248,6 @@ function getAjoTransaction() {
           }
       })
       .then(function(res) {
-          console.log(res.status);
-          console.log("RESPONSE CAME HERE " + res);
           if (res.status == 401) {
               removeSpinnerModal();
               openAuthenticationModal();
@@ -1261,13 +1259,6 @@ function getAjoTransaction() {
 
               // POPULATE CHART
               document.getElementById("d_profit").innerHTML = formatNumber(
-                  parseInt(data.daily_stat.withdrawal) +
-                  parseInt(data.daily_stat.card_transfer) +
-                  parseInt(data.daily_stat.transfer) +
-                  parseInt(data.daily_stat.airtime) +
-                  parseInt(data.daily_stat.purchase) +
-                  parseInt(data.daily_stat.pos_transfer) +
-                  parseInt(data.daily_stat.bill_payment)
               );
               document.getElementById("d_withdrawal").innerHTML = formatNumber(
                   parseInt(data.daily_stat.withdrawal)
