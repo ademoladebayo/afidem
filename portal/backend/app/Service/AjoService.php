@@ -142,6 +142,8 @@ class AjoService
         $balance = $totalCredit - $totalDebit;
         $availableBalance = $balance - $totalCharge;
 
+        var_dump($totalCredit, $totalDebit, $balance, $availableBalance);
+
         $stat =
             [
                 "total_credit" => $totalCredit,

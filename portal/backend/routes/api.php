@@ -90,7 +90,7 @@ Route::middleware([ActivityLog::class])->group(function () {
         Route::post('ajo/transaction', 'AjoController@createTransaction', function () {
         })->middleware(Cors::class);
 
-        Route::get('ajo/transaction/{from}/{to}', 'AjoController@fetchTransaction', function () {
+        Route::get('ajo/transaction/{from}/{to}/?{user_id}', 'AjoController@fetchTransaction', function () {
         })->middleware(Cors::class);
 
 
