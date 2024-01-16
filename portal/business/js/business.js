@@ -1179,7 +1179,7 @@ function getAllUsers(element,service){
 function createAjoTransaction() { 
   ajoUser = document.getElementById('ajo_user_2').value;
   transactionType = document.getElementById('transaction_type').value;
-  transactionDate = document.getElementById('transaction_date').value;
+  transactionDate = document.getElementById('txn_date').value;
   amount = document.getElementById('amount').value;
 
   if(ajoUser != '' && transactionType != '' && transactionDate != '' && amount != ''){
