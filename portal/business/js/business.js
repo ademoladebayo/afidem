@@ -1283,7 +1283,7 @@ function getAjoTransaction() {
 
               if (data.data.txn_history.length > 0) {
                   document.getElementById("transaction_table").innerHTML = ``;
-                  for (i in data.txn_history) {
+                  for (i in data.data.txn_history) {
                       document.getElementById("transaction_table").innerHTML += `
             <tr>
     
