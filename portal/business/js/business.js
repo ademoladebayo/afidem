@@ -1226,7 +1226,7 @@ function createAjoTransaction() {
 function getAjoTransaction() {
   start_date = changeDateFormat(document.getElementById("start_date").value);
   end_date = changeDateFormat(document.getElementById("end_date").value);
-  ajoUser = document.getElementById('ajo_user_2').value;
+  ajoUser = document.getElementById('ajo_user_1').value;
 
   date = "";
   if (start_date == "") {

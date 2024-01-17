@@ -136,7 +136,6 @@ class AjoService
     public function getUserBalance($user_id, $figure = true)
     {
         $accountStatement = AjoModel::where('user_id', $user_id);
-
         $totalCredit = clone $accountStatement->where('txn_type', 'CREDIT')->sum('amount');
         $totalDebit = clone $accountStatement->where('txn_type', 'DEBIT')->sum('amount');
         $totalCharge = clone $accountStatement->where('is_charge', true)->sum('amount');
