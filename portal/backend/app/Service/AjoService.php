@@ -76,7 +76,7 @@ class AjoService
         }
 
         $totalUsers = clone $ajoTxn;
-        $totalUsers =  $totalUsers->select('user_id')->distinct()->count();
+        $totalUsers = $totalUsers->select('user_id')->distinct()->count();
 
         $contributedToday = clone $ajoTxn;
         $contributedToday = $contributedToday->count();
@@ -145,9 +145,16 @@ class AjoService
     public function getUserBalance($user_id, $figure = true)
     {
         $accountStatement = AjoModel::where('user_id', $user_id);
-        $totalCredit = clone $accountStatement->where('txn_type', 'CREDIT')->sum('amount');
-        $totalDebit = clone $accountStatement->where('txn_type', 'DEBIT')->sum('amount');
-        $totalCharge = clone $accountStatement->where('is_charge', true)->sum('amount');
+
+        $totalCredit = clone $accountStatement;
+        $totalCredit = $totalCredit->where('txn_type', 'CREDIT')->sum('amount');
+
+        $totalDebit = clone $accountStatement;
+        $totalDebit = $totalDebit->where('txn_type', 'DEBIT')->sum('amount');
+
+        $totalCharge = clone $accountStatement;
+        $totalCharge = $totalCharge->where('is_charge', true)->sum('amount');
+        
         $balance = $totalCredit - $totalDebit;
         $availableBalance = $balance - $totalCharge;
 

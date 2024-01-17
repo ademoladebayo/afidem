@@ -1261,22 +1261,30 @@ function getAjoTransaction() {
 
               removeSpinnerModal();
               // POPULATE CHART
-              document.getElementById("total_user").innerHTML = formatNumber(parseInt(data.total_user)
+              document.getElementById("total_user").innerHTML = formatNumber(parseInt(data.data.total_user)
               );
               document.getElementById("contributed_today").innerHTML = formatNumber(
-                  parseInt(data.contributed_today)
+                  parseInt(data.data.contributed_today)
               );
               document.getElementById("total_credit").innerHTML = formatNumber(
-                  parseInt(data.total_credit)
+                  parseInt(data.data.total_credit)
               );
 
               document.getElementById("total_debit").innerHTML = formatNumber(
-                  parseInt(data.total_debit)
+                  parseInt(data.data.total_debit)
               );
 
               document.getElementById("profit").innerHTML = formatNumber(
-                  parseInt(data.profit)
+                  parseInt(data.data.profit)
               );
+
+              document.getElementById("total_bal").innerHTML = formatNumber(
+                parseInt(data.data.balance)
+            );
+
+            document.getElementById("total_avail_bal").innerHTML = formatNumber(
+              parseInt(data.data.available_balance)
+          );
 
               c = 1;
               // Destroy the existing DataTable
