@@ -75,12 +75,21 @@ class AjoService
             $ajoTxn = AjoModel::with('user')->whereBetween('date', [$start_date, $end_date]);
         }
 
+        $totalUsers = clone $ajoTxn;
+        $totalUsers =  $totalUsers->select('user_id')->distinct()->count();
 
-        $totalUsers = clone $ajoTxn->select('user_id')->distinct()->count();
-        $contributedToday = clone $ajoTxn->count();
-        $totalCredit = clone $ajoTxn->where('txn_type', 'CREDIT')->sum('amount');
-        $totalDebit = clone $ajoTxn->where('txn_type', 'DEBIT')->sum('amount');
-        $totalCharge = clone $ajoTxn->where('is_charge', true)->sum('amount');
+        $contributedToday = clone $ajoTxn;
+        $contributedToday = $contributedToday->count();
+
+        $totalCredit = clone $ajoTxn;
+        $totalCredit = $totalCredit->where('txn_type', 'CREDIT')->sum('amount');
+
+        $totalDebit = clone $ajoTxn;
+        $totalDebit = $totalDebit->where('txn_type', 'DEBIT')->sum('amount');
+
+        $totalCharge = clone $ajoTxn;
+        $totalCharge = $totalCharge->where('is_charge', true)->sum('amount');
+
         $balance = $totalCredit - $totalDebit;
         $availableBalance = $balance - $totalCharge;
 
