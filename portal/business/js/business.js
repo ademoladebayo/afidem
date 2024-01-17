@@ -1259,6 +1259,7 @@ function getAjoTransaction() {
 
   .then((data) => {
 
+              removeSpinnerModal();
               // POPULATE CHART
               document.getElementById("total_user").innerHTML = formatNumber(parseInt(data.total_user)
               );
