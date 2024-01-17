@@ -1228,17 +1228,6 @@ function getAjoTransaction() {
   end_date = changeDateFormat(document.getElementById("end_date").value);
   ajoUser = document.getElementById('ajo_user_1').value;
 
-  date = "";
-  if (start_date == "") {
-      // START AND END DATE DEFAULF AS TODAY
-      date =
-          changeDateFormat(getDate().split("~")[1]) +
-          "~" +
-          changeDateFormat(getDate().split("~")[1]);
-  } else {
-      date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
-  }
-
   openSpinnerModal("Fetch Ajo Transaction");
 
   fetch(ip + "/api/ajo/transaction/"+start_date+"/"+end_date+"/"+ajoUser, {
@@ -1292,25 +1281,25 @@ function getAjoTransaction() {
                   $("#paginate0").DataTable().destroy();
               }
 
-              if (data.txn_history.length > 0) {
+              if (data.data.txn_history.length > 0) {
                   document.getElementById("transaction_table").innerHTML = ``;
                   for (i in data.txn_history) {
                       document.getElementById("transaction_table").innerHTML += `
             <tr>
     
             <td>${c}.</td>
-            <td>${data.txn_history[i].user.first_name + " " + data.txn_history[i].user.last_name}</td>
-            <td style='color: ${data.txn_history[i].txn_type == 'DEBIT' ? `red` : ``}'><b>${data.txn_history[i].txn_type == 'DEBIT' ? `-` : ``} 
-            ${formatNumber(parseInt(data.txn_history[i].amount))
+            <td>${data.data.txn_history[i].user.first_name + " " + data.data.txn_history[i].user.last_name}</td>
+            <td style='color: ${data.data.txn_history[i].txn_type == 'DEBIT' ? `red` : ``}'><b>${data.data.txn_history[i].txn_type == 'DEBIT' ? `-` : ``} 
+            ${formatNumber(parseInt(data.data.txn_history[i].amount))
             }</b></td>
 
-            <td style='color: ${data.txn_history[i].txn_type == 'CREDIT' ? `green` : ``}'><b>${data.txn_history[i].txn_type == 'CREDIT' ? `+` : ``} 
-            ${formatNumber(parseInt(data.txn_history[i].amount))
+            <td style='color: ${data.data.txn_history[i].txn_type == 'CREDIT' ? `green` : ``}'><b>${data.data.txn_history[i].txn_type == 'CREDIT' ? `+` : ``} 
+            ${formatNumber(parseInt(data.data.txn_history[i].amount))
             }</b></td>
 
-            <td>${data.txn_history[i].bal_before}</td>
-            <td>${data.txn_history[i].bal_before}</td>
-            <td>${data.txn_history[i].date}</td>
+            <td>${data.data.txn_history[i].bal_before}</td>
+            <td>${data.data.txn_history[i].bal_before}</td>
+            <td>${data.data.txn_history[i].date}</td>
            
            </tr>
             `;

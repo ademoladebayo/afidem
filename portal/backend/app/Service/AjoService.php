@@ -76,8 +76,8 @@ class AjoService
         }
 
         $totalUsers = clone $ajoTxn;
-        $totalUsers = $totalUsers->select('user_id')->distinct()->count();
-
+        $totalUsers = $totalUsers->distinct()->count('user_id');
+        
         $contributedToday = clone $ajoTxn;
         $contributedToday = $contributedToday->count();
 
@@ -154,11 +154,9 @@ class AjoService
 
         $totalCharge = clone $accountStatement;
         $totalCharge = $totalCharge->where('is_charge', true)->sum('amount');
-        
+
         $balance = $totalCredit - $totalDebit;
         $availableBalance = $balance - $totalCharge;
-
-        //var_dump($totalCharge, $availableBalance);
 
         $stat =
             [
