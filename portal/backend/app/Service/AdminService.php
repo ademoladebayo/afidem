@@ -39,7 +39,7 @@ class AdminService
                 $token = $admin->createToken('token')->plainTextToken;
                 $station = [];
                 if ($admin->role == "SUPERADMIN") {
-                    $station = AdminModel::where("role", "ADMIN")->get();
+                    $station = AdminModel::where("role", "ADMIN")->whereNotNull('terminal_id')->get();
                 } else {
                     $station = AdminModel::where('id',$admin->id)->get();
                 }

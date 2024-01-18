@@ -42,7 +42,7 @@
     <script src="../js/modernizr-3.6.0.min.js"></script>
 </head>
 
-<body style="font-family: Poppins; font-weight: bold;" onload="loadSideNav('ajo'); getAllUsers('ajo_user_1','AJO'); getAjoTransaction();  loadDashBoardInformation();">
+<body style="font-family: Poppins; font-weight: bold;" onload="loadSideNav('ajo'); getAllUsers('ajo_user_1','AJO'); getAjoTransaction(); getAllExpense(7); loadDashBoardInformation();">
     <!-- Preloader Start Here -->
     <div id="preloader"></div>
     <!-- Preloader End Here -->
@@ -288,45 +288,148 @@
                         <div class="row">
                             <br>
                             <h3 style="font-weight: bold; font-family: Poppins;">Ajo Records</h3>
+
+                            <div class="heading-layout1">
+                                <div style="margin-right: 2px; margin-top: 5px;" class="col-4-xxxl col-xl-4 col-lg-4 col-12 form-group">
+                                    <button id="manual_btn" type="button" style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#transModal"><i class="fas fa-plus"></i>
+                                        <b> ADD TRANSACTION</b></button>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <div class="main-card mb-3 card">
+                                    <div onclick="collapseDiv('ajo-breakdown')" class="card-header justify-content-between ">
+                                        RECORD BREAKDOWN
+                                    </div>
+                                    <!-- MAIN VIEW -->
+                                    <div id="ajo-breakdown" class="card height-auto">
+                                        <div class="card-body">
+                                            <!-- <div class="heading-layout1">
+                                                <div style="margin-right: 2px; margin-top: 5px;" class="col-4-xxxl col-xl-4 col-lg-4 col-12 form-group">
+                                                    <button id="manual_btn" type="button" style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#transModal"><i class="fas fa-plus"></i>
+                                                        <b> ADD TRANSACTION</b></button>
+                                                </div>
+
+                                            </div> -->
+                                            <div class="table-responsive">
+                                                <table id="paginate0" style="color: white;" class="table  text-dark table-sm table-bordered" width="100%" cellspacing="0" style="margin-bottom: 50px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S/N</th>
+                                                            <th>Name</th>
+                                                            <th>Debit</th>
+                                                            <th>Credit</th>
+                                                            <th>Balance Before</th>
+                                                            <th>Balance After</th>
+                                                            <th>Date</th>
+                                                            <!-- <th>Actions</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-custom" id="transaction_table">
+                                                        <td colspan="12">
+                                                            <center>No data yet</center>
+                                                        </td>
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <!-- <div class="col-12 form-group">
+                                            <button onclick="uploadProfit()" type="button"
+                                                style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;"
+                                                class="btn btn-primary btn-block">
+                                                <i class="fas fa-file-upload"></i> <b> UPDATE REPORT</b></button>
+                                        </div> -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="main-card mb-3 card">
+                                    <div onclick="collapseDiv('ajo-summary')" class="card-header justify-content-between ">
+                                        RECORD SUMMARY
+                                    </div>
+                                    <!-- MAIN VIEW -->
+                                    <div id="ajo-summary" class="card height-auto">
+                                        <div class="card-body">
+                                            <!-- <div class="heading-layout1">
+                                                <div style="margin-right: 2px; margin-top: 5px;" class="col-4-xxxl col-xl-4 col-lg-4 col-12 form-group">
+                                                    <button id="manual_btn" type="button" style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#transModal"><i class="fas fa-plus"></i>
+                                                        <b> ADD TRANSACTION</b></button>
+                                                </div>
+
+                                            </div> -->
+                                            <div class="table-responsive">
+                                                <table id="paginate0" style="color: white;" class="table  text-dark table-sm table-bordered" width="100%" cellspacing="0" style="margin-bottom: 50px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S/N</th>
+                                                            <th>Name</th>
+                                                            <th>Debit</th>
+                                                            <th>Credit</th>
+                                                            <th>Balance Before</th>
+                                                            <th>Balance After</th>
+                                                            <th>Date</th>
+                                                            <!-- <th>Actions</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-custom" id="transaction_table">
+                                                        <td colspan="12">
+                                                            <center>No data yet</center>
+                                                        </td>
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <!-- <div class="col-12 form-group">
+                                            <button onclick="uploadProfit()" type="button"
+                                                style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;"
+                                                class="btn btn-primary btn-block">
+                                                <i class="fas fa-file-upload"></i> <b> UPDATE REPORT</b></button>
+                                        </div> -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- EXPENSE AREA -->
+                        <div class="row">
+                            <br>
+                            <h3 style="font-weight: bold; font-family: Poppins;">Expense History</h3>
                             <div class="card height-auto">
                                 <div class="card-body">
                                     <div class="heading-layout1">
                                         <div style="margin-right: 2px; margin-top: 5px;" class="col-4-xxxl col-xl-4 col-lg-4 col-12 form-group">
-                                            <button id="manual_btn" type="button" style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#transModal"><i class="fas fa-plus"></i>
-                                                <b> ADD TRANSACTION</b></button>
+                                            <button type="button" style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#modalYT"><i class="fas fa-plus"></i>
+                                                <b> ADD NEW EXPENSE</b></button>
                                         </div>
 
                                     </div>
                                     <div class="table-responsive">
-                                        <table id="paginate0" style="color: white;" class="table  text-dark table-sm table-bordered" width="100%" cellspacing="0" style="margin-bottom: 50px;">
+                                        <table id="paginate1" style="color: white;" class="table table-striped text-dark table-sm " width="100%" cellspacing="0" style="margin-bottom: 50px;">
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Name</th>
-                                                    <th>Debit</th>
-                                                    <th>Credit</th>
-                                                    <th>Balance Before</th>
-                                                    <th>Balance After</th>
-                                                    <th>Date</th>
-                                                    <!-- <th>Actions</th> -->
+                                                    <th>Expense Description</th>
+                                                    <th>Amount</th>
+                                                    <th>Date Incurred</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="table-custom" id="transaction_table">
+                                            <tbody class="table-custom" id="expense_table">
                                                 <td colspan="12">
                                                     <center>No data yet</center>
                                                 </td>
 
                                             </tbody>
                                         </table>
-
                                     </div>
-                                    <!-- <div class="col-12 form-group">
-                                    <button onclick="uploadProfit()" type="button"
-                                        style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;"
-                                        class="btn btn-primary btn-block">
-                                        <i class="fas fa-file-upload"></i> <b> UPDATE REPORT</b></button>
-                                </div> -->
-
                                 </div>
                             </div>
                         </div>
@@ -657,6 +760,15 @@
         }
 
     });
+
+    function collapseDiv(id) {
+        div = document.getElementById(id).className;
+        if (div.includes('collapse')) {
+            document.getElementById(id).className = "card height-auto";
+        } else {
+            document.getElementById(id).className = "card height-auto collapse";
+        }
+    }
 </script>
 
 <style id="result_upload_style">
@@ -677,4 +789,5 @@
 </style>
 
 <script>
+</script>
 </script>

@@ -235,6 +235,18 @@ function loadStations() {
     });
 }
 
+function getStationByURL() {
+    var parentUrl = window.parent.location.href;
+    if (parentUrl.endsWith("/ajo.html")) {
+        return 7;
+    } else if (parentUrl.endsWith("/loan.html")) {
+        return 8;
+    } else {
+        return window.parent.document.getElementById("station").value;
+    }
+
+}
+
 function goTo(page) {
     if (page == "") {
         localStorage.clear();
@@ -249,6 +261,8 @@ function createExpense() {
     var description = document.getElementById("description").value;
     var amount = document.getElementById("amount").value;
     var date = changeDateFormat(document.getElementById("date").value);
+
+    admin_station = getStationByURL();
 
     if (description != "" && amount != "" && date != "") {
         openSpinnerModal("Add expense");
@@ -266,7 +280,7 @@ function createExpense() {
                     description: description,
                     amount: amount,
                     date_incurred: date,
-                    admin_station: window.parent.document.getElementById("station").value,
+                    admin_station: admin_station,
                 }),
             })
             .then(function(res) {
@@ -302,6 +316,7 @@ function getAllExpense() {
     start_date = document.getElementById("start_date").value;
     end_date = document.getElementById("end_date").value;
     date = "";
+    admin_station = getStationByURL();
     if (start_date == "") {
         // START AND END DATE DEFAULF AS TODAY
         date =
@@ -323,7 +338,7 @@ function getAllExpense() {
             },
             body: JSON.stringify({
                 date: date,
-                admin_station: document.getElementById("station").value,
+                admin_station: admin_station,
             }),
         })
         .then(function(res) {
@@ -1210,6 +1225,7 @@ function createAjoTransaction() {
       .then((data) => {
         removeSpinnerModal();
         if (data.success) {
+          closeModal('transModal');
           successtoast(data.message);
           getAjoTransaction();
         } else {

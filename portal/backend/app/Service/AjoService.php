@@ -24,16 +24,24 @@ class AjoService
         $AjoModel->date = $request->date;
         $AjoModel->txn_type = $request->txn_type;
         $AjoModel->amount = $request->amount;
-        $AjoModel->bal_before = $this->getUserBalance($request->user_id);
+        $curr_bal = $$this->getUserBalance($request->user_id);
+        $AjoModel->bal_before = $curr_bal;
 
         $isFirstDepositOfTheMonth = $this->isFirstDepositOfTheMonth($request->user_id, $request->date, $request->amount);
 
         $isAmountSameOfTheMonth = $this->isAmountSameOfTheMonth($request->user_id, $request->date, $request->amount);
 
+        if ($request->txn_type == 'CREDIT') {
+            if (!$isAmountSameOfTheMonth) {
+                return response(['success' => false, 'message' => "Invalid amount for this user !"]);
+            }
+        } else {
+            if ($curr_bal < $request->amount) {
+                response(['success' => false, 'message' => "Insufficent balance !"]);
+            }
 
-        if (!$isAmountSameOfTheMonth) {
-            return response(['success' => false, 'message' => "Invalid amount for this user !"]);
         }
+
 
         if ($isFirstDepositOfTheMonth) {
             $AjoModel->is_charge = true;
@@ -77,7 +85,7 @@ class AjoService
 
         $totalUsers = clone $ajoTxn;
         $totalUsers = $totalUsers->distinct()->count('user_id');
-        
+
         $contributedToday = clone $ajoTxn;
         $contributedToday = $contributedToday->count();
 
