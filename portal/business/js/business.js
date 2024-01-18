@@ -1289,16 +1289,16 @@ function getAjoTransaction() {
     
             <td>${c}.</td>
             <td>${data.data.txn_history[i].user.first_name + " " + data.data.txn_history[i].user.last_name}</td>
-            <td style='color: ${data.data.txn_history[i].txn_type == 'DEBIT' ? `red` : `white`}'><b>${data.data.txn_history[i].txn_type == 'DEBIT' ? `- ₦` : ``} 
-            ${formatNumber(parseInt(data.data.txn_history[i].amount))
-            }</b></td>
+            <td style='color: ${data.data.txn_history[i].txn_type == 'DEBIT' ? `red` : `white`}'><b>${data.data.txn_history[i].txn_type == 'DEBIT' ? `- ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
+            }` : ``} 
+           </b></td>
 
-            <td style='color: ${data.data.txn_history[i].txn_type == 'CREDIT' ? `green` : `white`}'><b>${data.data.txn_history[i].txn_type == 'CREDIT' ? `+ ₦` : ``} 
-            ${formatNumber(parseInt(data.data.txn_history[i].amount))
-            }</b></td>
+            <td style='color: ${data.data.txn_history[i].txn_type == 'CREDIT' ? `green` : `white`}'><b>${data.data.txn_history[i].txn_type == 'CREDIT' ? `+ ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
+            }` : ``} 
+            </b></td>
 
             <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_before))}</td>
-            <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_before))}</td>
+            <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_after))}</td>
             <td>${dateToWord(data.data.txn_history[i].date)}</td>
            
            </tr>
