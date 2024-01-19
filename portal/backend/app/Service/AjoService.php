@@ -7,6 +7,7 @@ use App\Model\AjoModel;
 use App\Model\AdminModel;
 use App\Model\ExpenseModel;
 use App\Model\TransactionModel;
+use App\Model\UserModel;
 use App\Util\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -84,7 +85,7 @@ class AjoService
         }
 
         $totalUsers = clone $ajoTxn;
-        $totalUsers = $totalUsers->distinct()->count('user_id');
+        $totalUsers = $totalUsers->distinct()->pluck('user_id')->toArray();
 
         $contributedToday = clone $ajoTxn;
         $contributedToday = $contributedToday->count();
@@ -104,14 +105,15 @@ class AjoService
 
         $data =
             [
-                "total_user" => $totalUsers,
+                "total_user" => count($totalUsers),
                 "contributed_today" => $contributedToday,
                 "total_credit" => $totalCredit,
                 "total_debit" => $totalDebit,
                 "profit" => $totalCharge,
                 "balance" => $balance,
                 "available_balance" => $availableBalance,
-                "txn_history" => $ajoTxn->get()
+                "txn_history" => $ajoTxn->get(),
+                "txn_summary" => $this->getTransactionSummary($start_date, $end_date, $totalUsers)
             ];
         return response(['success' => true, 'message' => "Data fetched successfully", 'data' => $data]);
     }
@@ -150,9 +152,25 @@ class AjoService
 
     }
 
-    public function getUserBalance($user_id, $figure = true)
+
+    public function getTransactionSummary($start_date, $end_date, $users)
     {
-        $accountStatement = AjoModel::where('user_id', $user_id);
+        $transactions = [];
+        foreach ($users as $user) {
+            $tx = $this->getUserBalance($user, $start_date, $end_date, false);
+            array_push($transactions, $tx);
+        }
+        return $transactions;
+    }
+
+
+    public function getUserBalance($user_id, $start_date = null, $end_date = null, $figure = true)
+    {
+        if ($start_date == null) {
+            $accountStatement = AjoModel::where('user_id', $user_id);
+        } else {
+            $accountStatement = AjoModel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date]);
+        }
 
         $totalCredit = clone $accountStatement;
         $totalCredit = $totalCredit->where('txn_type', 'CREDIT')->sum('amount');
@@ -168,6 +186,7 @@ class AjoService
 
         $stat =
             [
+                "user" => UserModel::find($user_id)->pluck('first_name', 'last_name'),
                 "total_credit" => $totalCredit,
                 "total_debit" => $totalDebit,
                 "total_charge" => $totalCharge,

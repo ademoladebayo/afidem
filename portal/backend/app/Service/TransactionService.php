@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Http\Controllers\NotificationController;
 use App\Imports\TransactionImport;
 use App\Model\AdminModel;
+use App\Model\AjoModel;
 use App\Model\ExpenseModel;
 use App\Model\TransactionModel;
 use App\Util\Utils;
@@ -245,13 +246,30 @@ class TransactionService
         $stations = AdminModel::where("role", "ADMIN")->get();
 
         foreach ($stations as $station) {
-            $m_income = TransactionModel::where('transaction_time', 'like', $month . '%')->where("admin_station", $station->id)->sum("profit");
-            $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $station->id)->sum("amount");
-            $m_gross_profit = $m_income - $m_expense;
 
-            $y_income = TransactionModel::where('transaction_time', 'like', $year . '%')->where("admin_station", $station->id)->sum("profit");
-            $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
-            $y_gross_profit = $y_income - $y_expense;
+            if (!in_array($station->username, ['AJO', 'SERVICE ROOM', 'LOAN'])) {
+                $m_income = TransactionModel::where('transaction_time', 'like', $month . '%')->where("admin_station", $station->id)->sum("profit");
+                $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $station->id)->sum("amount");
+                $m_gross_profit = $m_income - $m_expense;
+
+                $y_income = TransactionModel::where('transaction_time', 'like', $year . '%')->where("admin_station", $station->id)->sum("profit");
+                $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
+                $y_gross_profit = $y_income - $y_expense;
+            } else {
+                if ($station->username == 'AJO') {
+                    $m_income = AjoModel::where('date', 'like', $month . '%')->where("is_charge", true)->sum("amount");
+                    $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $station->id)->sum("amount");
+                    $m_gross_profit = $m_income - $m_expense;
+
+                    $y_income = AjoModel::where('date', 'like', $year . '%')->where("is_charge", true)->sum("amount");
+                    $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
+                    $y_gross_profit = $y_income - $y_expense;
+
+                } elseif ($station->username == 'SERVICE ROOM') {
+
+                }
+
+            }
 
             $data = [
                 "station_id" => $station->id,

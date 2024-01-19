@@ -1291,44 +1291,77 @@ function getAjoTransaction() {
               parseInt(data.data.available_balance)
           );
 
+               // TRANSACTION BREAKDOWN
               c = 1;
               // Destroy the existing DataTable
               if ($.fn.DataTable.isDataTable("#paginate0")) {
                   $("#paginate0").DataTable().destroy();
               }
 
+              if ($.fn.DataTable.isDataTable("#paginate1")) {
+                $("#paginate1").DataTable().destroy();
+            }
+
               if (data.data.txn_history.length > 0) {
-                  document.getElementById("transaction_table").innerHTML = ``;
-                  for (i in data.data.txn_history) {
-                      document.getElementById("transaction_table").innerHTML += `
-            <tr>
-    
-            <td>${c}.</td>
-            <td>${data.data.txn_history[i].user.first_name + " " + data.data.txn_history[i].user.last_name}</td>
-            <td style='color: ${data.data.txn_history[i].txn_type == 'DEBIT' ? `red` : `white`}'><b>${data.data.txn_history[i].txn_type == 'DEBIT' ? `- ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
-            }` : ``} 
-           </b></td>
+                        document.getElementById("transaction_table").innerHTML = ``;
+                        for (i in data.data.txn_history) {
+                            document.getElementById("transaction_table").innerHTML += `
+                                <tr>
+                        
+                                <td>${c}.</td>
+                                <td>${data.data.txn_history[i].user.first_name + " " + data.data.txn_history[i].user.last_name}</td>
+                                <td style='color: ${data.data.txn_history[i].txn_type == 'DEBIT' ? `red` : `white`}'><b>${data.data.txn_history[i].txn_type == 'DEBIT' ? `- ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
+                                }` : ``} 
+                              </b></td>
 
-            <td style='color: ${data.data.txn_history[i].txn_type == 'CREDIT' ? `green` : `white`}'><b>${data.data.txn_history[i].txn_type == 'CREDIT' ? `+ ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
-            }` : ``} 
-            </b></td>
+                                <td style='color: ${data.data.txn_history[i].txn_type == 'CREDIT' ? `green` : `white`}'><b>${data.data.txn_history[i].txn_type == 'CREDIT' ? `+ ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
+                                }` : ``} 
+                                </b></td>
 
-            <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_before))}</td>
-            <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_after))}</td>
-            <td>${dateToWord(data.data.txn_history[i].date)}</td>
-           
-           </tr>
-            `;
-        c = c + 1;
+                                <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_before))}</td>
+                                <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_after))}</td>
+                                <td>${dateToWord(data.data.txn_history[i].date)}</td>
+                              
+                              </tr>
+                                `;
+                                c = c + 1;
+                          }
+                    $("#paginate0").DataTable();
+              } else {
+                      document.getElementById(
+                        "transaction_table"
+                      ).innerHTML = `<td colspan="12">
+                      <center>No transaction found</center>
+                  </td>`;
+              }
+
+              // TRANSACTION SUMMARY
+              if (data.data.txn_summary.length > 0) {
+                document.getElementById("transaction_summary_table").innerHTML = ``;
+                for (i in data.data.txn_summary) {
+                    document.getElementById("transaction_summary_table").innerHTML += `
+                        <tr>
+                
+                        <td>${c}.</td>
+                        <td>${data.data.txn_summary[i].user.first_name + " " + data.data.txn_summary[i].user.last_name}</td>
+                        <td style='color:red'>₦${formatNumber(parseInt(data.data.txn_summary[i].total_debit))}</td>
+                        <td style='color:green'>₦${formatNumber(parseInt(data.data.txn_summary[i].total_credit))}</td>
+                        <td style='color:red'>₦${formatNumber(parseInt(data.data.txn_summary[i].total_charge))}</td>
+                        <td style='color:black'>₦${formatNumber(parseInt(data.data.txn_summary[i].balance))}</td>
+                        <td style='color:blue'>₦${formatNumber(parseInt(data.data.txn_summary[i].available_balance))}</td>
+                      
+                      </tr>
+                        `;
+                        c = c + 1;
+                  }
+            $("#paginate1").DataTable();
+      } else {
+              document.getElementById(
+                "transaction_summary_table"
+              ).innerHTML = `<td colspan="12">
+              <center>No transaction found</center>
+          </td>`;
       }
-      $("#paginate0").DataTable();
-    } else {
-      document.getElementById(
-        "transaction_table"
-      ).innerHTML = `<td colspan="12">
-      <center>No transaction found</center>
-  </td>`;
-    }
 
     // $(".dataTables_length").addClass("bs-select");
   })
@@ -1385,7 +1418,7 @@ function paginateTable() {
 
 $(document).click(function (e) {
   if (!$(e.target).closest("#authenticationModal").length) {
-    modalExist = parent.document.getElementById("authenticationModal");
+    var modalExist = parent.document.getElementById("authenticationModal");
     if (modalExist != null) {
       modalExist.remove();
 
@@ -1395,6 +1428,18 @@ $(document).click(function (e) {
       });
     }
   }
+
+  spinnerModal = parent.document.getElementById("spinnerModal");
+  authenticationModal = parent.document.getElementById("authenticationModal");
+  if (spinnerModal == null && authenticationModal == null) {
+    const backdrop = document.getElementsByClassName(
+      "modal-backdrop fade show"
+    );
+    Array.from(backdrop).forEach(function (bd) {
+      bd.remove();
+    });
+  }
+  document.body.style.overflow = "auto";
 });
 
 function download(filename) {
