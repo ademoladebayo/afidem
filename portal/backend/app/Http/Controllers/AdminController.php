@@ -51,17 +51,15 @@ class AdminController extends Controller
         if ($service) {
             return UserModel::select('id', 'first_name', 'last_name')->where('service', 'LIKE', '%' . $service . '%')->where("status", "ACTIVE")->get();
         } else {
-            $customers = UserModel::select("*");
-
             $data =
                 [
                     "stat" => [
-                        "all" => clone $customers->where("status", "ACTIVE")->count(),
-                        "ajo" => clone $customers->where("status", "ACTIVE")->where('service', 'LIKE', '%AJO%')->count(),
-                        "loan" => clone $customers->where("status", "ACTIVE")->where('service', 'LIKE', '%LOAN%')->count(),
-                        "service_room" => clone $customers->where('service', 'LIKE', '%SERVICE_ROOM%')->count()
+                        "all" => UserModel::where("status", "ACTIVE")->count(),
+                        "ajo" => UserModel::where("status", "ACTIVE")->where('service', 'LIKE', '%AJO%')->count(),
+                        "loan" => UserModel::where("status", "ACTIVE")->where('service', 'LIKE', '%LOAN%')->count(),
+                        "service_room" => UserModel::where('service', 'LIKE', '%SERVICE_ROOM%')->count()
                     ],
-                    "customer" => clone $customers->get()
+                    "customer" => UserModel::select("*")->get()
                 ];
 
             return $data;
