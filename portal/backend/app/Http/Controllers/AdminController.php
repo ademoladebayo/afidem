@@ -56,12 +56,12 @@ class AdminController extends Controller
             $data =
                 [
                     "stat" => [
-                        "all" => $customers->where("status", "ACTIVE")->count(),
-                        "ajo" => $customers->where("status", "ACTIVE")->where('service', 'LIKE', '%AJO%')->count(),
-                        "loan" => $customers->where("status", "ACTIVE")->where('service', 'LIKE', '%LOAN%')->count(),
-                        "service_room" => $customers->where('service', 'LIKE', '%SERVICE_ROOM%')->count()
+                        "all" => clone $customers->where("status", "ACTIVE")->count(),
+                        "ajo" => clone $customers->where("status", "ACTIVE")->where('service', 'LIKE', '%AJO%')->count(),
+                        "loan" => clone $customers->where("status", "ACTIVE")->where('service', 'LIKE', '%LOAN%')->count(),
+                        "service_room" => clone $customers->where('service', 'LIKE', '%SERVICE_ROOM%')->count()
                     ],
-                    "customer" => $customers->get()
+                    "customer" => clone $customers->get()
                 ];
 
             return $data;

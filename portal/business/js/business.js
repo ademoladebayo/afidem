@@ -1209,10 +1209,10 @@ function getAllCustomer() {
       removeSpinnerModal();
       document.getElementById("customer_table").innerHTML = ``;
       // STAT 
-      document.getElementById("total_user").value = data.stat.all;
-      document.getElementById("ajo_user").value = data.stat.ajo;
-      document.getElementById("loan_user").value = data.stat.loan;
-      document.getElementById("service_room_user").value = data.stat.service_room;
+      document.getElementById("total_user").innerHTML = data.stat.all;
+      document.getElementById("ajo_user").innerHTML = data.stat.ajo;
+      document.getElementById("loan_user").innerHTML = data.stat.loan;
+      document.getElementById("service_room_user").innerHTML = data.stat.service_room;
 
       if ($.fn.DataTable.isDataTable("#paginate0")) {
         $("#paginate0").DataTable().destroy();
