@@ -1188,6 +1188,94 @@ function getAllUsers(element,service){
 .catch((err) => console.log(err));
 }
 
+function createCustomer() {
+  openSpinnerModal("Create Customer");
+
+  var selectedService = Array.from(document.getElementById("service").selectedOptions).map(option => option.value);
+  var selectedValuesString = selectedService.join(",");
+
+  fetch(ip + "/api/user", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      first_name: document.getElementById("first_name").value,
+      last_name: document.getElementById("last_name").value,
+      phone: document.getElementById("phone").value,
+      address: document.getElementById("address").value,
+      service: selectedValuesString,
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      if (data.success) {
+        successtoast(data.message);
+        getAllCustomer();
+        resetFormInputs();
+        closeModal("createCustomerModal");
+      } else {
+        errortoast(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+function updateCustomer() {
+  openSpinnerModal("Update Customer");
+
+  var selectedService = Array.from(document.getElementById("u_service").selectedOptions).map(option => option.value);
+  var selectedValuesString = selectedService.join(",");
+
+  fetch(ip + "/api/user", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      first_name: document.getElementById("u_first_name").value,
+      last_name: document.getElementById("u_last_name").value,
+      phone: document.getElementById("u_phone").value,
+      address: document.getElementById("u_address").value,
+      status: document.getElementById("u_status").value,
+      collateral: document.getElementById("u_collateral").value,
+      service: selectedValuesString,
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      if (data.success) {
+        successtoast(data.message);
+        getAllCustomer();
+        resetFormInputs();
+        closeModal("updateCustomerModal");
+      } else {
+        errortoast(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
 function getAllCustomer() {
   openSpinnerModal("Customers");
   fetch(ip + "/api/user", {
@@ -1223,6 +1311,13 @@ function getAllCustomer() {
 
         for (i in data.customer) {
           data = data.customer[i];
+
+          //SERVICE MAP
+          services = '';
+          data.service.split(",").forEach(service => {
+            services += `<span class='badge bg-primary'><b>${service}</b></span> `
+          });
+
           document.getElementById("customer_table").innerHTML += `
           <tr class='${c % 2 == 0 ? "even" : "odd"}'>
       
@@ -1231,9 +1326,9 @@ function getAllCustomer() {
           <td>${data.last_name}</td>
           <td>${data.phone}</td>
           <td>${data.address}</td>
-          <td>${data.service}</td>
-          <td>${data.status}</td>
-          <td>${data.date_created}</td>
+          <td>${services}</td>
+          <td><span class="badge ${data.status == 'ACTIVE' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
+          <td>${dateToWord(data.created_at)}</td>
           <td>
             <a  onclick ="editCustomer(${JSON.stringify(data)
                 .replace(/'/g, "")
@@ -1260,12 +1355,30 @@ function getAllCustomer() {
     .catch((err) => console.log(err));
 }
 
-
 function editCustomer(data) {
+  document.getElementById("u_user_id").value = data.id;
   document.getElementById("u_first_name").value = data.first_name;
   document.getElementById("u_last_name").value = data.last_name;
   document.getElementById("u_phone").value = data.phone;
   document.getElementById("u_address").value = data.address;
+
+  services = data.service.split(",");
+  if(services.includes("LOAN")){
+    document.getElementById("collateral").hidden = false;
+    document.getElementById("u_collateral").value = data.collateral;
+  }
+
+    Array.from(document.getElementById("u_status").options).forEach(option => {
+      if(option.value == data.status){
+        option.selected = true;
+      }
+  });
+
+    Array.from(document.getElementById("u_service").options).forEach(option => {
+      option.selected =  services.includes(option.value);
+  });
+
+  $('.select2').trigger('change');
 }
 
 
@@ -1528,8 +1641,10 @@ $(document).click(function (e) {
       bd.remove();
     });
   }
-  document.body.style.overflow = "auto";
+
+    document.body.style.overflow = "auto";
 });
+
 
 function download(filename) {
   filename = filename == null ? "file" : filename;
@@ -1751,6 +1866,13 @@ function changeDateFormat(prevdate) {
   mm = prevdate.split("/")[1];
   yyyy = prevdate.split("/")[2];
   return yyyy + "-" + mm + "-" + dd;
+}
+
+function resetFormInputs() {
+  var elements = document.getElementsByClassName("form-input");
+  for (var i = 0; i < elements.length; i++) {
+      elements[i].value = "";
+  }
 }
 
 // TOAST

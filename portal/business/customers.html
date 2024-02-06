@@ -46,7 +46,7 @@
     <!-- Preloader Start Here -->
     <div id="preloader"></div>
     <!-- Preloader End Here -->
-    <div id="wrapper" class="wrapper bg-ash">
+    <div id="wrapper" class="wrapper bg-ash" style="overflow: auto;">
         <!-- Header Menu Area Start Here -->
         <div class="navbar navbar-expand-md header-menu-one bg-light">
             <div class="nav-bar-header-one">
@@ -236,7 +236,7 @@
 
                         <div class="heading-layout1">
                             <div style="margin-right: 2px; margin-top: 5px;" class="col-4-xxxl col-xl-4 col-lg-4 col-12 form-group">
-                                <button id="manual_btn" type="button" style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#transModal"><i class="fas fa-plus"></i>
+                                <button id="manual_btn" type="button" style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createCustomerModal"><i class="fas fa-plus"></i>
                                     <b> ADD CUSTOMER</b></button>
                             </div>
 
@@ -255,6 +255,7 @@
                                                 <th>Phone</th>
                                                 <th>Address</th>
                                                 <th>Service</th>
+                                                <th>Status</th>
                                                 <th>Date Created</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -280,34 +281,6 @@
     </div>
 
     <div class="page-modal">
-        <!-- CREATE EXPENSE MODAL -->
-        <div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-            <div class="modal-dialog modal-lg">
-
-                <!--Content-->
-                <div class="modal-content">
-                    <div class="modal-header justify-content-center">
-                        <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title" id="exampleModalLabel">
-                            CREATE EXPENSE</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <!--Body-->
-                    <div class="modal-body mb-0 p-0">
-
-                        <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                            <iframe class="embed-responsive-item" src="./frame-new-expense.html" allowfullscreen></iframe>
-                        </div>
-
-                    </div>
-
-
-                </div>
-                <!--/.Content-->
-
-            </div>
-        </div>
 
         <!-- createCustomerModal -->
         <div class="modal fade" id="createCustomerModal" tabindex="-1" aria-labelledby="trans_modal" aria-hidden="true">
@@ -324,53 +297,52 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-12 form-group">
-                                                <label>FIRST NAME</label>
-                                                <input id="first_name" type="text" placeholder="First Name" class="form-control form-input">
-                                            </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>LAST NAME</label>
-                                                <input id="last_name" type="text" placeholder="Last Name" class="form-control form-input">
-                                            </div>
+                                            <form id="create-customer">
+                                                <div class="col-12 form-group">
+                                                    <label>FIRST NAME</label>
+                                                    <input id="first_name" type="text" placeholder="First Name" class="form-control form-input" required>
+                                                </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>PHONE</label>
-                                                <input id="phone" type="number" placeholder="Phone" class="form-control form-input">
-                                            </div>
+                                                <div class="col-12 form-group">
+                                                    <label>LAST NAME</label>
+                                                    <input id="last_name" type="text" placeholder="Last Name" class="form-control form-input" required>
+                                                </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>ADDRESS</label>
-                                                <input id="address" type="text" placeholder="Address" class="form-control form-input">
-                                            </div>
+                                                <div class="col-12 form-group">
+                                                    <label>PHONE</label>
+                                                    <input id="phone" type="number" placeholder="Phone" class="form-control form-input" required>
+                                                </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>SELECT AFIDEM SERVICE</label>
-                                                <select id="service" class="select2 form-input" multiple>
-                                                    <option value="AJO">AJO</option>
-                                                    <option value="LOAN">LOAN</option>
-                                                    <option value="SERVICE_ROOM">SERVICE ROOM</option>
-                                                </select>
-                                            </div>
+                                                <div class="col-12 form-group">
+                                                    <label>ADDRESS</label>
+                                                    <input id="address" type="text" placeholder="Address" class="form-control form-input">
+                                                </div>
+
+                                                <div class="col-12 form-group">
+                                                    <label>SELECT AFIDEM SERVICE</label>
+                                                    <select id="service" class="select2 form-input" required multiple>
+                                                        <option value="AJO">AJO</option>
+                                                        <option value="LOAN">LOAN</option>
+                                                        <option value="SERVICE ROOM">SERVICE ROOM</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-12 form-group mg-t-8">
+                                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+
+                                                </div>
+                                            </form>
                                         </div>
-
-
-
-                                        <div class="col-12 form-group mg-t-8">
-                                            <button onclick="createCustomer()" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-
-                                        </div>
-
                                     </div>
-                                    <!-- </form> -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+
 
         <!-- updateCustomerModal -->
         <div class="modal fade" id="updateCustomerModal" tabindex="-1" aria-labelledby="trans_modal" aria-hidden="true">
@@ -387,199 +359,69 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-12 form-group">
-                                                <label>FIRST NAME</label>
-                                                <input id="u_first_name" type="text" placeholder="First Name" class="form-control form-input">
-                                            </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>LAST NAME</label>
-                                                <input id="u_last_name" type="text" placeholder="Last Name" class="form-control form-input">
-                                            </div>
+                                            <form id="update-customer">
+                                                <input id="u_user_id" type="text" placeholder="First Name" class="form-control form-input" hidden>
+                                                <div class="col-12 form-group">
+                                                    <label>FIRST NAME</label>
+                                                    <input id="u_first_name" type="text" placeholder="First Name" class="form-control form-input">
+                                                </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>PHONE</label>
-                                                <input id="u_phone" type="number" placeholder="Phone" class="form-control form-input">
-                                            </div>
+                                                <div class="col-12 form-group">
+                                                    <label>LAST NAME</label>
+                                                    <input id="u_last_name" type="text" placeholder="Last Name" class="form-control form-input">
+                                                </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>ADDRESS</label>
-                                                <input id="u_address" type="text" placeholder="Address" class="form-control form-input">
-                                            </div>
+                                                <div class="col-12 form-group">
+                                                    <label>PHONE</label>
+                                                    <input id="u_phone" type="number" placeholder="Phone" class="form-control form-input">
+                                                </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>STATUS</label>
-                                                <select id="u_status" class="select2 form-input" multiple>
-                                                    <option value="ACTIVE">ACTIVE</option>
-                                                    <option value="INACTIVE">INACTIVE</option>
-                                                </select>
-                                            </div>
+                                                <div class="col-12 form-group">
+                                                    <label>ADDRESS</label>
+                                                    <input id="u_address" type="text" placeholder="Address" class="form-control form-input">
+                                                </div>
 
-                                            <div class="col-12 form-group">
-                                                <label>SELECT AFIDEM SERVICE</label>
-                                                <select id="u_service" class="select2 form-input" multiple>
-                                                    <option value="AJO">AJO</option>
-                                                    <option value="LOAN">LOAN</option>
-                                                    <option value="SERVICE_ROOM">SERVICE ROOM</option>
-                                                </select>
-                                            </div>
+                                                <div class="col-12 form-group">
+                                                    <label>STATUS</label>
+                                                    <select id="u_status" class="select2 form-input">
+                                                        <option value="ACTIVE">ACTIVE</option>
+                                                        <option value="INACTIVE">INACTIVE</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-12 form-group">
+                                                    <label>SELECT AFIDEM SERVICE</label>
+                                                    <select id="u_service" class="select2 form-input" multiple>
+                                                        <option value="AJO">AJO</option>
+                                                        <option value="LOAN">LOAN</option>
+                                                        <option value="SERVICE ROOM">SERVICE ROOM</option>
+                                                    </select>
+                                                </div>
+
+                                                <div id="collateral" class="col-12 form-group" hidden>
+                                                    <label>COLLATERAL</label>
+                                                    <input id="u_collateral" type="text" placeholder="Loan Collateral" class="form-control form-input">
+                                                </div>
+
+                                                <div class="col-12 form-group mg-t-8">
+                                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+
+                                                </div>
+                                            </form>
                                         </div>
-
-
-
-                                        <div class="col-12 form-group mg-t-8">
-                                            <button onclick="updateCustomer()" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-
-                                        </div>
-
+                                        <!-- </form> -->
                                     </div>
-                                    <!-- </form> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
 
-
-    </div>
-
-    <!-- VIEW MODAL -->
-    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title" id="exampleModalLabel">
-                        Student Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="heading-layout1">
-                                        <div class="item-title">
-                                            <!-- <h3>Add New User</h3> -->
-                                        </div>
-
-                                    </div>
-                                    <form class="new-added-form">
-                                        <div class="row">
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>First Name</label>
-                                                <input id="first_name" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Middle Name</label>
-                                                <input id="middle_name" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Last Name</label>
-                                                <input id="last_name" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Gender</label>
-                                                <input id="gender" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Religion</label>
-                                                <input id="religion" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Date Of Birth</label>
-                                                <input id="dob" type="text" placeholder="" class="form-control" readonly>
-                                                <i class="far fa-calendar-alt"></i>
-                                            </div>
-
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Joining Date</label>
-                                                <input id="joining_date" type="text" placeholder="" class="form-control" readonly>
-                                                <i class="far fa-calendar-alt"></i>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Joining Session</label>
-                                                <input id="joining_session" type="text" placeholder="" class="form-control" readonly>
-
-                                            </div>
-                                            <div class="col-lg-6 col-12 form-group">
-                                                <label>Home Address</label>
-                                                <textarea id="home_address" class="textarea form-control" name="message" id="form-message" cols="10" rows="4" readonly></textarea>
-                                            </div>
-                                            <div class="col-lg-6 col-12 form-group">
-                                                <label>State</label>
-                                                <input id="state" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Class</label>
-                                                <input id="student_class" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Guardian's Name</label>
-                                                <input id="guardian_name" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Guardian's Phone</label>
-                                                <input id="guardian_phone" type="text" placeholder="" class="form-control" readonly>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                                <label>Guardian's E-Mail</label>
-                                                <input id="guardian_email" type="email" placeholder="" class="form-control" readonly>
-                                            </div>
-                                            <div class="col-lg-6 col-12 form-group">
-                                                <label>Guardian's Address</label>
-                                                <textarea id="guardian_address" class="textarea form-control" name="message" id="form-message" cols="10" rows="4" readonly></textarea>
-                                            </div>
-
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- EDIT MODAL -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg">
-
-            <!--Content-->
-            <div class="modal-content">
-                <div class="modal-header justify-content-center">
-                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title" id="exampleModalLabel">
-                        EDIT EXPENSE</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <!--Body-->
-                <div class="modal-body mb-0 p-0">
-
-                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                        <iframe id="edit_frame" class="embed-responsive-item" src="./frame-edit-expense.html" allowfullscreen></iframe>
-                    </div>
-
-                </div>
-
-
-            </div>
-            <!--/.Content-->
 
         </div>
-    </div>
-
-
-    </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
@@ -622,89 +464,22 @@
 <script src="../assets/js/lib/sweetalert/sweetalert.min.js"></script>
 <script src="../assets/js/lib/sweetalert/sweetalert.init.js"></script>
 
-
-
-
-
-<script>
-    // document.getElementById("start_date").value = getDate().split("~")[1];
-    // document.getElementById("end_date").value = getDate().split("~")[1];
-
-
-    function resetFormInputs() {
-        var elements = document.getElementsByClassName("form-input");
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].value = "";
-        }
-
-        document.getElementById("terminal_id").value = JSON.parse(localStorage["user_data"]).data.terminal_id;
-        addToNewObject('terminal_id', JSON.parse(localStorage["user_data"]).data.terminal_id);
-        addToNewObject('transaction_time', changeDateFormat(getDate().split("~")[1]) + "" + getDate().split("~")[0]);
-    }
-
-
-    function checkAllowedReportType() {
-        // allowed report type
-        if (localStorage["ALLOWED_REPORT_TYPE"] == "MANUAL") {
-            document.getElementById("upload_btn").hidden = true;
-        }
-
-        if (localStorage["ALLOWED_REPORT_TYPE"] == "UPLOAD") {
-            document.getElementById("manual_btn").hidden = true;
-        }
-
-        if (localStorage["ALLOWED_REPORT_TYPE"] == "ANY") {
-            document.getElementById("upload_btn").hidden = false;
-            document.getElementById("manual_btn").hidden = false;
-        }
-    }
-
-    $("#paginate0").keydown(function(e) {
-        if (e.target.id != "allowKeyboard") {
-            if (e.keyCode == 13) {
-                $(this).parent('td').next('td').find('input.sample-value').focus();
-                event.preventDefault();
-            }
-
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
-                ((e.keyCode == 65 || e.keyCode == 86 || e.keyCode == 67) && (e.ctrlKey === true || e.metaKey === true)) ||
-                (e.keyCode >= 35 && e.keyCode <= 40)) {
-                return;
-            }
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                e.preventDefault();
-            }
-        }
-
-    });
-
-    function collapseDiv(id) {
-        div = document.getElementById(id).className;
-        if (div.includes('collapse')) {
-            document.getElementById(id).className = "card height-auto";
-        } else {
-            document.getElementById(id).className = "card height-auto collapse";
-        }
-    }
-</script>
-
-<style id="result_upload_style">
-    [contenteditable] {
-        outline-color: #105c05;
-    }
-</style>
-
-
 <style>
     .table>:not(:last-child)>:last-child>* {
         border-bottom-color: #e1e1e1;
     }
-    
-    #session_term0 {
-        text-align: center;
-    }
 </style>
 
+
+
 <script>
-</script>
+    document.getElementById("create-customer").addEventListener("submit", function(event) {
+        event.preventDefault();
+        createCustomer();
+    });
+
+    document.getElementById("update-customer").addEventListener("submit", function(event) {
+        event.preventDefault();
+        updateCustomer();
+    });
 </script>

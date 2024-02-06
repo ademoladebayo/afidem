@@ -18,7 +18,7 @@ class AdminController extends Controller
 
     public function createUser(Request $request)
     {
-        if (UserModel::where(["first_name" => $request->first_name, "last_name" => $request->last_name, "phone" => $request->phone])->exist()) {
+        if (UserModel::where(["first_name" => $request->first_name, "last_name" => $request->last_name, "phone" => $request->phone])->exists()) {
             return response(['success' => false, 'message' => "Customer already exists !"]);
         }
 
@@ -42,6 +42,7 @@ class AdminController extends Controller
         $userModel->address = $request->address;
         $userModel->service = $request->service;
         $userModel->status = $request->status;
+        $userModel->collateral = $request->collateral;
         $userModel->save();
         return response(['success' => true, 'message' => "Customer info was successfully updated."]);
     }
@@ -59,7 +60,7 @@ class AdminController extends Controller
                         "loan" => UserModel::where("status", "ACTIVE")->where('service', 'LIKE', '%LOAN%')->count(),
                         "service_room" => UserModel::where('service', 'LIKE', '%SERVICE_ROOM%')->count()
                     ],
-                    "customer" => UserModel::select("*")->get()
+                    "customer" => UserModel::select("*")->orderBy("id","DESC")->get()
                 ];
 
             return $data;
