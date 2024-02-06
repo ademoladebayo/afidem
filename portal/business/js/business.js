@@ -22,6 +22,9 @@ function loadSideNav(page) {
     document.getElementById("side_nav").innerHTML = `
     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
     <li class="nav-item">
+      <a   id="customers" href="customers.html" class="nav-link"><i class="fas fa-users"></i><span>Customers</span></a>
+    </li>
+    <li class="nav-item">
       <a  id="index" href="dashboard.html?#dashboard" class="nav-link"><i class="fas fa-credit-card"></i><span>POS</span></a>
       <!-- <ul>
         <li class="nav-item">
@@ -30,14 +33,16 @@ function loadSideNav(page) {
       </ul> -->
     </li>
 
-    
-
     <li class="nav-item">
       <a   id="ajo" href="ajo.html" class="nav-link"><i class="fas fa-piggy-bank"></i><span>Ajo</span></a>
     </li>
 
     <li class="nav-item">
       <a   id="loan" href="loan.html" class="nav-link"><i class="fas fa-handshake"></i><span>Loan</span></a>
+    </li>
+
+    <li class="nav-item">
+      <a   id="service-room" href="service-room.html" class="nav-link"><i class="fas fa-bed"></i><span>Service Room</span></a>
     </li>
 
     <li class="nav-item">
@@ -1149,7 +1154,7 @@ function addToNewObject(name, value) {
 
 /* START USERS SECTION */
 function getAllUsers(element,service){
-  fetch(ip + "/api/users/"+ service, {
+  fetch(ip + "/api/user/"+ service, {
     method: "GET",
     headers: {
         Accept: "application/json",
@@ -1182,6 +1187,87 @@ function getAllUsers(element,service){
 })
 .catch((err) => console.log(err));
 }
+
+function getAllCustomer() {
+  openSpinnerModal("Customers");
+  fetch(ip + "/api/user", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      document.getElementById("customer_table").innerHTML = ``;
+      // STAT 
+      document.getElementById("total_user").value = data.stat.all;
+      document.getElementById("ajo_user").value = data.stat.ajo;
+      document.getElementById("loan_user").value = data.stat.loan;
+      document.getElementById("service_room_user").value = data.stat.service_room;
+
+      if ($.fn.DataTable.isDataTable("#paginate0")) {
+        $("#paginate0").DataTable().destroy();
+    }
+
+      var c = 1;
+      if (data.customer.length > 0) {
+
+        for (i in data.customer) {
+          data = data.customer[i];
+          document.getElementById("customer_table").innerHTML += `
+          <tr class='${c % 2 == 0 ? "even" : "odd"}'>
+      
+          <td>${c}.</td>
+          <td>${data.first_name}</td>
+          <td>${data.last_name}</td>
+          <td>${data.phone}</td>
+          <td>${data.address}</td>
+          <td>${data.service}</td>
+          <td>${data.status}</td>
+          <td>${data.date_created}</td>
+          <td>
+            <a  onclick ="editCustomer(${JSON.stringify(data)
+                .replace(/'/g, "")
+                .replace(
+                  /"/g,
+                  "'"
+                )})" class="btn btn-warning" data-bs-toggle="modal"
+            data-bs-target="#updateCustomerModal"><i class="fas fa-edit"></i></a>
+      
+  
+          </td>
+      
+      </tr>`;
+
+          c = c + 1;
+        }
+      } else {
+        document.getElementById(
+          "customer_table"
+        ).innerHTML = `<h4 style="text-align:center;">NO RECORD FOUND</h4>`;
+      }
+      $("#paginate0").DataTable();
+    })
+    .catch((err) => console.log(err));
+}
+
+
+function editCustomer(data) {
+  document.getElementById("u_first_name").value = data.first_name;
+  document.getElementById("u_last_name").value = data.last_name;
+  document.getElementById("u_phone").value = data.phone;
+  document.getElementById("u_address").value = data.address;
+}
+
 
 /* END USERS SECTION */
 
@@ -1240,6 +1326,7 @@ function createAjoTransaction() {
 
 
 function getAjoTransaction() {
+  getAllExpense();
   start_date = changeDateFormat(document.getElementById("start_date").value);
   end_date = changeDateFormat(document.getElementById("end_date").value);
   ajoUser = document.getElementById('ajo_user_1').value;
@@ -1336,6 +1423,7 @@ function getAjoTransaction() {
               }
 
               // TRANSACTION SUMMARY
+              c = 1;
               if (data.data.txn_summary.length > 0) {
                 document.getElementById("transaction_summary_table").innerHTML = ``;
                 for (i in data.data.txn_summary) {
@@ -1378,6 +1466,7 @@ function getAjoTransaction() {
 
 
 /* START USERS SECTION */
+
 
 /* END USERS SECTION */
 

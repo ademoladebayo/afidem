@@ -42,8 +42,17 @@ Route::middleware([ActivityLog::class])->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
         // USERS
-        Route::get('users/{service}', 'AdminController@getUsers', function () {
+        Route::post('user', 'AdminController@createUser', function () {
         })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
+
+        Route::put('user}', 'AdminController@updateUser', function () {
+        })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
+
+        Route::get('user/{service?}', 'AdminController@getUsers', function () {
+        })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
+
+
+
 
         // TRANSACTION {EXPENSE MANAGEMENT}
         Route::post('transaction/create-expense', 'TransactionController@createExpense', function () {
