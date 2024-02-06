@@ -45,7 +45,7 @@ Route::middleware([ActivityLog::class])->group(function () {
         Route::post('user', 'AdminController@createUser', function () {
         })->middleware(Cors::class);
 
-        Route::put('user}', 'AdminController@updateUser', function () {
+        Route::put('user', 'AdminController@updateUser', function () {
         })->middleware(Cors::class);
 
         Route::get('user/{service?}', 'AdminController@getUsers', function () {

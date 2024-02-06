@@ -51,7 +51,7 @@ class AdminController extends Controller
         if ($service) {
             return UserModel::select('id', 'first_name', 'last_name')->where('service', 'LIKE', '%' . $service . '%')->where("status", "ACTIVE")->get();
         } else {
-            $customers = UserModel::select("*");
+            $customers = UserModel::select("*")->get();
 
             $data =
                 [
@@ -61,7 +61,7 @@ class AdminController extends Controller
                         "loan" => $customers->where("status", "ACTIVE")->where('service', 'LIKE', '%LOAN%')->count(),
                         "service_room" => $customers->where('service', 'LIKE', '%SERVICE_ROOM%')->count()
                     ],
-                    "customer" => $customers->get()
+                    "customer" => $customers
                 ];
 
             return $data;
