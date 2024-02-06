@@ -21,7 +21,7 @@ class AdminController extends Controller
         if (UserModel::where(["first_name" => $request->first_name, "last_name" => $request->last_name, "phone" => $request->phone])->exist()) {
             return response(['success' => false, 'message' => "Customer already exists !"]);
         }
-        
+
         $userModel = new UserModel();
         $userModel->first_name = $request->first_name;
         $userModel->last_name = $request->last_name;
@@ -49,7 +49,7 @@ class AdminController extends Controller
     public function getUsers($service = null)
     {
         if ($service) {
-            return UserModel::select('id', 'first_name', 'last_name')->where('service', 'LIKE', '%' . $service . '%')->where("status", "ACTIVE");
+            return UserModel::select('id', 'first_name', 'last_name')->where('service', 'LIKE', '%' . $service . '%')->where("status", "ACTIVE")->get();
         } else {
             $customers = UserModel::select("*");
 

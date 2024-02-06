@@ -43,15 +43,13 @@ Route::middleware([ActivityLog::class])->group(function () {
 
         // USERS
         Route::post('user', 'AdminController@createUser', function () {
-        })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
+        })->middleware(Cors::class);
 
         Route::put('user}', 'AdminController@updateUser', function () {
-        })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
+        })->middleware(Cors::class);
 
         Route::get('user/{service?}', 'AdminController@getUsers', function () {
-        })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
-
-
+        })->middleware(Cors::class);
 
 
         // TRANSACTION {EXPENSE MANAGEMENT}
