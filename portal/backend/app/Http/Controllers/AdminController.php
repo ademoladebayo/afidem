@@ -42,7 +42,6 @@ class AdminController extends Controller
         $userModel->address = $request->address;
         $userModel->service = $request->service;
         $userModel->status = $request->status;
-        $userModel->collateral = $request->collateral;
         $userModel->save();
         return response(['success' => true, 'message' => "Customer info was successfully updated."]);
     }
@@ -58,9 +57,9 @@ class AdminController extends Controller
                         "all" => UserModel::where("status", "ACTIVE")->count(),
                         "ajo" => UserModel::where("status", "ACTIVE")->where('service', 'LIKE', '%AJO%')->count(),
                         "loan" => UserModel::where("status", "ACTIVE")->where('service', 'LIKE', '%LOAN%')->count(),
-                        "service_room" => UserModel::where('service', 'LIKE', '%SERVICE_ROOM%')->count()
+                        "service_room" => UserModel::where("status", "ACTIVE")->where('service', 'LIKE', '%SERVICE_ROOM%')->count()
                     ],
-                    "customer" => UserModel::select("*")->orderBy("id","DESC")->get()
+                    "customer" => UserModel::select("*")->orderBy("id", "DESC")->get()
                 ];
 
             return $data;

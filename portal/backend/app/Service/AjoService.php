@@ -87,8 +87,8 @@ class AjoService
         $totalUsers = clone $ajoTxn;
         $totalUsers = $totalUsers->distinct()->pluck('user_id')->toArray();
 
-        $contributedToday = clone $ajoTxn;
-        $contributedToday = $contributedToday->count();
+        $contributionCount = clone $ajoTxn;
+        $contributionCount = $contributionCount->count();
 
         $totalCredit = clone $ajoTxn;
         $totalCredit = $totalCredit->where('txn_type', 'CREDIT')->sum('amount');
@@ -106,7 +106,7 @@ class AjoService
         $data =
             [
                 "total_user" => count($totalUsers),
-                "contributed_today" => $contributedToday,
+                "contribution_count" => $contributionCount,
                 "total_credit" => $totalCredit,
                 "total_debit" => $totalDebit,
                 "profit" => $totalCharge,

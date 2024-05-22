@@ -2,13 +2,13 @@ var ip = localStorage["ip"];
 var domain = localStorage["domain"];
 
 window.addEventListener("online", () => {
-    toastr.remove();
-    successtoast("<b>You are online</b>");
+  toastr.remove();
+  successtoast("<b>You are online</b>");
 });
 
 window.addEventListener("offline", () => {
-    toastr.remove();
-    errortoast("<b>You are offline</b>");
+  toastr.remove();
+  errortoast("<b>You are offline</b>");
 });
 
 // VAR
@@ -19,7 +19,7 @@ var newObj = {};
 collapseSidebar();
 
 function loadSideNav(page) {
-    document.getElementById("side_nav").innerHTML = `
+  document.getElementById("side_nav").innerHTML = `
     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
     <li class="nav-item">
       <a   id="customers" href="customers.html" class="nav-link"><i class="fas fa-users"></i><span>Customers</span></a>
@@ -94,280 +94,280 @@ function loadSideNav(page) {
     
     `;
 
-    document.getElementById(page).className += " menu-active";
+  document.getElementById(page).className += " menu-active";
 }
 
 function signIn() {
-    var id = document.getElementById("id").value;
-    var password = document.getElementById("password").value;
-    if (id != "" && password != "") {
-        // PUSH TO API
-        document.getElementById("signin").innerHTML = `<i
+  var id = document.getElementById("id").value;
+  var password = document.getElementById("password").value;
+  if (id != "" && password != "") {
+    // PUSH TO API
+    document.getElementById("signin").innerHTML = `<i
         class="fa fa-spinner fa-spin"></i> Processing ...`;
-        fetch(ip + "/api/signin", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify({
-                    id: id,
-                    password: password,
-                }),
-            })
-            .then(function(res) {
-                console.log(res.status);
-                if (res.status == 401) {
-                    openAuthenticationModal();
-                }
-                return res.json();
-            })
+    fetch(ip + "/api/signin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        password: password,
+      }),
+    })
+      .then(function (res) {
+        console.log(res.status);
+        if (res.status == 401) {
+          openAuthenticationModal();
+        }
+        return res.json();
+      })
 
-        .then((data) => {
-                toastr.remove();
-                if (data.success) {
-                    localStorage.setItem("user_data", JSON.stringify(data));
-                    localStorage.setItem("token", data.token);
-                    username = JSON.parse(localStorage["user_data"]).data.username;
-                    id = JSON.parse(localStorage["user_data"]).data.id;
-                    localStorage.setItem("user_id", id);
-                    localStorage.setItem("username", username);
-                    initFirebaseMessagingRegistration();
-                    // setTimeout(function () {
-                    //   window.location.href = "account/dashboard.html";
-                    // }, 1000);
-                } else {
-                    errortoast("<b>" + data.message + "</b>");
-                }
-            })
-            .catch((err) => {
-                document.getElementById("signin").innerHTML = `Sign in`;
-                errortoast("Error occurred please try again");
-            });
-    } else {
-        warningtoast("<b>Please check that no field is empty.</b>");
-    }
+      .then((data) => {
+        toastr.remove();
+        if (data.success) {
+          localStorage.setItem("user_data", JSON.stringify(data));
+          localStorage.setItem("token", data.token);
+          username = JSON.parse(localStorage["user_data"]).data.username;
+          id = JSON.parse(localStorage["user_data"]).data.id;
+          localStorage.setItem("user_id", id);
+          localStorage.setItem("username", username);
+          initFirebaseMessagingRegistration();
+          // setTimeout(function () {
+          //   window.location.href = "account/dashboard.html";
+          // }, 1000);
+        } else {
+          errortoast("<b>" + data.message + "</b>");
+        }
+      })
+      .catch((err) => {
+        document.getElementById("signin").innerHTML = `Sign in`;
+        errortoast("Error occurred please try again");
+      });
+  } else {
+    warningtoast("<b>Please check that no field is empty.</b>");
+  }
 }
 
 function reAuth() {
-    var id = localStorage["username"];
-    var password = document.getElementById("password").value;
-    if (id != "" && password != "") {
-        // PUSH TO API
-        document.getElementById("signin").innerHTML = `<i
+  var id = localStorage["username"];
+  var password = document.getElementById("password").value;
+  if (id != "" && password != "") {
+    // PUSH TO API
+    document.getElementById("signin").innerHTML = `<i
     class="fa fa-spinner fa-spin"></i> Processing ...`;
-        fetch(ip + "/api/signin", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify({
-                    id: id,
-                    password: password,
-                }),
-            })
-            .then(function(res) {
-                console.log(res.status);
-                if (res.status == 401) {
-                    openAuthenticationModal();
-                }
-                return res.json();
-            })
+    fetch(ip + "/api/signin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        password: password,
+      }),
+    })
+      .then(function (res) {
+        console.log(res.status);
+        if (res.status == 401) {
+          openAuthenticationModal();
+        }
+        return res.json();
+      })
 
-        .then((data) => {
-                toastr.remove();
-                if (data.success) {
-                    successtoast("<b>Welcome back, </b>" + localStorage["username"]);
-                    localStorage.setItem("user_data", JSON.stringify(data));
-                    localStorage.setItem("token", data.token);
-                    username = JSON.parse(localStorage["user_data"]).data.username;
-                    id = JSON.parse(localStorage["user_data"]).data.id;
-                    localStorage.setItem("username", username);
-                    localStorage.setItem("user_id", id);
-                    setTimeout(function() {
-                        parent.$("#authenticationModal").modal("hide");
-                        parent.document.getElementById("authenticationModal").remove();
-                    }, 1000);
-                } else {
-                    errortoast(data.message);
-                }
-                document.getElementById("signin").innerHTML = `Sign In`;
-            })
-            .catch((err) => console.log(err));
-    } else {
-        warningtoast("<b>Please check that no field is empty.</b>");
-    }
+      .then((data) => {
+        toastr.remove();
+        if (data.success) {
+          successtoast("<b>Welcome back, </b>" + localStorage["username"]);
+          localStorage.setItem("user_data", JSON.stringify(data));
+          localStorage.setItem("token", data.token);
+          username = JSON.parse(localStorage["user_data"]).data.username;
+          id = JSON.parse(localStorage["user_data"]).data.id;
+          localStorage.setItem("username", username);
+          localStorage.setItem("user_id", id);
+          setTimeout(function () {
+            parent.$("#authenticationModal").modal("hide");
+            parent.document.getElementById("authenticationModal").remove();
+          }, 1000);
+        } else {
+          errortoast(data.message);
+        }
+        document.getElementById("signin").innerHTML = `Sign In`;
+      })
+      .catch((err) => console.log(err));
+  } else {
+    warningtoast("<b>Please check that no field is empty.</b>");
+  }
 }
 
 function changeLogo() {
-    document.getElementById("logo").innerHTML =
-        document.getElementById("logo").innerHTML != "" ?
-        "" :
-        `<h1 style="font-weight: bold; font-family: Rowdies; color:white;"> AFIDEM </h1>`;
+  document.getElementById("logo").innerHTML =
+    document.getElementById("logo").innerHTML != "" ?
+      "" :
+      `<h1 style="font-weight: bold; font-family: Rowdies; color:white;"> AFIDEM </h1>`;
 }
 
 function reloadEditFrame() {
-    var iframe = document.getElementById("edit_frame");
-    temp = iframe.src;
-    iframe.src = "";
-    iframe.src = temp;
+  var iframe = document.getElementById("edit_frame");
+  temp = iframe.src;
+  iframe.src = "";
+  iframe.src = temp;
 }
 
 function formatNumber(number) {
-    console.log("NUMBER: " + number);
-    return number.toLocaleString(
-        undefined, // leave undefined to use the visitor's browser
-        // locale or a string like 'en-US' to override it.
-        { minimumFractionDigits: 0 }
-    );
+  console.log("NUMBER: " + number);
+  return number.toLocaleString(
+    undefined, // leave undefined to use the visitor's browser
+    // locale or a string like 'en-US' to override it.
+    { minimumFractionDigits: 0 }
+  );
 }
 
 function loadDashBoardInformation() {
-    document.getElementById("user_name").innerHTML = `<b>${JSON.parse(localStorage["user_data"]).data.username
+  document.getElementById("user_name").innerHTML = `<b>${JSON.parse(localStorage["user_data"]).data.username
     }</b>`;
-    document.getElementById("user_name1").innerHTML = `<b>${JSON.parse(localStorage["user_data"]).data.username
+  document.getElementById("user_name1").innerHTML = `<b>${JSON.parse(localStorage["user_data"]).data.username
     }</b>`;
 }
 
 function loadStations() {
-    document.getElementById("station").innerHTML = "";
-    station = JSON.parse(localStorage["user_data"]).station;
-    station.forEach((st) => {
-        document.getElementById(
-            "station"
-        ).innerHTML += `<option value="${st.id}">${st.username} (${st.terminal_id})</option>`;
-    });
+  document.getElementById("station").innerHTML = "";
+  station = JSON.parse(localStorage["user_data"]).station;
+  station.forEach((st) => {
+    document.getElementById(
+      "station"
+    ).innerHTML += `<option value="${st.id}">${st.username} (${st.terminal_id})</option>`;
+  });
 }
 
 function getStationByURL() {
-    var parentUrl = window.parent.location.href;
-    if (parentUrl.endsWith("/ajo.html")) {
-        return 7;
-    } else if (parentUrl.endsWith("/loan.html")) {
-        return 8;
-    } else {
-        return window.parent.document.getElementById("station").value;
-    }
+  var parentUrl = window.parent.location.href;
+  if (parentUrl.endsWith("/ajo.html")) {
+    return 7;
+  } else if (parentUrl.endsWith("/loan.html")) {
+    return 8;
+  } else {
+    return window.parent.document.getElementById("station").value;
+  }
 
 }
 
 function goTo(page) {
-    if (page == "") {
-        localStorage.clear();
-        window.parent.location.assign(domain);
-        return 0;
-    }
-    window.parent.location.assign(domain + "/" + page);
+  if (page == "") {
+    localStorage.clear();
+    window.parent.location.assign(domain);
+    return 0;
+  }
+  window.parent.location.assign(domain + "/" + page);
 }
 
 // EXPENSE MANAGEMENT
 function createExpense() {
-    var description = document.getElementById("description").value;
-    var amount = document.getElementById("amount").value;
-    var date = changeDateFormat(document.getElementById("date").value);
+  var description = document.getElementById("description").value;
+  var amount = document.getElementById("amount").value;
+  var date = changeDateFormat(document.getElementById("date").value);
 
-    admin_station = getStationByURL();
+  admin_station = getStationByURL();
 
-    if (description != "" && amount != "" && date != "") {
-        openSpinnerModal("Add expense");
+  if (description != "" && amount != "" && date != "") {
+    openSpinnerModal("Add expense");
 
-        // PUSH TO API
-        // warningtoast("<b>Processing ... Please wait</b>");
-        fetch(ip + "/api/transaction/create-expense", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-type": "application/json",
-                    Authorization: "Bearer " + localStorage["token"],
-                },
-                body: JSON.stringify({
-                    description: description,
-                    amount: amount,
-                    date_incurred: date,
-                    admin_station: admin_station,
-                }),
-            })
-            .then(function(res) {
-                console.log(res.status);
-                if (res.status == 401) {
-                    removeSpinnerModal();
-                    openAuthenticationModal();
-                }
-                return res.json();
-            })
+    // PUSH TO API
+    // warningtoast("<b>Processing ... Please wait</b>");
+    fetch(ip + "/api/transaction/create-expense", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: "Bearer " + localStorage["token"],
+      },
+      body: JSON.stringify({
+        description: description,
+        amount: amount,
+        date_incurred: date,
+        admin_station: admin_station,
+      }),
+    })
+      .then(function (res) {
+        console.log(res.status);
+        if (res.status == 401) {
+          removeSpinnerModal();
+          openAuthenticationModal();
+        }
+        return res.json();
+      })
 
-        .then((data) => {
-                toastr.remove();
-                // removeSpinnerModal();
-                if (data.success) {
-                    successtoast("<b>" + data.message + "</b>");
-                    setTimeout(function() {
-                        closeModal("modalYT");
-                        // window.parent.location.reload();
-                        window.parent.processReport();
-                    }, 1000);
-                } else {
-                    errortoast("<b>" + data.message + "</b>");
-                }
-            })
-            .catch((err) => console.log(err));
-    } else {
-        warningtoast("<b>Please check that compulsory field is not empty.</b>");
-    }
+      .then((data) => {
+        toastr.remove();
+        // removeSpinnerModal();
+        if (data.success) {
+          successtoast("<b>" + data.message + "</b>");
+          setTimeout(function () {
+            closeModal("modalYT");
+            // window.parent.location.reload();
+            window.parent.processReport();
+          }, 1000);
+        } else {
+          errortoast("<b>" + data.message + "</b>");
+        }
+      })
+      .catch((err) => console.log(err));
+  } else {
+    warningtoast("<b>Please check that compulsory field is not empty.</b>");
+  }
 }
 
 function getAllExpense() {
-    start_date = document.getElementById("start_date").value;
-    end_date = document.getElementById("end_date").value;
-    date = "";
-    admin_station = getStationByURL();
-    if (start_date == "") {
-        // START AND END DATE DEFAULF AS TODAY
-        date =
-            changeDateFormat(getDate().split("~")[1]) +
-            "~" +
-            changeDateFormat(getDate().split("~")[1]);
-    } else {
-        date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
-    }
+  start_date = document.getElementById("start_date").value;
+  end_date = document.getElementById("end_date").value;
+  date = "";
+  admin_station = getStationByURL();
+  if (start_date == "") {
+    // START AND END DATE DEFAULF AS TODAY
+    date =
+      changeDateFormat(getDate().split("~")[1]) +
+      "~" +
+      changeDateFormat(getDate().split("~")[1]);
+  } else {
+    date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
+  }
 
-    openSpinnerModal("Fetch expense");
+  openSpinnerModal("Fetch expense");
 
-    fetch(ip + "/api/transaction/all-expense", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-type": "application/json",
-                Authorization: "Bearer " + localStorage["token"],
-            },
-            body: JSON.stringify({
-                date: date,
-                admin_station: admin_station,
-            }),
-        })
-        .then(function(res) {
-            console.log(res.status);
-            if (res.status == 401) {
-                removeSpinnerModal();
-                openAuthenticationModal();
-            }
-            return res.json();
-        })
+  fetch(ip + "/api/transaction/all-expense", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      date: date,
+      admin_station: admin_station,
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
 
     .then((data) => {
-            removeSpinnerModal();
-            c = 1;
+      removeSpinnerModal();
+      c = 1;
 
-            // Destroy the existing DataTable
-            if ($.fn.DataTable.isDataTable("#paginate1")) {
-                $("#paginate1").DataTable().destroy();
-            }
+      // Destroy the existing DataTable
+      if ($.fn.DataTable.isDataTable("#paginate1")) {
+        $("#paginate1").DataTable().destroy();
+      }
 
-            if (data.length > 0) {
-                document.getElementById("expense_table").innerHTML = ``;
-                for (i in data) {
-                    document.getElementById("expense_table").innerHTML += `
+      if (data.length > 0) {
+        document.getElementById("expense_table").innerHTML = ``;
+        for (i in data) {
+          document.getElementById("expense_table").innerHTML += `
               <tr class='${c % 2 == 0 ? "even" : "odd"}'>
       
               <td>${c}.</td>
@@ -386,322 +386,322 @@ function getAllExpense() {
               </td>
              </tr>
               `;
-                    c = c + 1;
-                }
+          c = c + 1;
+        }
 
-                $("#paginate1").DataTable();
-            } else {
-                document.getElementById("expense_table").innerHTML = `<td colspan="12">
+        $("#paginate1").DataTable();
+      } else {
+        document.getElementById("expense_table").innerHTML = `<td colspan="12">
         <center>No expense found</center>
     </td>`;
-            }
+      }
 
-            // $(".dataTables_length").addClass("bs-select");
-        })
-        .catch((err) => console.log(err));
+      // $(".dataTables_length").addClass("bs-select");
+    })
+    .catch((err) => console.log(err));
 }
 
 function editExpenseDetails() {
-    document.getElementById("description").value =
-        localStorage["editExpense"].split("~")[1];
+  document.getElementById("description").value =
+    localStorage["editExpense"].split("~")[1];
 
-    document.getElementById("date").value =
-        localStorage["editExpense"].split("~")[2];
+  document.getElementById("date").value =
+    localStorage["editExpense"].split("~")[2];
 
-    document.getElementById("amount").value =
-        localStorage["editExpense"].split("~")[3];
+  document.getElementById("amount").value =
+    localStorage["editExpense"].split("~")[3];
 }
 
 function updateExpense() {
-    var description = document.getElementById("description").value;
-    var amount = document.getElementById("amount").value;
-    var date = changeDateFormat(document.getElementById("date").value);
+  var description = document.getElementById("description").value;
+  var amount = document.getElementById("amount").value;
+  var date = changeDateFormat(document.getElementById("date").value);
 
-    if (description != "" && amount != "" && date != "") {
-        // PUSH TO API
-        // warningtoast("<b>Processing ... Please wait</b>");
+  if (description != "" && amount != "" && date != "") {
+    // PUSH TO API
+    // warningtoast("<b>Processing ... Please wait</b>");
 
-        openSpinnerModal("Update Expense");
+    openSpinnerModal("Update Expense");
 
-        fetch(ip + "/api/transaction/edit-expense", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-type": "application/json",
-                    Authorization: "Bearer " + localStorage["token"],
-                },
-                body: JSON.stringify({
-                    expense_id: localStorage["editExpense"].split("~")[0],
-                    description: description,
-                    amount: amount,
-                    date_incurred: date,
-                    last_modified: getDate().split("~")[1],
-                    session: localStorage["current_session"],
-                    term: localStorage["current_term"],
-                }),
-            })
-            .then(function(res) {
-                console.log(res.status);
-                if (res.status == 401) {
-                    removeSpinnerModal();
-                    openAuthenticationModal();
-                }
-                return res.json();
-            })
+    fetch(ip + "/api/transaction/edit-expense", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: "Bearer " + localStorage["token"],
+      },
+      body: JSON.stringify({
+        expense_id: localStorage["editExpense"].split("~")[0],
+        description: description,
+        amount: amount,
+        date_incurred: date,
+        last_modified: getDate().split("~")[1],
+        session: localStorage["current_session"],
+        term: localStorage["current_term"],
+      }),
+    })
+      .then(function (res) {
+        console.log(res.status);
+        if (res.status == 401) {
+          removeSpinnerModal();
+          openAuthenticationModal();
+        }
+        return res.json();
+      })
 
-        .then((data) => {
-                //toastr.remove();
-                removeSpinnerModal();
-                if (data.success) {
-                    successtoast("<b>" + data.message + "</b>");
-                    setTimeout(function() {
-                        closeModal("editModal");
-                        // window.parent.location.reload();
-                        window.parent.getAllExpense();
-                    }, 1000);
-                } else {
-                    errortoast("<b>" + data.message + "</b>");
-                }
-            })
-            .catch((err) => console.log(err));
-    } else {
-        warningtoast("<b>Please check that compulsory field is not empty.</b>");
-    }
+      .then((data) => {
+        //toastr.remove();
+        removeSpinnerModal();
+        if (data.success) {
+          successtoast("<b>" + data.message + "</b>");
+          setTimeout(function () {
+            closeModal("editModal");
+            // window.parent.location.reload();
+            window.parent.getAllExpense();
+          }, 1000);
+        } else {
+          errortoast("<b>" + data.message + "</b>");
+        }
+      })
+      .catch((err) => console.log(err));
+  } else {
+    warningtoast("<b>Please check that compulsory field is not empty.</b>");
+  }
 }
 
 function deleteExpense(id) {
-    if (!confirm("Are you sure you want to delete ?")) {
-        return 0;
-    }
+  if (!confirm("Are you sure you want to delete ?")) {
+    return 0;
+  }
 
-    openSpinnerModal("Delete Expense");
+  openSpinnerModal("Delete Expense");
 
-    fetch(ip + "/api/transaction/delete-expense/" + id, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-type": "application/json",
-                Authorization: "Bearer " + localStorage["token"],
-            },
-        })
-        .then(function(res) {
-            console.log(res.status);
-            if (res.status == 401) {
-                removeSpinnerModal();
-                openAuthenticationModal();
-            }
-            return res.json();
-        })
+  fetch(ip + "/api/transaction/delete-expense/" + id, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
 
     .then((data) => {
-            removeSpinnerModal();
-            toastr.remove();
-            if (data.success) {
-                successtoast("<b>" + data.message + "</b>");
-                getAllTransaction();
-                getAllExpense();
-            } else {
-                errortoast("<b>" + data.message + "</b>");
-            }
-        })
-        .catch((err) => console.log(err));
+      removeSpinnerModal();
+      toastr.remove();
+      if (data.success) {
+        successtoast("<b>" + data.message + "</b>");
+        getAllTransaction();
+        getAllExpense();
+      } else {
+        errortoast("<b>" + data.message + "</b>");
+      }
+    })
+    .catch((err) => console.log(err));
 }
 
 function uploadTransactionReport() {
-    upload = document.getElementById("file-upload");
-    report = upload.files;
-    if (report.length < 1) {
-        return alert("Please upload a report !");
-    }
+  upload = document.getElementById("file-upload");
+  report = upload.files;
+  if (report.length < 1) {
+    return alert("Please upload a report !");
+  }
 
-    const formData = new FormData();
-    formData.append("report_type", "UPLOAD");
-    formData.append("file", report[0]);
-    formData.append("admin_station", document.getElementById("station").value);
-    // Select your input type file and store it in a variable
+  const formData = new FormData();
+  formData.append("report_type", "UPLOAD");
+  formData.append("file", report[0]);
+  formData.append("admin_station", document.getElementById("station").value);
+  // Select your input type file and store it in a variable
 
-    // This will upload the file after having read it
+  // This will upload the file after having read it
 
-    openSpinnerModal("Report Upload");
+  openSpinnerModal("Report Upload");
 
-    return fetch(ip + "/api/transaction/report", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                Authorization: "Bearer " + localStorage["token"],
-            },
-            body: formData,
-        })
-        .then(function(res) {
-            console.log(res.status);
-            if (res.status == 401) {
-                removeSpinnerModal();
-                openAuthenticationModal();
-            }
-            return res.json();
-        })
+  return fetch(ip + "/api/transaction/report", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: formData,
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
 
     .then((data) => {
-            removeSpinnerModal();
-            toastr.remove();
-            if (data.success) {
-                successtoast("<b>" + data.message + "</b>");
-                setTimeout(function() {
-                    // parent.getAllStudentForTable();
-                    // parent.$("#modalYT").modal("hide");
-                    window.parent.getAllTransaction();
-                }, 1000);
-            } else {
-                errortoast("<b>" + data.message + "</b>");
-            }
-        })
-        .catch((err) => console.log(err));
+      removeSpinnerModal();
+      toastr.remove();
+      if (data.success) {
+        successtoast("<b>" + data.message + "</b>");
+        setTimeout(function () {
+          // parent.getAllStudentForTable();
+          // parent.$("#modalYT").modal("hide");
+          window.parent.getAllTransaction();
+        }, 1000);
+      } else {
+        errortoast("<b>" + data.message + "</b>");
+      }
+    })
+    .catch((err) => console.log(err));
 }
 
 function getAllTransaction() {
-    start_date = document.getElementById("start_date").value;
-    end_date = document.getElementById("end_date").value;
-    date = "";
-    if (start_date == "") {
-        // START AND END DATE DEFAULF AS TODAY
-        date =
-            changeDateFormat(getDate().split("~")[1]) +
-            "~" +
-            changeDateFormat(getDate().split("~")[1]);
-    } else {
-        date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
-    }
+  start_date = document.getElementById("start_date").value;
+  end_date = document.getElementById("end_date").value;
+  date = "";
+  if (start_date == "") {
+    // START AND END DATE DEFAULF AS TODAY
+    date =
+      changeDateFormat(getDate().split("~")[1]) +
+      "~" +
+      changeDateFormat(getDate().split("~")[1]);
+  } else {
+    date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
+  }
 
-    openSpinnerModal("Fetch Transaction");
+  openSpinnerModal("Fetch Transaction");
 
-    fetch(ip + "/api/transaction", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-type": "application/json",
-                Authorization: "Bearer " + localStorage["token"],
-            },
-            body: JSON.stringify({
-                admin_station: document.getElementById("station").value,
-                date: date,
-            }),
-        })
-        .then(function(res) {
-            console.log(res.status);
-            console.log("RESPONSE CAME HERE " + res);
-            if (res.status == 401) {
-                removeSpinnerModal();
-                openAuthenticationModal();
-            }
-            return res.json();
-        })
+  fetch(ip + "/api/transaction", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      admin_station: document.getElementById("station").value,
+      date: date,
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      console.log("RESPONSE CAME HERE " + res);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
 
     .then((data) => {
-                removeSpinnerModal();
+      removeSpinnerModal();
 
-                // CLEAR LIST
-                profit_list = {};
+      // CLEAR LIST
+      profit_list = {};
 
-                localStorage.setItem("ALLOWED_REPORT_TYPE", data.ALLOWED_REPORT_TYPE);
-                checkAllowedReportType();
+      localStorage.setItem("ALLOWED_REPORT_TYPE", data.ALLOWED_REPORT_TYPE);
+      checkAllowedReportType();
 
-                // POPULATE CHART
-                document.getElementById("d_profit").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.withdrawal) +
-                    parseInt(data.daily_stat.card_transfer) +
-                    parseInt(data.daily_stat.transfer) +
-                    parseInt(data.daily_stat.airtime) +
-                    parseInt(data.daily_stat.purchase) +
-                    parseInt(data.daily_stat.pos_transfer) +
-                    parseInt(data.daily_stat.bill_payment)
-                );
-                document.getElementById("d_withdrawal").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.withdrawal)
-                );
-                document.getElementById("d_card_transfer").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.card_transfer)
-                );
+      // POPULATE CHART
+      document.getElementById("d_profit").innerHTML = formatNumber(
+        parseInt(data.daily_stat.withdrawal) +
+        parseInt(data.daily_stat.card_transfer) +
+        parseInt(data.daily_stat.transfer) +
+        parseInt(data.daily_stat.airtime) +
+        parseInt(data.daily_stat.purchase) +
+        parseInt(data.daily_stat.pos_transfer) +
+        parseInt(data.daily_stat.bill_payment)
+      );
+      document.getElementById("d_withdrawal").innerHTML = formatNumber(
+        parseInt(data.daily_stat.withdrawal)
+      );
+      document.getElementById("d_card_transfer").innerHTML = formatNumber(
+        parseInt(data.daily_stat.card_transfer)
+      );
 
-                document.getElementById("d_transfer").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.transfer)
-                );
+      document.getElementById("d_transfer").innerHTML = formatNumber(
+        parseInt(data.daily_stat.transfer)
+      );
 
-                document.getElementById("d_airtime").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.airtime)
-                );
+      document.getElementById("d_airtime").innerHTML = formatNumber(
+        parseInt(data.daily_stat.airtime)
+      );
 
-                document.getElementById("d_purchase").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.purchase)
-                );
+      document.getElementById("d_purchase").innerHTML = formatNumber(
+        parseInt(data.daily_stat.purchase)
+      );
 
-                document.getElementById("d_pos_transfer").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.purchase)
-                );
+      document.getElementById("d_pos_transfer").innerHTML = formatNumber(
+        parseInt(data.daily_stat.purchase)
+      );
 
-                document.getElementById("d_bill_payment").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.bill_payment)
-                );
+      document.getElementById("d_bill_payment").innerHTML = formatNumber(
+        parseInt(data.daily_stat.bill_payment)
+      );
 
-                document.getElementById("d_trans_count").innerHTML = formatNumber(
-                    parseInt(data.daily_stat.trans_count)
-                );
+      document.getElementById("d_trans_count").innerHTML = formatNumber(
+        parseInt(data.daily_stat.trans_count)
+      );
 
-                document.getElementById("m_profit").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.withdrawal) +
-                    parseInt(data.montly_stat.card_transfer) +
-                    parseInt(data.montly_stat.transfer) +
-                    parseInt(data.montly_stat.airtime) +
-                    parseInt(data.montly_stat.purchase) +
-                    parseInt(data.montly_stat.pos_transfer) +
-                    parseInt(data.montly_stat.bill_payment)
-                );
-                document.getElementById("m_withdrawal").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.withdrawal)
-                );
-                document.getElementById("m_card_transfer").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.card_transfer)
-                );
+      document.getElementById("m_profit").innerHTML = formatNumber(
+        parseInt(data.montly_stat.withdrawal) +
+        parseInt(data.montly_stat.card_transfer) +
+        parseInt(data.montly_stat.transfer) +
+        parseInt(data.montly_stat.airtime) +
+        parseInt(data.montly_stat.purchase) +
+        parseInt(data.montly_stat.pos_transfer) +
+        parseInt(data.montly_stat.bill_payment)
+      );
+      document.getElementById("m_withdrawal").innerHTML = formatNumber(
+        parseInt(data.montly_stat.withdrawal)
+      );
+      document.getElementById("m_card_transfer").innerHTML = formatNumber(
+        parseInt(data.montly_stat.card_transfer)
+      );
 
-                document.getElementById("m_transfer").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.transfer)
-                );
+      document.getElementById("m_transfer").innerHTML = formatNumber(
+        parseInt(data.montly_stat.transfer)
+      );
 
-                document.getElementById("m_airtime").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.airtime)
-                );
+      document.getElementById("m_airtime").innerHTML = formatNumber(
+        parseInt(data.montly_stat.airtime)
+      );
 
-                document.getElementById("m_purchase").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.purchase)
-                );
+      document.getElementById("m_purchase").innerHTML = formatNumber(
+        parseInt(data.montly_stat.purchase)
+      );
 
-                document.getElementById("m_trans_count").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.trans_count)
-                );
+      document.getElementById("m_trans_count").innerHTML = formatNumber(
+        parseInt(data.montly_stat.trans_count)
+      );
 
-                document.getElementById("m_pos_transfer").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.pos_transfer)
-                );
+      document.getElementById("m_pos_transfer").innerHTML = formatNumber(
+        parseInt(data.montly_stat.pos_transfer)
+      );
 
-                document.getElementById("m_bill_payment").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.bill_payment)
-                );
+      document.getElementById("m_bill_payment").innerHTML = formatNumber(
+        parseInt(data.montly_stat.bill_payment)
+      );
 
-                document.getElementById("m_expense").innerHTML = formatNumber(
-                    parseInt(data.montly_stat.expense)
-                );
+      document.getElementById("m_expense").innerHTML = formatNumber(
+        parseInt(data.montly_stat.expense)
+      );
 
-                c = 1;
-                // Destroy the existing DataTable
-                if ($.fn.DataTable.isDataTable("#paginate0")) {
-                    $("#paginate0").DataTable().destroy();
-                }
+      c = 1;
+      // Destroy the existing DataTable
+      if ($.fn.DataTable.isDataTable("#paginate0")) {
+        $("#paginate0").DataTable().destroy();
+      }
 
-                //$("#paginate0").DataTable().clear();
-                if (data.transaction_history.length > 0) {
-                    document.getElementById("transaction_table").innerHTML = ``;
-                    for (i in data.transaction_history) {
-                        earnings = data.transaction_history[i].earnings.split(" ");
-                        document.getElementById("transaction_table").innerHTML += `
+      //$("#paginate0").DataTable().clear();
+      if (data.transaction_history.length > 0) {
+        document.getElementById("transaction_table").innerHTML = ``;
+        for (i in data.transaction_history) {
+          earnings = data.transaction_history[i].earnings.split(" ");
+          document.getElementById("transaction_table").innerHTML += `
               <tr>
       
               <td>${c}.</td>
@@ -1153,39 +1153,39 @@ function addToNewObject(name, value) {
 }
 
 /* START USERS SECTION */
-function getAllUsers(element,service){
-  fetch(ip + "/api/user/"+ service, {
+function getAllUsers(element, service) {
+  fetch(ip + "/api/user/" + service, {
     method: "GET",
     headers: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-        Authorization: "Bearer " + localStorage["token"],
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
     }
-})
-.then(function(res) {
-    if (res.status == 401) {
+  })
+    .then(function (res) {
+      if (res.status == 401) {
         removeSpinnerModal();
         openAuthenticationModal();
-    }
-    return res.json();
-})
+      }
+      return res.json();
+    })
 
-.then((data) => {
+    .then((data) => {
 
-        // POPULATE USERS
-        data.forEach( user => {
-          document.getElementById(element).innerHTML +=  ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
+      // POPULATE USERS
+      data.forEach(user => {
+        document.getElementById(element).innerHTML += ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
+      });
+
+
+      if (service == "AJO") {
+        data.forEach(user => {
+          document.getElementById('ajo_user_2').innerHTML += ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
         });
+      }
 
-
-        if(service == "AJO"){
-          data.forEach( user => {
-            document.getElementById('ajo_user_2').innerHTML +=  ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
-          });
-        }
-       
-})
-.catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
 }
 
 function createCustomer() {
@@ -1238,13 +1238,14 @@ function updateCustomer() {
   var selectedValuesString = selectedService.join(",");
 
   fetch(ip + "/api/user", {
-    method: "POST",
+    method: "PUT",
     headers: {
       Accept: "application/json",
       "Content-type": "application/json",
       Authorization: "Bearer " + localStorage["token"],
     },
     body: JSON.stringify({
+      user_id: document.getElementById("u_user_id").value,
       first_name: document.getElementById("u_first_name").value,
       last_name: document.getElementById("u_last_name").value,
       phone: document.getElementById("u_phone").value,
@@ -1295,7 +1296,7 @@ function getAllCustomer() {
     })
     .then((data) => {
       removeSpinnerModal();
-      document.getElementById("customer_table").innerHTML = ``;
+
       // STAT 
       document.getElementById("total_user").innerHTML = data.stat.all;
       document.getElementById("ajo_user").innerHTML = data.stat.ajo;
@@ -1304,13 +1305,12 @@ function getAllCustomer() {
 
       if ($.fn.DataTable.isDataTable("#paginate0")) {
         $("#paginate0").DataTable().destroy();
-    }
+      }
 
       var c = 1;
       if (data.customer.length > 0) {
-
-        for (i in data.customer) {
-          data = data.customer[i];
+        document.getElementById("customer_table").innerHTML = ``;
+        data.customer.forEach(data => {
 
           //SERVICE MAP
           services = '';
@@ -1319,32 +1319,31 @@ function getAllCustomer() {
           });
 
           document.getElementById("customer_table").innerHTML += `
-          <tr class='${c % 2 == 0 ? "even" : "odd"}'>
+              <tr>
+              <td>${c}.</td>
+              <td>${data.first_name}</td>
+              <td>${data.last_name}</td>
+              <td>${data.phone}</td>
+              <td>${data.address}</td>
+              <td>${services}</td>
+              <td><span class="badge ${data.status == 'ACTIVE' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
+              <td>${dateToWord(data.created_at)}</td>
+              <td>
+                <a  onclick ="editCustomer(${JSON.stringify(data)
+              .replace(/'/g, "")
+              .replace(
+                /"/g,
+                "'"
+              )})" class="btn btn-warning" data-bs-toggle="modal"
+                data-bs-target="#updateCustomerModal"><i class="fas fa-edit"></i></a>
+          
       
-          <td>${c}.</td>
-          <td>${data.first_name}</td>
-          <td>${data.last_name}</td>
-          <td>${data.phone}</td>
-          <td>${data.address}</td>
-          <td>${services}</td>
-          <td><span class="badge ${data.status == 'ACTIVE' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
-          <td>${dateToWord(data.created_at)}</td>
-          <td>
-            <a  onclick ="editCustomer(${JSON.stringify(data)
-                .replace(/'/g, "")
-                .replace(
-                  /"/g,
-                  "'"
-                )})" class="btn btn-warning" data-bs-toggle="modal"
-            data-bs-target="#updateCustomerModal"><i class="fas fa-edit"></i></a>
-      
-  
-          </td>
-      
-      </tr>`;
+              </td>
+          
+          </tr>`;
 
           c = c + 1;
-        }
+        });
       } else {
         document.getElementById(
           "customer_table"
@@ -1356,6 +1355,8 @@ function getAllCustomer() {
 }
 
 function editCustomer(data) {
+  document.getElementById("collateral").hidden = true;
+
   document.getElementById("u_user_id").value = data.id;
   document.getElementById("u_first_name").value = data.first_name;
   document.getElementById("u_last_name").value = data.last_name;
@@ -1363,25 +1364,18 @@ function editCustomer(data) {
   document.getElementById("u_address").value = data.address;
 
   services = data.service.split(",");
-  if(services.includes("LOAN")){
-    document.getElementById("collateral").hidden = false;
-    document.getElementById("u_collateral").value = data.collateral;
-  }
-
-    Array.from(document.getElementById("u_status").options).forEach(option => {
-      if(option.value == data.status){
-        option.selected = true;
-      }
+  Array.from(document.getElementById("u_status").options).forEach(option => {
+    if (option.value == data.status) {
+      option.selected = true;
+    }
   });
 
-    Array.from(document.getElementById("u_service").options).forEach(option => {
-      option.selected =  services.includes(option.value);
+  Array.from(document.getElementById("u_service").options).forEach(option => {
+    option.selected = services.includes(option.value);
   });
 
   $('.select2').trigger('change');
 }
-
-
 /* END USERS SECTION */
 
 
@@ -1390,13 +1384,13 @@ function editCustomer(data) {
 
 
 /* AJO SECTION */
-function createAjoTransaction() { 
+function createAjoTransaction() {
   ajoUser = document.getElementById('ajo_user_2').value;
   transactionType = document.getElementById('transaction_type').value;
   transactionDate = document.getElementById('txn_date').value;
   amount = document.getElementById('amount').value;
 
-  if(ajoUser != '' && transactionType != '' && transactionDate != '' && amount != ''){
+  if (ajoUser != '' && transactionType != '' && transactionDate != '' && amount != '') {
     openSpinnerModal("Create Ajo Transaction");
 
     fetch(ip + "/api/ajo/transaction", {
@@ -1432,7 +1426,7 @@ function createAjoTransaction() {
         }
       })
       .catch((err) => console.log(err));
-  }else{
+  } else {
     warningtoast('Check that no field is empty !')
   }
 }
@@ -1446,101 +1440,63 @@ function getAjoTransaction() {
 
   openSpinnerModal("Fetch Ajo Transaction");
 
-  fetch(ip + "/api/ajo/transaction/"+start_date+"/"+end_date+"/"+ajoUser, {
-          method: "GET",
-          headers: {
-              Accept: "application/json",
-              "Content-type": "application/json",
-              Authorization: "Bearer " + localStorage["token"],
-          }
-      })
-      .then(function(res) {
-          if (res.status == 401) {
-              removeSpinnerModal();
-              openAuthenticationModal();
-          }
-          return res.json();
-      })
+  fetch(ip + "/api/ajo/transaction/" + start_date + "/" + end_date + "/" + ajoUser, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    }
+  })
+    .then(function (res) {
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
 
-  .then((data) => {
+    .then((data) => {
 
-              removeSpinnerModal();
-              // POPULATE CHART
-              document.getElementById("total_user").innerHTML = formatNumber(parseInt(data.data.total_user)
-              );
-              document.getElementById("contributed_today").innerHTML = formatNumber(
-                  parseInt(data.data.contributed_today)
-              );
-              document.getElementById("total_credit").innerHTML = formatNumber(
-                  parseInt(data.data.total_credit)
-              );
+      removeSpinnerModal();
+      // POPULATE CHART
+      document.getElementById("total_user").innerHTML = formatNumber(parseInt(data.data.total_user)
+      );
+      document.getElementById("contribution_count").innerHTML = formatNumber(
+        parseInt(data.data.contribution_count)
+      );
+      document.getElementById("total_credit").innerHTML = formatNumber(
+        parseInt(data.data.total_credit)
+      );
 
-              document.getElementById("total_debit").innerHTML = formatNumber(
-                  parseInt(data.data.total_debit)
-              );
+      document.getElementById("total_debit").innerHTML = formatNumber(
+        parseInt(data.data.total_debit)
+      );
 
-              document.getElementById("profit").innerHTML = formatNumber(
-                  parseInt(data.data.profit)
-              );
+      document.getElementById("profit").innerHTML = formatNumber(
+        parseInt(data.data.profit)
+      );
 
-              document.getElementById("total_bal").innerHTML = formatNumber(
-                parseInt(data.data.balance)
-            );
+      document.getElementById("total_bal").innerHTML = formatNumber(
+        parseInt(data.data.balance)
+      );
 
-            document.getElementById("total_avail_bal").innerHTML = formatNumber(
-              parseInt(data.data.available_balance)
-          );
+      document.getElementById("total_avail_bal").innerHTML = formatNumber(
+        parseInt(data.data.available_balance)
+      );
 
-               // TRANSACTION BREAKDOWN
-              c = 1;
-              // Destroy the existing DataTable
-              if ($.fn.DataTable.isDataTable("#paginate0")) {
-                  $("#paginate0").DataTable().destroy();
-              }
+      // Destroy the existing DataTable
+      if ($.fn.DataTable.isDataTable("#paginate1")) {
+        $("#paginate1").DataTable().destroy();
+      }
 
-              if ($.fn.DataTable.isDataTable("#paginate1")) {
-                $("#paginate1").DataTable().destroy();
-            }
 
-              if (data.data.txn_history.length > 0) {
-                        document.getElementById("transaction_table").innerHTML = ``;
-                        for (i in data.data.txn_history) {
-                            document.getElementById("transaction_table").innerHTML += `
-                                <tr>
-                        
-                                <td>${c}.</td>
-                                <td>${data.data.txn_history[i].user.first_name + " " + data.data.txn_history[i].user.last_name}</td>
-                                <td style='color: ${data.data.txn_history[i].txn_type == 'DEBIT' ? `red` : `white`}'><b>${data.data.txn_history[i].txn_type == 'DEBIT' ? `- ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
-                                }` : ``} 
-                              </b></td>
-
-                                <td style='color: ${data.data.txn_history[i].txn_type == 'CREDIT' ? `green` : `white`}'><b>${data.data.txn_history[i].txn_type == 'CREDIT' ? `+ ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
-                                }` : ``} 
-                                </b></td>
-
-                                <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_before))}</td>
-                                <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_after))}</td>
-                                <td>${dateToWord(data.data.txn_history[i].date)}</td>
-                              
-                              </tr>
-                                `;
-                                c = c + 1;
-                          }
-                    $("#paginate0").DataTable();
-              } else {
-                      document.getElementById(
-                        "transaction_table"
-                      ).innerHTML = `<td colspan="12">
-                      <center>No transaction found</center>
-                  </td>`;
-              }
-
-              // TRANSACTION SUMMARY
-              c = 1;
-              if (data.data.txn_summary.length > 0) {
-                document.getElementById("transaction_summary_table").innerHTML = ``;
-                for (i in data.data.txn_summary) {
-                    document.getElementById("transaction_summary_table").innerHTML += `
+      // TRANSACTION SUMMARY
+      c = 1;
+      if (data.data.txn_summary.length > 0) {
+        document.getElementById("transaction_summary_table").innerHTML = ``;
+        for (i in data.data.txn_summary) {
+          document.getElementById("transaction_summary_table").innerHTML += `
                         <tr>
                 
                         <td>${c}.</td>
@@ -1549,29 +1505,119 @@ function getAjoTransaction() {
                         <td style='color:green'>₦${formatNumber(parseInt(data.data.txn_summary[i].total_credit))}</td>
                         <td style='color:red'>₦${formatNumber(parseInt(data.data.txn_summary[i].total_charge))}</td>
                         <td style='color:black'>₦${formatNumber(parseInt(data.data.txn_summary[i].balance))}</td>
-                        <td style='color:blue'>₦${formatNumber(parseInt(data.data.txn_summary[i].available_balance))}</td>
+            
+                        <td> <a onclick="getAjoTransactionForAPerson('${start_date}','${end_date}','${ajoUser}')" data-bs-toggle="modal"
+                              data-bs-target="#viewModal" href="#" style='color:blue'>${formatNumber(parseInt(data.data.txn_summary[i].available_balance))}</a></td>
                       
                       </tr>
                         `;
-                        c = c + 1;
-                  }
-            $("#paginate1").DataTable();
+          c = c + 1;
+        }
+        $("#paginate1").DataTable();
       } else {
-              document.getElementById(
-                "transaction_summary_table"
-              ).innerHTML = `<td colspan="12">
+        document.getElementById(
+          "transaction_summary_table"
+        ).innerHTML = `<td colspan="12">
               <center>No transaction found</center>
           </td>`;
       }
 
-    // $(".dataTables_length").addClass("bs-select");
+      // $(".dataTables_length").addClass("bs-select");
+    })
+    .catch((err) => console.log(err));
+
+}
+
+
+function getAjoTransactionForAPerson(start_date, end_date, ajoUser) {
+
+  openSpinnerModal("Fetch Transaction Breakdown");
+
+  fetch(ip + "/api/ajo/transaction/" + start_date + "/" + end_date + "/" + ajoUser, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    }
   })
-  .catch((err) => console.log(err));
+    .then(function (res) {
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
 
- }
+    .then((data) => {
+
+      removeSpinnerModal();
+
+      //STAT
+      document.getElementById("b_total_credit").innerHTML = formatNumber(
+        parseInt(data.data.total_credit)
+      );
+
+      document.getElementById("b_total_debit").innerHTML = formatNumber(
+        parseInt(data.data.total_debit)
+      );
+
+      document.getElementById("b_profit").innerHTML = formatNumber(
+        parseInt(data.data.profit)
+      );
+
+      document.getElementById("b_contribution_count").innerHTML = formatNumber(
+        parseInt(data.data.contributed_today)
+      );
+
+      document.getElementById("b_avail_bal").innerHTML = formatNumber(
+        parseInt(data.data.available_balance)
+      );
+
+      // TRANSACTION BREAKDOWN
+      c = 1;
+      // Destroy the existing DataTable
+      // if ($.fn.DataTable.isDataTable("#paginate0")) {
+      //   $("#paginate0").DataTable().destroy();
+      // }
 
 
+      if (data.data.txn_history.length > 0) {
+        document.getElementById("transaction_table").innerHTML = ``;
+        for (i in data.data.txn_history) {
+          document.getElementById("transaction_table").innerHTML += `
+                                <tr>
+                        
+                                <td>${c}.</td>
+                                <td>${data.data.txn_history[i].user.first_name + " " + data.data.txn_history[i].user.last_name}</td>
+                                <td style='color: ${data.data.txn_history[i].txn_type == 'DEBIT' ? `red` : `white`}'><b>${data.data.txn_history[i].txn_type == 'DEBIT' ? `- ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
+              }` : ``} 
+                              </b></td>
 
+                                <td style='color: ${data.data.txn_history[i].txn_type == 'CREDIT' ? `green` : `white`}'><b>${data.data.txn_history[i].txn_type == 'CREDIT' ? `+ ₦${formatNumber(parseInt(data.data.txn_history[i].amount))
+              }` : ``} 
+                                </b></td>
+
+                                <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_before))}</td>
+                                <td>₦${formatNumber(parseInt(data.data.txn_history[i].bal_after))}</td>
+                                <td>${dateToWord(data.data.txn_history[i].date)}</td>
+                              
+                              </tr>
+                                `;
+          c = c + 1;
+        }
+        // $("#paginate0").DataTable();
+      } else {
+        document.getElementById(
+          "transaction_table"
+        ).innerHTML = `<td colspan="12">
+                      <center>No transaction found</center>
+                  </td>`;
+      }
+    })
+    .catch((err) => console.log(err));
+
+}
 
 /* END AJO SECTION /
 
@@ -1581,7 +1627,309 @@ function getAjoTransaction() {
 /* START USERS SECTION */
 
 
-/* END USERS SECTION */
+
+
+/* LOAN SECTION */
+
+function createLoanTransaction() {
+  loanUser = document.getElementById('loan_user_2').value;
+  openSpinnerModal("Create Loan Transaction");
+
+  fetch(ip + "/api/loan/transaction", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      user_id: loanUser,
+      amount: document.getElementById('amount').value,
+      loan_type: document.getElementById('loan_type').value,
+      rate: document.getElementById('rate').value,
+      commission: document.getElementById('loan_commission').value,
+      disbursement_date: document.getElementById('disbursement_date').value,
+      due_date: document.getElementById('loan_due_date').value,
+      collateral: document.getElementById('collateral').value
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      if (data.success) {
+        closeModal('transModal');
+        successtoast(data.message);
+        getLoanTransaction();
+      } else {
+        errortoast(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+function getLoanTransaction() {
+  // getAllExpense();
+  start_date = changeDateFormat(document.getElementById("start_date").value);
+  end_date = changeDateFormat(document.getElementById("end_date").value);
+
+  openSpinnerModal("Fetch Loan Transaction");
+
+  fetch(ip + "/api/loan/transaction/" + start_date + "/" + end_date, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    }
+  })
+    .then(function (res) {
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+
+      removeSpinnerModal();
+      // POPULATE CHART
+
+      // DEBITOR
+      document.getElementById("debitor").innerHTML = formatNumber(parseInt(data.debitor.total_user)
+      );
+
+      document.getElementById("debt_amount").innerHTML = formatNumber(
+        parseInt(data.debitor.total_amount)
+      );
+
+      document.getElementById("debt_commission").innerHTML = formatNumber(
+        parseInt(data.debitor.total_commission)
+      );
+
+      document.getElementById("unpaid_debt").innerHTML = formatNumber(
+        parseInt(data.debitor.unpaid)
+      );
+
+      //CREDITORS
+      document.getElementById("creditor").innerHTML = formatNumber(parseInt(data.creditor.total_user)
+      );
+
+      document.getElementById("credit_amount").innerHTML = formatNumber(
+        parseInt(data.creditor.total_amount)
+      );
+
+      document.getElementById("credit_commission").innerHTML = formatNumber(
+        parseInt(data.creditor.total_commission)
+      );
+
+      document.getElementById("unpaid_credit").innerHTML = formatNumber(
+        parseInt(data.creditor.unpaid))
+
+
+
+      // Destroy the existing DataTable
+      if ($.fn.DataTable.isDataTable("#paginate1")) {
+        $("#paginate1").DataTable().destroy();
+      }
+
+      if ($.fn.DataTable.isDataTable("#paginate0")) {
+        $("#paginate0").DataTable().destroy();
+      }
+
+
+      // DEBITOR
+      c = 1;
+      if (data.debitor.data.length > 0) {
+        document.getElementById("loan_debitor_table").innerHTML = ``;
+        data.debitor.data.forEach(data => {
+          document.getElementById("loan_debitor_table").innerHTML +=
+            `
+          <tr>
+    
+            <td>${c}.</td>
+            <td>${data.user.first_name + " " + data.user.last_name}</td>
+            <td style='color:red'>₦${formatNumber(parseInt(data.amount))}</td>
+            <td style='color:black'>%${formatNumber(parseInt(data.rate))}</td>
+            <td style='color:green'>₦${formatNumber(parseInt(data.commission))}</td>
+            <td><span class="badge ${data.status == 'PAID' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
+            <td style='color:black'>(${formatNumber(parseInt(data.duration))})Months</td>
+           
+            <td>${dateToWord(data.disbursement_date)}</td>
+            <td>${dateToWord(data.due_date)}</td>
+            <td>${dateToWord(data.collateral)}</td>
+            <td>
+              <a  onclick ="editLoanTransaction(${JSON.stringify(data)
+              .replace(/'/g, "")
+              .replace(
+                /"/g,
+                "'"
+              )})" class="btn btn-warning" data-bs-toggle="modal"
+              data-bs-target="#updateLoanModal"><i class="fas fa-edit"></i></a>
+        
+    
+            </td>
+          
+          </tr>
+          `;
+        });
+
+        $("#paginate0").DataTable();
+      } else {
+        document.getElementById(
+          "loan_debitor_table"
+        ).innerHTML = `<td colspan="12">
+              <center>No transaction found</center>
+          </td>`;
+      }
+
+      // CREDITOR
+      c = 1;
+      if (data.creditor.data.length > 0) {
+        document.getElementById("loan_creditor_table").innerHTML = ``;
+        data.creditor.data.forEach(data => {
+          document.getElementById("loan_creditor_table").innerHTML +=
+            `
+    <tr>
+
+      <td>${c}.</td>
+      <td>${data.user.first_name + " " + data.user.last_name}</td>
+      <td style='color:red'>₦${formatNumber(parseInt(data.amount))}</td>
+      <td style='color:black'>%${formatNumber(parseInt(data.rate))}</td>
+      <td style='color:green'>₦${formatNumber(parseInt(data.commission))}</td>
+      <td><span class="badge ${data.status == 'PAID' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
+      <td style='color:black'>(${formatNumber(parseInt(data.duration))})Months</td>
+     
+      <td>${dateToWord(data.disbursement_date)}</td>
+      <td>${dateToWord(data.due_date)}</td>
+      <td>${dateToWord(data.collateral)}</td>
+      <td>
+        <a  onclick ="editLoanTransaction(${JSON.stringify(data)
+              .replace(/'/g, "")
+              .replace(
+                /"/g,
+                "'"
+              )})" class="btn btn-warning" data-bs-toggle="modal"
+        data-bs-target="#updateLoanModal"><i class="fas fa-edit"></i></a>
+  
+
+      </td>
+    
+    </tr>
+    `;
+        });
+
+        $("#paginate1").DataTable();
+      } else {
+        document.getElementById(
+          "loan_creditor_table"
+        ).innerHTML = `<td colspan="12">
+        <center>No transaction found</center>
+    </td>`;
+      }
+
+    })
+    .catch((err) => console.log(err));
+
+}
+
+
+function editLoanTransaction(data) {
+  document.getElementById("loan_id").value = data.id;
+  Array.from(document.getElementById("e_loan_user_1").options).forEach(option => {
+    if (option.value == data.user.id) {
+      option.selected = true;
+    }
+  });
+
+  Array.from(document.getElementById("e_loan_type").options).forEach(option => {
+    if (option.value == data.loan_type) {
+      option.selected = true;
+    }
+  });
+
+  Array.from(document.getElementById("loan_status").options).forEach(option => {
+    if (option.value == data.status) {
+      option.selected = true;
+    }
+  });
+
+  document.getElementById("e_amount").value = data.amount;
+  document.getElementById("e_rate").value = data.rate;
+  document.getElementById("e_duration").value = data.duration;
+  document.getElementById("e_collateral").value = data.collateral;
+  document.getElementById("e_disbursement_date").value = data.disbursement_date;
+
+  document.getElementById("e_loan_return").innerHTML = formatNumber(parseInt(data.amount) + parseInt(data.commission));
+  document.getElementById("e_due_date").innerHTML = dateToWord(data.due_date);
+
+
+  document.getElementById("e_loan_due_date").value = data.due_date;
+  document.getElementById("e_loan_commission").value = data.commission;
+
+  $('.select2').trigger('change');
+}
+
+
+function updateLoanTransaction() {
+  openSpinnerModal("Update Loan Transaction");
+
+  loanUser = document.getElementById('e_loan_user_1').value;
+
+  fetch(ip + "/api/loan/transaction", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      id: document.getElementById("loan_id").value,
+      user_id: loanUser,
+      status: document.getElementById('loan_status').value,
+      amount: document.getElementById('e_amount').value,
+      loan_type: document.getElementById('e_loan_type').value,
+      rate: document.getElementById('e_rate').value,
+      commission: document.getElementById('e_loan_commission').value,
+      disbursement_date: document.getElementById('e_disbursement_date').value,
+      due_date: document.getElementById('e_loan_due_date').value,
+      collateral: document.getElementById('e_collateral').value
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      if (data.success) {
+        closeModal('transModal');
+        successtoast(data.message);
+        getLoanTransaction();
+      } else {
+        errortoast(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+
+
+
+
+/*END LOAN SECTION */
+
 
 
 
@@ -1642,7 +1990,7 @@ $(document).click(function (e) {
     });
   }
 
-    document.body.style.overflow = "auto";
+  document.body.style.overflow = "auto";
 });
 
 
@@ -1871,7 +2219,7 @@ function changeDateFormat(prevdate) {
 function resetFormInputs() {
   var elements = document.getElementsByClassName("form-input");
   for (var i = 0; i < elements.length; i++) {
-      elements[i].value = "";
+    elements[i].value = "";
   }
 }
 

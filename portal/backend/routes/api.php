@@ -119,6 +119,26 @@ Route::middleware([ActivityLog::class])->group(function () {
 
 
 
+        // =============================================================================
+        //               BEGINNING OF LOAN ROUTE
+        // =============================================================================
+
+        Route::post('loan/transaction', 'LoanController@createLoan', function () {
+        })->middleware(Cors::class);
+
+        Route::put('loan/transaction', 'LoanController@updateLoan', function () {
+        })->middleware(Cors::class);
+
+        Route::get('loan/transaction/{from}/{to}/{user_id?}', 'LoanController@fetchLoan', function () {
+        })->middleware(Cors::class);
+
+
+        // =============================================================================
+        //               END OF LOAN ROUTE
+        // =============================================================================
+
+
+
     });
 
     // =============================================================================
