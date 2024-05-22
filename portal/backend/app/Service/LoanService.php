@@ -23,6 +23,7 @@ class LoanService
         $LoanModel = new LoanModel();
         $LoanModel->user_id = $request->user_id;
         $LoanModel->amount = $request->amount;
+        $LoanModel->duration = $request->duration;
         $LoanModel->loan_type = $request->loan_type;
         $LoanModel->rate = $request->rate;
         $LoanModel->commission = $request->commission;
