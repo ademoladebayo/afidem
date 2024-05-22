@@ -1704,35 +1704,35 @@ function getLoanTransaction() {
       // POPULATE CHART
 
       // DEBITOR
-      document.getElementById("debitor").innerHTML = formatNumber(parseInt(data.debitor.total_user)
+      document.getElementById("debitor").innerHTML = formatNumber(parseInt(data.data.debitor.total_user)
       );
 
       document.getElementById("debt_amount").innerHTML = formatNumber(
-        parseInt(data.debitor.total_amount)
+        parseInt(data.data.debitor.total_amount)
       );
 
       document.getElementById("debt_commission").innerHTML = formatNumber(
-        parseInt(data.debitor.total_commission)
+        parseInt(data.data.debitor.total_commission)
       );
 
       document.getElementById("unpaid_debt").innerHTML = formatNumber(
-        parseInt(data.debitor.unpaid)
+        parseInt(data.data.debitor.unpaid)
       );
 
       //CREDITORS
-      document.getElementById("creditor").innerHTML = formatNumber(parseInt(data.creditor.total_user)
+      document.getElementById("creditor").innerHTML = formatNumber(parseInt(data.data.creditor.total_user)
       );
 
       document.getElementById("credit_amount").innerHTML = formatNumber(
-        parseInt(data.creditor.total_amount)
+        parseInt(data.data.creditor.total_amount)
       );
 
       document.getElementById("credit_commission").innerHTML = formatNumber(
-        parseInt(data.creditor.total_commission)
+        parseInt(data.data.creditor.total_commission)
       );
 
       document.getElementById("unpaid_credit").innerHTML = formatNumber(
-        parseInt(data.creditor.unpaid))
+        parseInt(data.data.creditor.unpaid))
 
 
 
@@ -1748,9 +1748,9 @@ function getLoanTransaction() {
 
       // DEBITOR
       c = 1;
-      if (data.debitor.data.length > 0) {
+      if (data.data.debitor.data.length > 0) {
         document.getElementById("loan_debitor_table").innerHTML = ``;
-        data.debitor.data.forEach(data => {
+        data.data.debitor.data.forEach(data => {
           document.getElementById("loan_debitor_table").innerHTML +=
             `
           <tr>
@@ -1793,9 +1793,9 @@ function getLoanTransaction() {
 
       // CREDITOR
       c = 1;
-      if (data.creditor.data.length > 0) {
+      if (data.data.creditor.data.length > 0) {
         document.getElementById("loan_creditor_table").innerHTML = ``;
-        data.creditor.data.forEach(data => {
+        data.data.creditor.data.forEach(data => {
           document.getElementById("loan_creditor_table").innerHTML +=
             `
     <tr>

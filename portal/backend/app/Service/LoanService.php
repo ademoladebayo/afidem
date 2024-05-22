@@ -110,7 +110,7 @@ class LoanService
 
 
         return [
-            'total_user' => $totalUsers,
+            'total_user' => count($totalUsers),
             'total_amount' => $total_amount,
             'total_commission' => $total_commission,
             'unpaid' => $unpaid,
