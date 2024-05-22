@@ -242,9 +242,9 @@ function loadStations() {
 
 function getStationByURL() {
   var parentUrl = window.parent.location.href;
-  if (parentUrl.endsWith("/ajo.html")) {
+  if (parentUrl.includes("/ajo.html")) {
     return 7;
-  } else if (parentUrl.endsWith("/loan.html")) {
+  } else if (parentUrl.includes("/loan.html")) {
     return 8;
   } else {
     return window.parent.document.getElementById("station").value;
@@ -1567,7 +1567,7 @@ function getAjoTransactionForAPerson(start_date, end_date, ajoUser) {
       );
 
       document.getElementById("b_contribution_count").innerHTML = formatNumber(
-        parseInt(data.data.contributed_today)
+        parseInt(data.data.contribution_count)
       );
 
       document.getElementById("b_avail_bal").innerHTML = formatNumber(
@@ -1632,7 +1632,7 @@ function getAjoTransactionForAPerson(start_date, end_date, ajoUser) {
 /* LOAN SECTION */
 
 function createLoanTransaction() {
-  loanUser = document.getElementById('loan_user_2').value;
+  loanUser = document.getElementById('loan_user_1').value;
   openSpinnerModal("Create Loan Transaction");
 
   fetch(ip + "/api/loan/transaction", {
@@ -1645,6 +1645,7 @@ function createLoanTransaction() {
     body: JSON.stringify({
       user_id: loanUser,
       amount: document.getElementById('amount').value,
+      duration: document.getElementById('duration').value,
       loan_type: document.getElementById('loan_type').value,
       rate: document.getElementById('rate').value,
       commission: document.getElementById('loan_commission').value,
@@ -1893,6 +1894,7 @@ function updateLoanTransaction() {
     body: JSON.stringify({
       id: document.getElementById("loan_id").value,
       user_id: loanUser,
+      duration: document.getElementById('e_duration').value,
       status: document.getElementById('loan_status').value,
       amount: document.getElementById('e_amount').value,
       loan_type: document.getElementById('e_loan_type').value,

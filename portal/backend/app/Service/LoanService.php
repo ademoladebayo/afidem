@@ -55,6 +55,7 @@ class LoanService
         $LoanModel = LoanModel::find($request->loan_id);
         $LoanModel->user_id = $request->user_id;
         $LoanModel->amount = $request->amount;
+        $LoanModel->duration = $request->duration;
         $LoanModel->loan_type = $request->loan_type;
         $LoanModel->rate = $request->rate;
         $LoanModel->commission = $request->commission;
@@ -89,9 +90,9 @@ class LoanService
     public function processFetchLoan($type, $user_id, $start_date, $end_date)
     {
         if ($user_id) {
-            $loanTXN = LoanModel::with('user')->where('user_id', $user_id)->where('loan_type', $type)->whereBetween('date', [$start_date, $end_date]);
+            $loanTXN = LoanModel::with('user')->where('user_id', $user_id)->where('loan_type', $type)->whereBetween('disbursement_date', [$start_date, $end_date]);
         } else {
-            $loanTXN = LoanModel::with('user')->where('loan_type', $type)->whereBetween('date', [$start_date, $end_date]);
+            $loanTXN = LoanModel::with('user')->where('loan_type', $type)->whereBetween('disbursement_date', [$start_date, $end_date]);
         }
 
 
