@@ -167,14 +167,13 @@
 
 
                     <div class="col-12 form-group">
-                        <button onclick="processReport()" type="button"
+                        <button onclick="getLoanTransaction()" type="button"
                             style="border-radius: 0.2rem; box-shadow: 10px; background-color:#051f3e; border-color:#051f3e;"
                             class="btn btn-primary btn-block">
                             <i class="fas fa-download"></i> <b> FETCH RECORDS</b></button>
                     </div>
 
-                    <div onclick="document.querySelector('#paginate0').scrollIntoView({behavior: 'smooth'});"
-                        class="row gutters-20">
+                    <div class="row gutters-20">
                         <div class="col-xl-12 col-sm-6 col-12">
                             <div class="dashboard-summery-one mg-b-20">
                                 <div class="row align-items-center">
@@ -188,16 +187,18 @@
                                             <div style="font-family: Poppins; color: black;" class="item-title">Loan
                                                 Stat
                                             </div>
-                                            <small>DEBITOR : </small><small id="debitor">0</small>
+                                            <small>DEBITOR : </small><small style="font-family: Rowdies;"
+                                                id="debitor">0</small>
                                             <br>
-                                            <small>CREDITOR : </small><small id="creditor">0</small>
+                                            <small>CREDITOR : </small><small style="font-family: Rowdies;"
+                                                id="creditor">0</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div onclick="document.querySelector('#paginate0').scrollIntoView({behavior: 'smooth'});"
-                            class="col-xl-6 col-sm-6 col-12">
+                        <div class="col-xl-6 col-sm-6 col-12">
+                            <!-- onclick="document.querySelector('#paginate0').scrollIntoView({behavior: 'smooth'});" -->
                             <div class="dashboard-summery-one mg-b-20">
                                 <div class="row align-items-center">
                                     <div class="col-6">
@@ -210,19 +211,22 @@
                                             <div style="font-family: Poppins; color: black;" class="item-title">
                                                 Debitors</div>
                                             <div style="font-family: Poppins; color: black;">
-                                                <small>Amount :<br> ₦ </small><small id="debt_amount">0</small>
+                                                <small>Amount :<br> ₦ </small><b><small style="font-family: Rowdies;"
+                                                        id="debt_amount">0</small></b>
                                                 <br>
-                                                <small>Commission :<br> ₦ </small><small id="debt_commission">0</small>
+                                                <small>Commission :<br> ₦ </small><b><small
+                                                        style="font-family: Rowdies;" id="debt_commission">0</small></b>
                                                 <br>
-                                                <small>Unpaid Total :<br> ₦ </small><small id="unpaid_debt">0</small>
+                                                <small>Unpaid Total :<br> ₦ </small><b><small
+                                                        style="font-family: Rowdies;" id="unpaid_debt">0</small></b>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div onclick="document.querySelector('#paginate0').scrollIntoView({behavior: 'smooth'});"
-                            class="col-xl-6 col-sm-6 col-12">
+                        <div class="col-xl-6 col-sm-6 col-12">
+                            <!-- onclick="document.querySelector('#paginate0').scrollIntoView({behavior: 'smooth'});" -->
                             <div class="dashboard-summery-one mg-b-20">
                                 <div class="row align-items-center">
                                     <div class="col-6">
@@ -235,12 +239,15 @@
                                             <div style="font-family: Poppins; color: black;" class="item-title">
                                                 Creditors</div>
                                             <div style="font-family: Poppins; color: black;">
-                                                <small>Amount :<br> ₦ </small><small id="credit_amount">0</small>
+                                                <small>Amount :<br> ₦ </small><b><small style="font-family: Rowdies;"
+                                                        id="credit_amount">0</small></b>
                                                 <br>
-                                                <small>Commission :<br> ₦ </small><small
-                                                    id="credit_commission">0</small>
+                                                <small>Commission :<br> ₦ </small><b><small
+                                                        style="font-family: Rowdies;"
+                                                        id="credit_commission">0</small></b>
                                                 <br>
-                                                <small>Total :<br> ₦ </small><small id="total_credit_bal">0</small>
+                                                <small>Unpaid Total :<br> ₦ </small><b><small
+                                                        style="font-family: Rowdies;" id="unpaid_credit">0</small></b>
                                             </div>
                                         </div>
                                     </div>
@@ -289,16 +296,16 @@
                                                             <th>Commission</th>
                                                             <th>Status</th>
                                                             <th>Duration</th>
+                                                            <th>Collateral</th>
                                                             <th>Disbursement Date</th>
                                                             <th>Due Date</th>
-                                                            <th>Collateral</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="table-custom" id="loan_debitor_table">
-                                                        <td colspan="12">
+                                                        <!-- <td colspan="12">
                                                             <center>No data yet</center>
-                                                        </td>
+                                                        </td> -->
 
                                                     </tbody>
                                                 </table>
@@ -339,16 +346,16 @@
                                                             <th>Commission</th>
                                                             <th>Status</th>
                                                             <th>Duration</th>
+                                                            <th>Collateral</th>
                                                             <th>Disbursement Date</th>
                                                             <th>Due Date</th>
-                                                            <th>Collateral</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="table-custom" id="loan_creditor_table">
-                                                        <td colspan="12">
+                                                        <!-- <td colspan="12">
                                                             <center>No data yet</center>
-                                                        </td>
+                                                        </td> -->
 
                                                     </tbody>
                                                 </table>
@@ -406,536 +413,536 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
 
 
+                <div class="page-modal">
+                    <!-- CREATE EXPENSE MODAL -->
+                    <div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
 
-            <div class="page-modal">
-                <!-- CREATE EXPENSE MODAL -->
-                <div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                    aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
 
-                    <div class="modal-dialog modal-lg">
-
-                        <!--Content-->
-                        <div class="modal-content">
-                            <div class="modal-header justify-content-center">
-                                <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
-                                    id="exampleModalLabel">CREATE EXPENSE</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-
-                            <!--Body-->
-                            <div class="modal-body mb-0 p-0">
-
-                                <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                                    <iframe class="embed-responsive-item" src="./frame-new-expense.html"
-                                        allowfullscreen></iframe>
+                            <!--Content-->
+                            <div class="modal-content">
+                                <div class="modal-header justify-content-center">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">CREATE EXPENSE</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
 
-                            </div>
+                                <!--Body-->
+                                <div class="modal-body mb-0 p-0">
 
+                                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                                        <iframe class="embed-responsive-item" src="./frame-new-expense.html"
+                                            allowfullscreen></iframe>
+                                    </div>
 
-                        </div>
-                        <!--/.Content-->
-
-                    </div>
-                </div>
-
-                <!-- EDIT MODAL -->
-                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                    aria-hidden="true">
-
-                    <div class="modal-dialog modal-lg">
-
-                        <!--Content-->
-                        <div class="modal-content">
-                            <div class="modal-header justify-content-center">
-                                <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
-                                    id="exampleModalLabel">
-                                    EDIT
-                                    EXPENSE</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-
-                            <!--Body-->
-                            <div class="modal-body mb-0 p-0">
-
-                                <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                                    <iframe id="edit_frame" class="embed-responsive-item"
-                                        src="./frame-edit-expense.html" allowfullscreen></iframe>
                                 </div>
 
-                            </div>
 
+                            </div>
+                            <!--/.Content-->
 
                         </div>
-                        <!--/.Content-->
-
                     </div>
-                </div>
+
+                    <!-- EDIT MODAL -->
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
+
+                        <div class="modal-dialog modal-lg">
+
+                            <div class="modal-content">
+                                <div class="modal-header justify-content-center">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">
+                                        EDIT
+                                        EXPENSE</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
 
 
+                                <div class="modal-body mb-0 p-0">
+
+                                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                                        <iframe id="edit_frame" class="embed-responsive-item"
+                                            src="./frame-edit-expense.html" allowfullscreen></iframe>
+                                    </div>
+
+                                </div>
 
 
-
-
-                <!-- CREATE LOAN MODAL -->
-                <div class="modal fade" id="transModal" tabindex="-1" aria-labelledby="trans_modal" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
-                                    id="exampleModalLabel">RECORD NEW LOAN</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="heading-layout1">
-                                                    <div class="item-title">
-                                                        <!-- <h3>Add New User</h3> -->
-                                                    </div>
 
-                                                </div>
-                                                <form class="new-added-form" action="#">
-                                                    <div class="row">
-                                                        <div class="col-12 form-group">
-                                                            <label>SELECT LOAN USER</label>
-                                                            <select onchange="clearDisbursementDate()" id="loan_user_1"
-                                                                class="select2" required>
-                                                            </select>
-                                                        </div>
+                        </div>
+                    </div>
 
-                                                        <div class="col-12 form-group">
-                                                            <label>Loan Type</label>
-                                                            <select onchange="clearDisbursementDate()" id="loan_type"
-                                                                class="select2 form-input">
-                                                                <option value="DEBITOR">DEBITOR LOAN</option>
-                                                                <option value="CREDITOR">CREDITOR LOAN</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Amount</label>
-                                                            <input onchange="clearDisbursementDate()" id="amount"
-                                                                min="10000" value="10000" type="number"
-                                                                placeholder="Loan Amount"
-                                                                class="form-control form-input" contenteditable="false"
-                                                                required>
-                                                        </div>
-
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Rate (%)</label>
-                                                            <input onchange="clearDisbursementDate()" id="rate"
-                                                                value="10" type="number" placeholder="Rate"
-                                                                class="form-control form-input" contenteditable="false"
-                                                                required>
-                                                        </div>
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Duration in months </label>
-                                                            <input onchange="clearDisbursementDate()" id="duration"
-                                                                min="1" value="1" type="number"
-                                                                placeholder="No of months"
-                                                                class="form-control form-input" contenteditable="false"
-                                                                required>
-                                                        </div>
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Collateral</label>
-                                                            <input onchange="clearDisbursementDate()" id="collateral"
-                                                                type="text" placeholder="Loan Collateral"
-                                                                class="form-control form-input" contenteditable="false"
-                                                                required>
-                                                        </div>
-
-                                                        <label>Disbursement Date</label>
-                                                        <div class="col-12 form-group">
-                                                            <input onchange="processCommission()" autocomplete="off"
-                                                                id="disbursement_date" type="date"
-                                                                placeholder="Disbursement Date" value=""
-                                                                class="form-control air-datepickergg"
-                                                                data-position='bottom left' format="yyyy-MM-dd
-                                      " style="z-index: 999999;" required>
-                                                        </div>
-                                                </form>
-
-                                                <br>
-                                                <br>
-                                                <div id="loan_breakdown_card"
-                                                    style="display: flex; justify-content: center;">
-                                                    <div style="position: relative; width: 300px; height: 210px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s ease-in-out;"
-                                                        onmouseover="this.style.transform = 'translateY(-10px)';"
-                                                        onmouseout="this.style.transform = 'translateY(0)';">
-                                                        <div style="padding: 20px; text-align: center;">
-                                                            ₦<h2 id="loan_return"
-                                                                style="font-weight: bold; margin-bottom: 10px; font-family: Rowdies;">
-                                                            </h2>
-                                                            <p>is the expected return on</p>
-                                                            <h2 id="due_date"
-                                                                style="font-weight: bold; margin-top: 20px; margin-bottom: 10px;">
-                                                            </h2>
-                                                            <p></p>
-
-
-                                                            <input id="loan_due_date" type="text" hidden>
-                                                            <input id="loan_commission" type="text" hidden>
+                    <!-- CREATE LOAN MODAL -->
+                    <div class="modal fade" id="transModal" tabindex="-1" aria-labelledby="trans_modal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">RECORD NEW LOAN</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="heading-layout1">
+                                                        <div class="item-title">
                                                         </div>
 
                                                     </div>
+                                                    <form id="loanForm" class="new-added-form" action="#">
+                                                        <div class="row">
+                                                            <div class="col-12 form-group">
+                                                                <label>SELECT LOAN USER</label>
+                                                                <select onchange="clearDisbursementDate()"
+                                                                    id="loan_user_1" class="select2" required>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Loan Type</label>
+                                                                <select onchange="clearDisbursementDate()"
+                                                                    id="loan_type" class="select2 form-input">
+                                                                    <option value="DEBITOR">DEBITOR LOAN</option>
+                                                                    <option value="CREDITOR">CREDITOR LOAN</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Amount</label>
+                                                                <input onchange="clearDisbursementDate()" id="amount"
+                                                                    min="10000" value="10000" type="number"
+                                                                    placeholder="Loan Amount"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Rate (%)</label>
+                                                                <input onchange="clearDisbursementDate()" id="rate"
+                                                                    value="10" type="number" placeholder="Rate"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Duration in months </label>
+                                                                <input onchange="clearDisbursementDate()" id="duration"
+                                                                    min="1" value="1" type="number"
+                                                                    placeholder="No of months"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Collateral</label>
+                                                                <input onchange="clearDisbursementDate()"
+                                                                    id="collateral" type="text"
+                                                                    placeholder="Loan Collateral"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+                                                            <label>Disbursement Date</label>
+                                                            <div class="col-12 form-group">
+                                                                <input onchange="processCommission()" autocomplete="off"
+                                                                    id="disbursement_date" type="date"
+                                                                    placeholder="Disbursement Date" value=""
+                                                                    class="form-control air-datepickergg"
+                                                                    data-position='bottom left' format="yyyy-MM-dd
+                                          " style="z-index: 999999;" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <br>
+                                                        <br>
+                                                        <div id="loan_breakdown_card"
+                                                            style="display: flex; justify-content: center;">
+                                                            <div style="position: relative; width: 300px; height: 210px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s ease-in-out;"
+                                                                onmouseover="this.style.transform = 'translateY(-10px)';"
+                                                                onmouseout="this.style.transform = 'translateY(0)';">
+                                                                <div style="padding: 20px; text-align: center;">
+                                                                    ₦<h2 id="loan_return"
+                                                                        style="font-weight: bold; margin-bottom: 10px; font-family: Rowdies;">
+                                                                    </h2>
+                                                                    <p>is the expected return on</p>
+                                                                    <h2 id="due_date"
+                                                                        style="font-weight: bold; margin-top: 20px; margin-bottom: 10px;">
+                                                                    </h2>
+                                                                    <p></p>
+
+
+                                                                    <input id="loan_due_date" type="text" hidden>
+                                                                    <input id="loan_commission" type="text" hidden>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                        <div class="col-12 form-group mg-t-8">
+                                                            <button type="submit" onclick="" id="createLoanBTN"
+                                                                class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create
+                                                                Loan</button>
+
+                                                        </div>
+                                                    </form>
+
+
+
                                                 </div>
-
-
-
-
-                                                <div class="col-12 form-group mg-t-8">
-                                                    <button type="submit" onclick="createLoanTransaction()"
-                                                        id="createLoanBTN"
-                                                        class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create
-                                                        Loan</button>
-
-                                                </div>
-
                                             </div>
-                                            <!-- </form> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
-
                     </div>
-                </div>
 
-                <!-- EDIT LOAN MODAL -->
-                <div class="modal fade" id="updateLoanModal" tabindex="-1" aria-labelledby="trans_modal" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
-                                    id="exampleModalLabel">EDIT LOAN TRANSACTION</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="heading-layout1">
-                                                    <div class="item-title">
-                                                        <!-- <h3>Add New User</h3> -->
-                                                    </div>
-
-                                                </div>
-                                                <form class="new-added-form" action="#">
-                                                    <input id="loan_id" type="text" hidden>
-                                                    <div class="row">
-                                                        <div class="col-12 form-group">
-                                                            <label>SELECT LOAN USER</label>
-                                                            <select onchange="clearDisbursementDate('EDIT')"
-                                                                id="e_loan_user_1" class="select2" required>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Loan Type</label>
-                                                            <select onchange="clearDisbursementDate('EDIT')"
-                                                                id="e_loan_type" class="select2 form-input">
-                                                                <option value="DEBITOR">DEBITOR LOAN</option>
-                                                                <option value="CREDITOR">CREDITOR LOAN</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Loan Type</label>
-                                                            <select  id="loan_status" class="select2 form-input">
-                                                                <option value="NOT PAID">NOT PAID</option>
-                                                                <option value="PAID">PAID</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Amount</label>
-                                                            <input onchange="clearDisbursementDate('EDIT')"
-                                                                id="e_amount" min="10000" value="10000" type="number"
-                                                                placeholder="Loan Amount"
-                                                                class="form-control form-input" contenteditable="false"
-                                                                required>
-                                                        </div>
-
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Rate (%)</label>
-                                                            <input onchange="clearDisbursementDate('EDIT')" id="e_rate"
-                                                                value="10" type="number" placeholder="Rate"
-                                                                class="form-control form-input" contenteditable="false"
-                                                                required>
-                                                        </div>
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Duration in months </label>
-                                                            <input onchange="clearDisbursementDate('EDIT')"
-                                                                id="e_duration" min="1" value="1" type="number"
-                                                                placeholder="No of months"
-                                                                class="form-control form-input" contenteditable="false"
-                                                                required>
-                                                        </div>
-
-                                                        <div class="col-12 form-group">
-                                                            <label>Collateral</label>
-                                                            <input onchange="clearDisbursementDate('EDIT')"
-                                                                id="e_collateral" type="text"
-                                                                placeholder="Loan Collateral"
-                                                                class="form-control form-input" contenteditable="false"
-                                                                required>
-                                                        </div>
-
-                                                        <label>Disbursement Date</label>
-                                                        <div class="col-12 form-group">
-                                                            <input onchange="processCommissionForEditLoan()" autocomplete="off"
-                                                                id="e_disbursement_date" type="date"
-                                                                placeholder="Disbursement Date" value=""
-                                                                class="form-control air-datepickergg"
-                                                                data-position='bottom left' format="yyyy-MM-dd
-                                      " style="z-index: 999999;" required>
-                                                        </div>
-                                                </form>
-
-                                                <br>
-                                                <br>
-                                                <div id="e_loan_breakdown_card"
-                                                    style="display: flex; justify-content: center;">
-                                                    <div style="position: relative; width: 300px; height: 210px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s ease-in-out;"
-                                                        onmouseover="this.style.transform = 'translateY(-10px)';"
-                                                        onmouseout="this.style.transform = 'translateY(0)';">
-                                                        <div style="padding: 20px; text-align: center;">
-                                                            ₦<h2 id="e_loan_return"
-                                                                style="font-weight: bold; margin-bottom: 10px; font-family: Rowdies;">
-                                                            </h2>
-                                                            <p>is the expected return on</p>
-                                                            <h2 id="e_due_date"
-                                                                style="font-weight: bold; margin-top: 20px; margin-bottom: 10px;">
-                                                            </h2>
-                                                            <p></p>
-
-
-                                                            <input id="e_loan_due_date" type="text" hidden>
-                                                            <input id="e_loan_commission" type="text" hidden>
+                    <!-- EDIT LOAN MODAL -->
+                    <div class="modal fade" id="updateLoanModal" tabindex="-1" aria-labelledby="updateLoanModal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">EDIT LOAN TRANSACTION</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="heading-layout1">
+                                                        <div class="item-title">
                                                         </div>
 
                                                     </div>
+                                                    <form class="new-added-form" action="#">
+                                                        <input id="loan_id" type="text" hidden>
+                                                        <div class="row">
+                                                            <div class="col-12 form-group">
+                                                                <label>SELECT LOAN USER</label>
+                                                                <select onchange="clearDisbursementDate('EDIT')"
+                                                                    id="e_loan_user_1" class="select2" required>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Loan Type</label>
+                                                                <select onchange="clearDisbursementDate('EDIT')"
+                                                                    id="e_loan_type" class="select2 form-input">
+                                                                    <option value="DEBITOR">DEBITOR LOAN</option>
+                                                                    <option value="CREDITOR">CREDITOR LOAN</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Loan Type</label>
+                                                                <select id="loan_status" class="select2 form-input">
+                                                                    <option value="NOT PAID">NOT PAID</option>
+                                                                    <option value="PAID">PAID</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Amount</label>
+                                                                <input onchange="clearDisbursementDate('EDIT')"
+                                                                    id="e_amount" min="10000" value="10000"
+                                                                    type="number" placeholder="Loan Amount"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Rate (%)</label>
+                                                                <input onchange="clearDisbursementDate('EDIT')"
+                                                                    id="e_rate" value="10" type="number"
+                                                                    placeholder="Rate" class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Duration in months </label>
+                                                                <input onchange="clearDisbursementDate('EDIT')"
+                                                                    id="e_duration" min="1" value="1" type="number"
+                                                                    placeholder="No of months"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Collateral</label>
+                                                                <input onchange="clearDisbursementDate('EDIT')"
+                                                                    id="e_collateral" type="text"
+                                                                    placeholder="Loan Collateral"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+                                                            <label>Disbursement Date</label>
+                                                            <div class="col-12 form-group">
+                                                                <input onchange="processCommissionForEditLoan()"
+                                                                    autocomplete="off" id="e_disbursement_date"
+                                                                    type="date" placeholder="Disbursement Date" value=""
+                                                                    class="form-control air-datepickergg"
+                                                                    data-position='bottom left' format="yyyy-MM-dd
+                                          " style="z-index: 999999;" required>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                    <br>
+                                                    <br>
+                                                    <div hidden id="e_loan_breakdown_card"
+                                                        style="display: flex; justify-content: center;">
+                                                        <div style="position: relative; width: 300px; height: 210px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s ease-in-out;"
+                                                            onmouseover="this.style.transform = 'translateY(-10px)';"
+                                                            onmouseout="this.style.transform = 'translateY(0)';">
+                                                            <div style="padding: 20px; text-align: center;">
+                                                                ₦<h2 id="e_loan_return"
+                                                                    style="font-weight: bold; margin-bottom: 10px; font-family: Rowdies;">
+                                                                </h2>
+                                                                <p>is the expected return on</p>
+                                                                <h2 id="e_due_date"
+                                                                    style="font-weight: bold; margin-top: 20px; margin-bottom: 10px;">
+                                                                </h2>
+                                                                <p></p>
+
+
+                                                                <input id="e_loan_due_date" type="text" hidden>
+                                                                <input id="e_loan_commission" type="text" hidden>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12 form-group mg-t-8">
+                                                        <button type="submit" onclick="updateLoanTransaction()"
+                                                            id="updateLoanBTN"
+                                                            class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update
+                                                            Loan</button>
+
+                                                    </div>
+
                                                 </div>
-
-
-
-
-                                                <div class="col-12 form-group mg-t-8">
-                                                    <button type="submit" onclick="updateLoanTransaction()"
-                                                        id="updateLoanBTN"
-                                                        class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update
-                                                        Loan</button>
-
-                                                </div>
-
                                             </div>
-                                            <!-- </form> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
+
                 </div>
             </div>
-</body>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
-    crossorigin="anonymous"></script>
-<!-- jquery-->
-<script src="../js/jquery-3.3.1.min.js"></script>
-<!-- Plugins js -->
-<script src="../js/plugins.js"></script>
-<!-- Popper js -->
-<script src="../js/popper.min.js"></script>
-<!-- Bootstrap js -->
-<script src="../js/bootstrap.min.js"></script>
-<!-- Counterup Js -->
-<script src="../js/jquery.counterup.min.js"></script>
-<!-- Moment Js -->
-<script src="../js/moment.min.js"></script>
-<!-- Waypoints Js -->
-<script src="../js/jquery.waypoints.min.js"></script>
-<!-- Scroll Up Js -->
-<script src="../js/jquery.scrollUp.min.js"></script>
-<!-- Full Calender Js -->
-<script src="../js/fullcalendar.min.js"></script>
-<!-- Chart Js -->
-<script src="../js/Chart.min.js"></script>
-<!-- Data Table Js -->
-<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-<!-- Custom Js -->
-<script src="../js/main.js"></script>
-<script src="../js/myscript.js"></script>
-<script src="./js/business.js?v=1?v=1"></script>
-<script src="../common-library.js"></script>
-<!-- Select 2 Js -->
-<script src="../js/select2.min.js"></script>
-<!-- Date Picker Js -->
-<script src="../js/datepicker.min.js"></script>
-<!-- <script src="../js/iframeSizer.min.js"></script>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <!-- jquery-->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <!-- Plugins js -->
+    <script src="../js/plugins.js"></script>
+    <!-- Popper js -->
+    <script src="../js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- Counterup Js -->
+    <script src="../js/jquery.counterup.min.js"></script>
+    <!-- Moment Js -->
+    <script src="../js/moment.min.js"></script>
+    <!-- Waypoints Js -->
+    <script src="../js/jquery.waypoints.min.js"></script>
+    <!-- Scroll Up Js -->
+    <script src="../js/jquery.scrollUp.min.js"></script>
+    <!-- Full Calender Js -->
+    <script src="../js/fullcalendar.min.js"></script>
+    <!-- Chart Js -->
+    <script src="../js/Chart.min.js"></script>
+    <!-- Data Table Js -->
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <!-- Custom Js -->
+    <script src="../js/main.js"></script>
+    <script src="../js/myscript.js"></script>
+    <script src="./js/business.js?v=1?v=1"></script>
+    <script src="../common-library.js"></script>
+    <!-- Select 2 Js -->
+    <script src="../js/select2.min.js"></script>
+    <!-- Date Picker Js -->
+    <script src="../js/datepicker.min.js"></script>
+    <!-- <script src="../js/iframeSizer.min.js"></script>
     <script src="../js/frame_script.js"></script> -->
 
-<script src="../assets/js/lib/toastr/toastr.min.js"></script>
-<script src="../assets/js/lib/toastr/toastr.init.js"></script>
-<script src="../assets/js/lib/sweetalert/sweetalert.min.js"></script>
-<script src="../assets/js/lib/sweetalert/sweetalert.init.js"></script>
+    <script src="../assets/js/lib/toastr/toastr.min.js"></script>
+    <script src="../assets/js/lib/toastr/toastr.init.js"></script>
+    <script src="../assets/js/lib/sweetalert/sweetalert.min.js"></script>
+    <script src="../assets/js/lib/sweetalert/sweetalert.init.js"></script>
 
 
 
 
 
-<script>
-    document.getElementById("start_date").value = getDate().split("~")[1];
-    document.getElementById("end_date").value = getDate().split("~")[1];
+    <script>
+        document.getElementById("start_date").value = getDate().split("~")[1];
+        document.getElementById("end_date").value = getDate().split("~")[1];
 
 
-    function resetFormInputs() {
-        var elements = document.getElementsByClassName("form-input");
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].value = "";
-        }
-
-        document.getElementById("terminal_id").value = JSON.parse(localStorage["user_data"]).data.terminal_id;
-        addToNewObject('terminal_id', JSON.parse(localStorage["user_data"]).data.terminal_id);
-        addToNewObject('transaction_time', changeDateFormat(getDate().split("~")[1]) + " " + getDate().split("~")[0]);
-    }
-
-
-    function checkAllowedReportType() {
-        // allowed report type
-        if (localStorage["ALLOWED_REPORT_TYPE"] == "MANUAL") {
-            document.getElementById("upload_btn").hidden = true;
-        }
-
-        if (localStorage["ALLOWED_REPORT_TYPE"] == "UPLOAD") {
-            document.getElementById("manual_btn").hidden = true;
-        }
-
-        if (localStorage["ALLOWED_REPORT_TYPE"] == "ANY") {
-            document.getElementById("upload_btn").hidden = false;
-            document.getElementById("manual_btn").hidden = false;
-        }
-    }
-
-    $("#paginate0").keydown(function (e) {
-        if (e.target.id != "allowKeyboard") {
-            if (e.keyCode == 13) {
-                $(this).parent('td').next('td').find('input.sample-value').focus();
-                event.preventDefault();
+        function resetFormInputs() {
+            var elements = document.getElementsByClassName("form-input");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].value = "";
             }
 
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
-                ((e.keyCode == 65 || e.keyCode == 86 || e.keyCode == 67) && (e.ctrlKey === true || e.metaKey === true)) ||
-                (e.keyCode >= 35 && e.keyCode <= 40)) {
-                return;
+            document.getElementById("terminal_id").value = JSON.parse(localStorage["user_data"]).data.terminal_id;
+            addToNewObject('terminal_id', JSON.parse(localStorage["user_data"]).data.terminal_id);
+            addToNewObject('transaction_time', changeDateFormat(getDate().split("~")[1]) + " " + getDate().split("~")[0]);
+        }
+
+
+        function checkAllowedReportType() {
+            // allowed report type
+            if (localStorage["ALLOWED_REPORT_TYPE"] == "MANUAL") {
+                document.getElementById("upload_btn").hidden = true;
             }
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                e.preventDefault();
+
+            if (localStorage["ALLOWED_REPORT_TYPE"] == "UPLOAD") {
+                document.getElementById("manual_btn").hidden = true;
+            }
+
+            if (localStorage["ALLOWED_REPORT_TYPE"] == "ANY") {
+                document.getElementById("upload_btn").hidden = false;
+                document.getElementById("manual_btn").hidden = false;
             }
         }
 
-    });
+        $("#paginate0").keydown(function (e) {
+            if (e.target.id != "allowKeyboard") {
+                if (e.keyCode == 13) {
+                    $(this).parent('td').next('td').find('input.sample-value').focus();
+                    event.preventDefault();
+                }
+
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+                    ((e.keyCode == 65 || e.keyCode == 86 || e.keyCode == 67) && (e.ctrlKey === true || e.metaKey === true)) ||
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    return;
+                }
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            }
+
+        });
 
 
-    function processCommission() {
-        amount = document.getElementById("amount").value;
-        rate = document.getElementById("rate").value;
-        duration = document.getElementById("duration").value;
-        disbursement_date = document.getElementById("disbursement_date").value;
+        function processCommission() {
+            amount = document.getElementById("amount").value;
+            rate = document.getElementById("rate").value;
+            duration = document.getElementById("duration").value;
+            disbursement_date = document.getElementById("disbursement_date").value;
 
 
-        if (amount > 0) {
-            document.getElementById("createLoanBTN").hidden = false;
-        } else {
-            alert("Input a valid loan amount !")
+            if (amount > 0) {
+                document.getElementById("createLoanBTN").hidden = false;
+            } else {
+                alert("Input a valid loan amount !")
+            }
+
+            var date = new Date(disbursement_date);
+            date.setMonth(date.getMonth() + parseInt(duration));
+
+            commission = (rate / 100 * amount) * parseInt(duration);
+            document.getElementById("loan_return").innerHTML = formatNumber(commission + parseInt(amount));
+            document.getElementById("due_date").innerHTML = dateToWord(date.toISOString().slice(0, 10));
+
+
+
+            document.getElementById("loan_due_date").value = date.toISOString().slice(0, 10);
+            document.getElementById("loan_commission").value = commission;
+
         }
 
-        var date = new Date(disbursement_date);
-        date.setMonth(date.getMonth() + parseInt(duration));
-
-        commission = (rate / 100 * amount) * parseInt(duration);
-        document.getElementById("loan_return").innerHTML = formatNumber(commission + parseInt(amount));
-        document.getElementById("due_date").innerHTML = dateToWord(date.toISOString().slice(0, 10));
-
+        function processCommissionForEditLoan() {
+            amount = document.getElementById("e_amount").value;
+            rate = document.getElementById("e_rate").value;
+            duration = document.getElementById("e_duration").value;
+            disbursement_date = document.getElementById("e_disbursement_date").value;
 
 
-        document.getElementById("loan_due_date").value = date.toISOString().slice(0, 10);
-        document.getElementById("loan_commission").value = commission;
+            if (amount > 0) {
+                document.getElementById("updateLoanBTN").hidden = false;
+            } else {
+                alert("Input a valid loan amount !")
+            }
 
-    }
+            var date = new Date(disbursement_date);
+            date.setMonth(date.getMonth() + parseInt(duration));
 
-    function processCommissionForEditLoan() {
-        amount = document.getElementById("e_amount").value;
-        rate = document.getElementById("e_rate").value;
-        duration = document.getElementById("e_duration").value;
-        disbursement_date = document.getElementById("e_disbursement_date").value;
+            commission = (rate / 100 * amount) * parseInt(duration);
+            document.getElementById("e_loan_return").innerHTML = formatNumber(commission + parseInt(amount));
+            document.getElementById("e_due_date").innerHTML = dateToWord(date.toISOString().slice(0, 10));
 
 
-        if (amount > 0) {
-            document.getElementById("updateLoanBTN").hidden = false;
-        } else {
-            alert("Input a valid loan amount !")
+
+            document.getElementById("e_loan_due_date").value = date.toISOString().slice(0, 10);
+            document.getElementById("e_loan_commission").value = commission;
+
         }
 
-        var date = new Date(disbursement_date);
-        date.setMonth(date.getMonth() + parseInt(duration));
-
-        commission = (rate / 100 * amount) * parseInt(duration);
-        document.getElementById("e_loan_return").innerHTML = formatNumber(commission + parseInt(amount));
-        document.getElementById("e_due_date").innerHTML = dateToWord(date.toISOString().slice(0, 10));
-
-
-
-        document.getElementById("e_loan_due_date").value = date.toISOString().slice(0, 10);
-        document.getElementById("e_loan_commission").value = commission;
-
-    }
-
-    function clearDisbursementDate(type) {
-        if (type == "EDIT") {
-            document.getElementById("e_disbursement_date").value = "";
+        function clearDisbursementDate(type) {
+            if (type == "EDIT") {
+                //document.getElementById("e_disbursement_date").value = "";
+            }
+            document.getElementById("disbursement_date").value = "";
         }
-        document.getElementById("disbursement_date").value = "";
-    }
-</script>
-
-<style id="result_upload_style">
-    [contenteditable] {
-        outline-color: #105c05;
-    }
-</style>
 
 
-<style>
-    .table>:not(:last-child)>:last-child>* {
-        border-bottom-color: #e1e1e1;
-    }
+        document.getElementById("loanForm").addEventListener("submit", function (event) {
+            // Prevent the form from submitting by default
+            event.preventDefault();
+            createLoanTransaction();
+        });
+    </script>
 
-    #session_term0 {
-        text-align: center;
-    }
-</style>
+    <style id="result_upload_style">
+        [contenteditable] {
+            outline-color: #105c05;
+        }
+    </style>
 
-<script>
-</script>
+
+    <style>
+        .table>:not(:last-child)>:last-child>* {
+            border-bottom-color: #e1e1e1;
+        }
+
+        #session_term0 {
+            text-align: center;
+        }
+    </style>
+
+</body>
+
+</html>

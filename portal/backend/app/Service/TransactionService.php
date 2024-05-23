@@ -7,6 +7,7 @@ use App\Imports\TransactionImport;
 use App\Model\AdminModel;
 use App\Model\AjoModel;
 use App\Model\ExpenseModel;
+use App\Model\LoanModel;
 use App\Model\TransactionModel;
 use App\Util\Utils;
 use Illuminate\Http\Request;
@@ -267,6 +268,18 @@ class TransactionService
 
                 } elseif ($station->username == 'SERVICE ROOM') {
 
+                } else if ($station->username == 'LOAN') {
+                    $m_income = LoanModel::where('disbursement_date', 'like', $month . '%')->where("status", "PAID")->where("loan_type", "DEBITOR")->sum("commission");
+
+                    $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $station->id)->sum("amount");
+
+                    $m_gross_profit = $m_income - $m_expense;
+
+                    $y_income = LoanModel::where('disbursement_date', 'like', $year . '%')->where("status", "PAID")->where("loan_type", "DEBITOR")->sum("commission");
+
+                    $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
+
+                    $y_gross_profit = $y_income - $y_expense;
                 }
 
             }

@@ -1251,7 +1251,6 @@ function updateCustomer() {
       phone: document.getElementById("u_phone").value,
       address: document.getElementById("u_address").value,
       status: document.getElementById("u_status").value,
-      collateral: document.getElementById("u_collateral").value,
       service: selectedValuesString,
     }),
   })
@@ -1355,7 +1354,7 @@ function getAllCustomer() {
 }
 
 function editCustomer(data) {
-  document.getElementById("collateral").hidden = true;
+  //document.getElementById("collateral").hidden = true;
 
   document.getElementById("u_user_id").value = data.id;
   document.getElementById("u_first_name").value = data.first_name;
@@ -1758,14 +1757,13 @@ function getLoanTransaction() {
             <td>${c}.</td>
             <td>${data.user.first_name + " " + data.user.last_name}</td>
             <td style='color:red'>₦${formatNumber(parseInt(data.amount))}</td>
-            <td style='color:black'>%${formatNumber(parseInt(data.rate))}</td>
+            <td style='color:black'>${formatNumber(parseInt(data.rate))}%</td>
             <td style='color:green'>₦${formatNumber(parseInt(data.commission))}</td>
             <td><span class="badge ${data.status == 'PAID' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
             <td style='color:black'>(${formatNumber(parseInt(data.duration))})Months</td>
-           
+            <td>${data.collateral}</td>
             <td>${dateToWord(data.disbursement_date)}</td>
             <td>${dateToWord(data.due_date)}</td>
-            <td>${dateToWord(data.collateral)}</td>
             <td>
               <a  onclick ="editLoanTransaction(${JSON.stringify(data)
               .replace(/'/g, "")
@@ -1782,13 +1780,12 @@ function getLoanTransaction() {
           `;
         });
 
-        $("#paginate0").DataTable();
       } else {
-        document.getElementById(
-          "loan_debitor_table"
-        ).innerHTML = `<td colspan="12">
-              <center>No transaction found</center>
-          </td>`;
+        // document.getElementById(
+        //   "loan_debitor_table"
+        // ).innerHTML = `<td colspan="12">
+        //       <center>No transaction found</center>
+        //   </td>`;
       }
 
       // CREDITOR
@@ -1803,14 +1800,13 @@ function getLoanTransaction() {
       <td>${c}.</td>
       <td>${data.user.first_name + " " + data.user.last_name}</td>
       <td style='color:red'>₦${formatNumber(parseInt(data.amount))}</td>
-      <td style='color:black'>%${formatNumber(parseInt(data.rate))}</td>
+      <td style='color:black'>${formatNumber(parseInt(data.rate))}%</td>
       <td style='color:green'>₦${formatNumber(parseInt(data.commission))}</td>
       <td><span class="badge ${data.status == 'PAID' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
       <td style='color:black'>(${formatNumber(parseInt(data.duration))})Months</td>
-     
+      <td>${data.collateral}</td>
       <td>${dateToWord(data.disbursement_date)}</td>
       <td>${dateToWord(data.due_date)}</td>
-      <td>${dateToWord(data.collateral)}</td>
       <td>
         <a  onclick ="editLoanTransaction(${JSON.stringify(data)
               .replace(/'/g, "")
@@ -1827,14 +1823,16 @@ function getLoanTransaction() {
     `;
         });
 
-        $("#paginate1").DataTable();
       } else {
-        document.getElementById(
-          "loan_creditor_table"
-        ).innerHTML = `<td colspan="12">
-        <center>No transaction found</center>
-    </td>`;
+        //     document.getElementById(
+        //       "loan_creditor_table"
+        //     ).innerHTML = `<td colspan="12">
+        //     <center>No transaction found</center>
+        // </td>`;
       }
+
+      $("#paginate0").DataTable();
+      $("#paginate1").DataTable();
 
     })
     .catch((err) => console.log(err));
@@ -1866,8 +1864,6 @@ function editLoanTransaction(data) {
   document.getElementById("e_rate").value = data.rate;
   document.getElementById("e_duration").value = data.duration;
   document.getElementById("e_collateral").value = data.collateral;
-  document.getElementById("e_disbursement_date").value = data.disbursement_date;
-
   document.getElementById("e_loan_return").innerHTML = formatNumber(parseInt(data.amount) + parseInt(data.commission));
   document.getElementById("e_due_date").innerHTML = dateToWord(data.due_date);
 
@@ -1876,10 +1872,30 @@ function editLoanTransaction(data) {
   document.getElementById("e_loan_commission").value = data.commission;
 
   $('.select2').trigger('change');
+  document.getElementById("e_disbursement_date").value = data.disbursement_date.split(" ")[0];
 }
 
 
 function updateLoanTransaction() {
+  var dropdown = document.getElementById("e_loan_user_1");
+  var selectedIndex = dropdown.selectedIndex;
+  var name = dropdown.options[selectedIndex].text;
+  loan_type = document.getElementById('e_loan_type').value;
+
+  return_amount = document.getElementById("e_loan_return").innerHTML;
+  due_date = document.getElementById("e_due_date").innerHTML;
+
+  if (loan_type == "CREDITOR") {
+    if (!confirm("You are expected to return ₦" + return_amount + " to " + name + " on " + due_date + " ?")) {
+      return 0;
+    }
+
+  } else {
+    if (!confirm(name + " is expected to return ₦" + return_amount + " on " + due_date + " ?")) {
+      return 0;
+    }
+  }
+
   openSpinnerModal("Update Loan Transaction");
 
   loanUser = document.getElementById('e_loan_user_1').value;

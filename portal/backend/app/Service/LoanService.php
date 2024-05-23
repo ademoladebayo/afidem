@@ -53,7 +53,7 @@ class LoanService
 
     public function updateLoan(Request $request)
     {
-        $LoanModel = LoanModel::find($request->loan_id);
+        $LoanModel = LoanModel::find($request->id);
         $LoanModel->user_id = $request->user_id;
         $LoanModel->amount = $request->amount;
         $LoanModel->duration = $request->duration;
