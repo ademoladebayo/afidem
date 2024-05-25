@@ -334,7 +334,7 @@ class TransactionService
                         DB::raw("amount AS profit"),
                         DB::raw("CONCAT('Commission from ', users.first_name, ' ', users.last_name, ' contribution') AS description")
                     )
-                    ->join('users', '=', 'ajo.user_id')
+                    ->join('users', 'users.id', '=', 'ajo.user_id')
                     ->where('is_charge', '1')
                     ->where('date', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
@@ -349,7 +349,7 @@ class TransactionService
                         DB::raw("commission AS profit"),
                         DB::raw("CONCAT('%', loan.rate, ' Commission from ', users.first_name, ' ', users.last_name, ' ₦', FORMAT(loan.amount), ' loan') AS description")
                     )
-                    ->join('users', '=', 'loan.user_id')
+                    ->join('users', 'users.id', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')
                     ->where('disbursement_date', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
@@ -361,7 +361,7 @@ class TransactionService
                         DB::raw("total_charge AS profit"),
                         DB::raw("CONCAT(service_room.duration, ' Day(s) service charge from ', users.first_name, ' ', users.last_name) AS description")
                     )
-                    ->join('users', '=', 'service_room.user_id')
+                    ->join('users', 'users.id', '=', 'service_room.user_id')
                     ->where('checked_in', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
                     ->get();
