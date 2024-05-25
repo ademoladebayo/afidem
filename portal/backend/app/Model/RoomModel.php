@@ -11,7 +11,7 @@ use App\Model\UserModel;
 class RoomModel extends Authenticatable
 {
     use  Notifiable, HasApiTokens;
-    protected $table = 'room';
+    protected $table = 'service_room';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
