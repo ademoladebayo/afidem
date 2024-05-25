@@ -1089,7 +1089,7 @@ function getBreakdown(date, station_id, station_name) {
           document.getElementById("daily_profit").innerHTML += `<tr>
             <td>${c}.</td>
             <td>${dateToWord(transaction.day)}</td>
-            <td>${transaction.description}</td>
+            <td>${transaction.description.replace('NGN', '₦')}</td>
             <td>₦${formatNumber(parseInt(transaction.profit))}</td>
         </tr>
         `;
@@ -1099,7 +1099,7 @@ function getBreakdown(date, station_id, station_name) {
           } else {
             total_trans_count = data.transaction.length;
           }
-          total_profit += transaction.profit
+          total_profit += parseInt(transaction.profit);
 
           c = c + 1;
         });
