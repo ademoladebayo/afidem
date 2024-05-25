@@ -1093,8 +1093,13 @@ function getBreakdown(date, station_id, station_name) {
             <td>₦${formatNumber(parseInt(transaction.profit))}</td>
         </tr>
         `;
-          total_profit += parseInt(transaction.profit);
-          total_trans_count += parseInt(transaction.count);
+        
+          if (transaction.count != null) {
+            total_trans_count += parseInt(transaction.count);
+          } else {
+            total_trans_count = data.transaction.length;
+          }
+
           c = c + 1;
         });
       }

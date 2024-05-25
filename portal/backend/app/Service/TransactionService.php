@@ -334,13 +334,9 @@ class TransactionService
                         DB::raw("amount AS profit"),
                         DB::raw("CONCAT('Commission from ', users.first_name, ' ', users.last_name, ' contribution') AS description")
                     )
-                    ->whereIn(DB::raw("SUBSTRING(date, 1, 10)"), function ($query) use ($date) {
-                        $query->select(DB::raw("DISTINCT SUBSTRING(date, 1, 10)"))
-                            ->from('ajo')
-                            ->where('date', 'like', $date . '%');
-                    })
                     ->join('users', '=', 'ajo.user_id')
                     ->where('is_charge', '1')
+                    ->where('date', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
                     ->get();
 
@@ -352,13 +348,9 @@ class TransactionService
                         DB::raw("commission AS profit"),
                         DB::raw("CONCAT('%', loan.rate, ' Commission from ', users.first_name, ' ', users.last_name, ' ₦', FORMAT(loan.amount), ' loan') AS description")
                     )
-                    ->whereIn(DB::raw("SUBSTRING(disbursement_date, 1, 10)"), function ($query) use ($date) {
-                        $query->select(DB::raw("DISTINCT SUBSTRING(disbursement_date, 1, 10)"))
-                            ->from('loan')
-                            ->where('disbursement_date', 'like', $date . '%');
-                    })
                     ->join('users', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')
+                    ->where('disbursement_date', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
                     ->get();
             } else if ($request->station == 9) {
@@ -368,12 +360,8 @@ class TransactionService
                         DB::raw("total_charge AS profit"),
                         DB::raw("CONCAT(service_room.duration, ' Day(s) service charge from ', users.first_name, ' ', users.last_name) AS description")
                     )
-                    ->whereIn(DB::raw("SUBSTRING(checked_in, 1, 10)"), function ($query) use ($date) {
-                        $query->select(DB::raw("DISTINCT SUBSTRING(checked_in, 1, 10)"))
-                            ->from('service_room')
-                            ->where('checked_in', 'like', $date . '%');
-                    })
                     ->join('users', '=', 'service_room.user_id')
+                    ->where('checked_in', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
                     ->get();
             }
@@ -382,7 +370,8 @@ class TransactionService
                 ->select(
                     DB::raw("SUBSTRING(transaction_time, 1, 10) AS day"),
                     DB::raw("SUM(profit) AS profit"),
-                    DB::raw("CONCAT(COUNT(profit), ' Transaction(s) was performed') AS description")
+                    DB::raw("CONCAT(COUNT(profit), ' Transaction(s)') AS description"),
+                    DB::raw("COUNT(profit) as count")
                 )
                 ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query) use ($date) {
                     $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 10)"))
