@@ -246,6 +246,8 @@ function getStationByURL() {
     return 7;
   } else if (parentUrl.includes("/loan.html")) {
     return 8;
+  } else if (parentUrl.includes("/room-service.html")) {
+    return 9;
   } else {
     return window.parent.document.getElementById("station").value;
   }
@@ -1087,7 +1089,7 @@ function getBreakdown(date, station_id, station_name) {
           document.getElementById("daily_profit").innerHTML += `<tr>
             <td>${c}.</td>
             <td>${dateToWord(transaction.day)}</td>
-            <td>${transaction.count}</td>
+            <td>${transaction.description}</td>
             <td>₦${formatNumber(parseInt(transaction.profit))}</td>
         </tr>
         `;
@@ -1376,8 +1378,6 @@ function editCustomer(data) {
   $('.select2').trigger('change');
 }
 /* END USERS SECTION */
-
-
 
 
 
@@ -1760,7 +1760,7 @@ function getLoanTransaction() {
             <td style='color:black'>${formatNumber(parseInt(data.rate))}%</td>
             <td style='color:green'>₦${formatNumber(parseInt(data.commission))}</td>
             <td><span class="badge ${data.status == 'PAID' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
-            <td style='color:black'>(${formatNumber(parseInt(data.duration))})Months</td>
+            <td style='color:black'>(${formatNumber(parseInt(data.duration))})Month(s)</td>
             <td>${data.collateral}</td>
             <td>${dateToWord(data.disbursement_date)}</td>
             <td>${dateToWord(data.due_date)}</td>
@@ -1803,7 +1803,7 @@ function getLoanTransaction() {
       <td style='color:black'>${formatNumber(parseInt(data.rate))}%</td>
       <td style='color:green'>₦${formatNumber(parseInt(data.commission))}</td>
       <td><span class="badge ${data.status == 'PAID' ? `bg-success` : `bg-danger`} "><b>${data.status}</b></span></td>
-      <td style='color:black'>(${formatNumber(parseInt(data.duration))})Months</td>
+      <td style='color:black'>(${formatNumber(parseInt(data.duration))})Month(s)</td>
       <td>${data.collateral}</td>
       <td>${dateToWord(data.disbursement_date)}</td>
       <td>${dateToWord(data.due_date)}</td>
@@ -1932,7 +1932,7 @@ function updateLoanTransaction() {
     .then((data) => {
       removeSpinnerModal();
       if (data.success) {
-        closeModal('transModal');
+        closeModal('updateLoanModal');
         successtoast(data.message);
         getLoanTransaction();
       } else {
@@ -1942,14 +1942,218 @@ function updateLoanTransaction() {
     .catch((err) => console.log(err));
 }
 
-
-
-
-
 /*END LOAN SECTION */
 
 
 
+/*SERVICE ROOM SECTION */
+
+function createRoomBooking() {
+  room_user = document.getElementById('room_user_1').value;
+  openSpinnerModal("Book Room");
+
+  fetch(ip + "/api/service-room", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      user_id: room_user,
+      room: document.getElementById('room').value,
+      amount: document.getElementById('amount').value,
+      checked_in: document.getElementById('checked_in').value,
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      if (data.success) {
+        closeModal('transModal');
+        successtoast(data.message);
+        getBookedRooms();
+      } else {
+        errortoast(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+function getBookedRooms() {
+  start_date = changeDateFormat(document.getElementById("start_date").value);
+  end_date = changeDateFormat(document.getElementById("end_date").value);
+
+  openSpinnerModal("Booked Rooms");
+
+  fetch(ip + "/api/service-room" + start_date + "/" + end_date, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    }
+  })
+    .then(function (res) {
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+
+      removeSpinnerModal();
+      // POPULATE CHART
+
+      document.getElementById("total_user").innerHTML = formatNumber(parseInt(data.total_user)
+      );
+
+      document.getElementById("available_room").innerHTML = data.room.stat
+
+      document.getElementById("total_sales").innerHTML = formatNumber(
+        parseInt(data.total_sales)
+      );
+
+
+      //Append available rooms
+      document.getElementById("room").innerHTML = ``;
+
+      data.room.available_room.forEach(room => {
+        document.getElementById("room").innerHTML += ` <option value="${room}">ROOM ${room}</option>`;
+      });
+
+
+      // Destroy the existing DataTable
+      if ($.fn.DataTable.isDataTable("#paginate0")) {
+        $("#paginate0").DataTable().destroy();
+      }
+
+
+      c = 1;
+      if (data.data.length > 0) {
+        document.getElementById("booked_room_table").innerHTML = ``;
+        data.data.forEach(data => {
+          document.getElementById("booked_room_table").innerHTML +=
+            `
+          <tr>
+    
+            <td>${c}.</td>
+            <td>${data.user.first_name + " " + data.user.last_name}</td>
+            <td style='color:black'>Room ${data.room}</td>
+               ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-success"><b>${data.duration} Day(s)</b></span>`}
+            </td>
+            <td>${dateToWord(data.checked_in)}</td>
+            <td>${data.checked_out == '-' ? `<span class="badge bg-warning"><b>NOT CHECKED OUT</b></span>` : dateToWord(data.checkout)}</td>
+            <td style='color:black'>${formatNumber(parseInt(data.amount))}%</td>
+            <td style='color:green'>₦${formatNumber(parseInt(data.total_charge))}</td>
+            <td>
+              <a  onclick ="editBookedRoom(${JSON.stringify(data)
+              .replace(/'/g, "")
+              .replace(
+                /"/g,
+                "'"
+              )})" class="btn btn-warning" data-bs-toggle="modal"
+              data-bs-target="#editBookingModal"><i class="fas fa-edit"></i></a>
+        
+    
+            </td>
+          
+          </tr>
+          `;
+        });
+
+      } else {
+        // document.getElementById(
+        //   "loan_debitor_table"
+        // ).innerHTML = `<td colspan="12">
+        //       <center>No transaction found</center>
+        //   </td>`;
+      }
+
+
+      $("#paginate0").DataTable();
+
+    })
+    .catch((err) => console.log(err));
+
+}
+
+function editBookedRoom(data) {
+  document.getElementById("booking_id").value = data.id;
+  Array.from(document.getElementById("e_room_user_1").options).forEach(option => {
+    if (option.value == data.user.id) {
+      option.selected = true;
+    }
+  });
+
+  Array.from(document.getElementById("e_room").options).forEach(option => {
+    if (option.value == data.room) {
+      option.selected = true;
+    }
+  });
+
+
+  document.getElementById("e_amount").value = data.amount;
+  document.getElementById("e_rate").value = data.rate;
+  document.getElementById("e_checked_in").value = data.checked_in;
+  document.getElementById("e_checked_out").value = data.checked_out;
+
+  $('.select2').trigger('change');
+}
+
+function updateRoomBooking(duration, total_charge) {
+  room_user = document.getElementById('e_room_user_1').value;
+  openSpinnerModal("Update Booked Room");
+
+  fetch(ip + "/api/service-room", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      id: document.getElementById('booking_id').value,
+      user_id: room_user,
+      room: document.getElementById('e_room').value,
+      amount: document.getElementById('e_amount').value,
+      checked_in: document.getElementById('e_checked_in').value,
+      checked_out: document.getElementById('e_checked_out').value,
+      duration: duration,
+      total_charge: total_charge
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      if (data.success) {
+        closeModal('editBookingModal');
+        successtoast(data.message);
+        getBookedRooms();
+      } else {
+        errortoast(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+/*END SERVICE ROOM SECTION */
 
 
 

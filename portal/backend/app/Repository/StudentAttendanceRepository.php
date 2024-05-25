@@ -30,7 +30,7 @@ class StudentAttendanceRepository
 
                 if ($alreadytaken) {
                     // CHECK OUT STUDENT
-                    if ($request->check_out) {
+                    if ($request->checked_out) {
                         $StudentAttendanceModel = StudentAttendanceModel::where('student_id', $student[0]->id)->where('date', $request->date)->get()[0];
                         $StudentAttendanceModel->time_out = $request->time;
                         $StudentAttendanceModel->save();
@@ -85,7 +85,7 @@ class StudentAttendanceRepository
 
         if ($alreadytaken) {
             // CHECK OUT STUDENT
-            if ($request->check_out) {
+            if ($request->checked_out) {
                 $StudentAttendanceModel = StudentAttendanceModel::where('student_id', $request->student_id)->where('date', $request->date)->get()[0];
                 $StudentAttendanceModel->time_out = $request->time;
                 $StudentAttendanceModel->save();

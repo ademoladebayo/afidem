@@ -31,8 +31,6 @@ class LoanService
         $LoanModel->due_date = $request->due_date;
         $LoanModel->collateral = $request->collateral;
         $LoanModel->status = "NOT PAID";
-        // $LoanModel->created_at = "NOT PAID";
-        // $LoanModel->updated_at = "NOT PAID";
         $LoanModel->save();
 
 

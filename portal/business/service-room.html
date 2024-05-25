@@ -1,0 +1,728 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+
+<head id="common-library">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>AFIDEM | Room Service</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="../css/normalize.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="../css/all.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="../fonts/flaticon.css">
+    <!-- Full Calender CSS -->
+    <link rel="stylesheet" href="../css/fullcalendar.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="../css/animate.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="../css/select2.min.css">
+    <!-- Date Picker CSS -->
+    <link rel="stylesheet" href="../css/datepicker.min.css">
+    <link href="../assets/css/lib/toastr/toastr.min.css" rel="stylesheet">
+    <link href="../assets/css/lib/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="../css/frame_style.css"> -->
+    <!-- Modernize js -->
+    <script src="../js/modernizr-3.6.0.min.js"></script>
+</head>
+
+<body style="font-family: Poppins; font-weight: bold;"
+    onload="loadSideNav('service-room');  getAllUsers('room_user_1','SERVICE ROOM'); getAllUsers('e_room_user_1','SERVICE ROOM'); getBookedRooms(); getAllExpense(9); loadDashBoardInformation();">
+    <!-- Preloader Start Here -->
+    <div id="preloader"></div>
+    <!-- Preloader End Here -->
+    <div id="wrapper" class="wrapper bg-ash">
+        <!-- Header Menu Area Start Here -->
+        <div class="navbar navbar-expand-md header-menu-one bg-light">
+            <div class="nav-bar-header-one">
+                <b style="margin-left: 5px; margin-top: 5px;" id="logo">
+                    <h1 style="font-weight: bold; font-family: Rowdies; color:white;"> AFIDEM
+                    </h1>
+                </b>
+                <div class="toggle-button sidebar-toggle">
+                    <button onclick="changeLogo()" type="button" class="item-link">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="d-md-none mobile-nav-bar">
+                <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
+                    <i class="far fa-arrow-alt-circle-down"></i>
+                </button>
+                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav">
+                    <li class="navbar-item header-search-bar">
+                        <div class="input-group stylish-input-group">
+                            <span class="input-group-addon">
+                                <button type="submit">
+                                    <span class="flaticon-search" aria-hidden="true"></span>
+                                </button>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="navbar-item dropdown header-admin">
+                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <div class="admin-title">
+                                <h5 id="user_name" class="item-title"></h5>
+                                <span id="user_type">ADMIN</span>
+                            </div>
+                            <div id="user_img" class="admin-img">
+                                <img src="../img/figure/admin.jpg" alt="Admin">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="item-header">
+                                <h6 id="user_name1" class="item-title"></h6>
+                            </div>
+                            <div class="item-content">
+                                <ul class="settings-list">
+                                    <li><a href="my-profile.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                    <li><a href="change-password.html"><i class="flaticon-gear-loading"></i>Account
+                                            Settings</a></li>
+                                    <li><a onclick="goTo('')" href="#"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+        <!-- Header Menu Area End Here -->
+        <!-- Page Area Start Here -->
+        <div class="dashboard-page-one">
+            <!-- Sidebar Area Start Here -->
+            <div style="font-family: Poppins; font-weight: bold;"
+                class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+
+
+                <div class="mobile-sidebar-header d-md-none">
+                    <div class="header-logo">
+                        <a href="dashboard.html"><b id="logo">
+                                <h1 style="font-weight: bold; font-family: Rowdies; color:white;"> AFIDEM
+                                </h1>
+                            </b></a>
+                    </div>
+                </div>
+                <div id="side_nav" class="sidebar-menu-content">
+
+                </div>
+            </div>
+            <!-- Sidebar Area End Here -->
+            <div class="dashboard-content-one">
+                <div class="breadcrumbs-area">
+                    <h3 style="font-weight: bold; font-family: Poppins;"><i class="fas fa-bed"></i> AFIDEM SERVICE ROOM
+                        DASHBOARD</h3>
+                    <ul>
+                        <li>
+                            <a style="font-weight: bold; font-family: Poppins;" href="#">Home</a>
+                        </li>
+                        <li style="font-weight: bold; font-family: Poppins;">Service Room</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <input onchange="" autocomplete="off" id="start_date" type="text" placeholder="START DATE"
+                            value="" class="form-control air-datepicker" data-position='bottom left'
+                            format="yyyy-MM-dd">
+                        <!-- <i class="far fa-calendar-alt"></i> -->
+                    </div>
+
+                    <div class="col-6 form-group">
+                        <input autocomplete="off" id="end_date" type="text" placeholder="END DATE" value=""
+                            class="form-control air-datepicker" data-position='bottom right' format="yyyy-MM-dd">
+                        <!-- <i class="far fa-calendar-alt"></i> -->
+                    </div>
+
+
+                    <div class="col-12 form-group">
+                        <button onclick="getBookedRooms()" type="button"
+                            style="border-radius: 0.2rem; box-shadow: 10px; background-color:#051f3e; border-color:#051f3e;"
+                            class="btn btn-primary btn-block">
+                            <i class="fas fa-download"></i> <b> FETCH RECORDS</b></button>
+                    </div>
+
+
+
+                    <div class="col-xl-4 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon">
+                                        <i style="color: black;" class="fas fa-users"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div style="font-family: Poppins; color: black;" class="item-title">Room User
+                                        </div>
+                                        <div style="font-family: Rowdies; color: black; "><span id="total_user">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xl-4 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon">
+                                        <i style="color: black;" class="fas fa-bed"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div style="font-family: Poppins; color: black;" class="item-title">Available
+                                            Room
+                                        </div>
+                                        <div style="font-family: Rowdies; color: black; "><span
+                                                id="available_room">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xl-4 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon">
+                                        <i style="color: black;" class="fas fa-dollar-sign"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div style="font-family: Poppins; color: black;" class="item-title">Total Sales
+                                        </div>
+                                        <div style="font-family: Rowdies; color: black; ">₦<span
+                                                id="total_sales">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row gutters-20">
+
+                        <!-- BOOK ROOM -->
+                        <div class="row">
+                            <br>
+                            <h3 style="font-weight: bold; font-family: Poppins;margin-left: 10px;">Booking Records</h3>
+
+                            <div class="heading-layout1">
+                                <div style="margin-right: 2px; margin-top: 5px;"
+                                    class="col-4-xxxl col-xl-4 col-lg-4 col-12 form-group">
+                                    <button id="manual_btn" type="button"
+                                        style="box-shadow: 10px; background-color:#051f3e;  border-color:#051f3e;"
+                                        class="btn btn-primary btn-block" data-bs-toggle="modal"
+                                        data-bs-target="#transModal"><i class="fas fa-plus"></i>
+                                        <b> BOOK ROOM</b></button>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="main-card mb-3 card">
+                                    <div onclick="collapseDiv('ajo-summaryY')"
+                                        class="card-header justify-content-between"
+                                        style="border: #051f3e; color: black;">
+                                        BOOKED ROOMS
+                                    </div>
+
+                                    <!-- MAIN VIEW -->
+                                    <div id="ajo-summary" class="card height-auto">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table id="paginate0" style="color: white;"
+                                                    class="table text-dark table-sm table-bordered" width="100%"
+                                                    cellspacing="0" style="margin-bottom: 50px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S/N</th>
+                                                            <th>Name</th>
+                                                            <th>Room</th>
+                                                            <th>Duration</th>
+                                                            <th>Check In</th>
+                                                            <th>Check Out</th>
+                                                            <th>Room Price</th>
+                                                            <th>Total Charge</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-custom" id="booked_room_table">
+                                                        <!-- <td colspan="12">
+                                                            <center>No data yet</center>
+                                                        </td> -->
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <!-- EXPENSE AREA -->
+                        <div class="row">
+                            <br>
+                            <h3 style="font-weight: bold; font-family: Poppins; margin-left: 10px;">Expense History
+                            </h3>
+                            <div class="card height-auto">
+                                <div class="card-body">
+                                    <div class="heading-layout1">
+                                        <div style="margin-right: 2px; margin-top: 5px;"
+                                            class="col-4-xxxl col-xl-4 col-lg-4 col-12 form-group">
+                                            <button type="button"
+                                                style="box-shadow: 10px; background-color:#051f3e; border-color:#051f3e;"
+                                                class="btn btn-primary btn-block" data-bs-toggle="modal"
+                                                data-bs-target="#modalYT"><i class="fas fa-plus"></i>
+                                                <b> ADD NEW EXPENSE</b></button>
+                                        </div>
+
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="paginate1" style="color: white;"
+                                            class="table table-striped text-dark table-sm" width="100%" cellspacing="0"
+                                            style="margin-bottom: 50px;">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Expense Description</th>
+                                                    <th>Amount</th>
+                                                    <th>Date Incurred</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-custom" id="expense_table">
+                                                <td colspan="12">
+                                                    <center>No data yet</center>
+                                                </td>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="page-modal">
+                    <!-- CREATE EXPENSE MODAL -->
+                    <div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
+
+                        <div class="modal-dialog modal-lg">
+
+                            <!--Content-->
+                            <div class="modal-content">
+                                <div class="modal-header justify-content-center">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">CREATE EXPENSE</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+
+                                <!--Body-->
+                                <div class="modal-body mb-0 p-0">
+
+                                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                                        <iframe class="embed-responsive-item" src="./frame-new-expense.html"
+                                            allowfullscreen></iframe>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <!--/.Content-->
+
+                        </div>
+                    </div>
+
+                    <!-- EDIT MODAL -->
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
+
+                        <div class="modal-dialog modal-lg">
+
+                            <div class="modal-content">
+                                <div class="modal-header justify-content-center">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">
+                                        EDIT
+                                        EXPENSE</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+
+
+                                <div class="modal-body mb-0 p-0">
+
+                                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                                        <iframe id="edit_frame" class="embed-responsive-item"
+                                            src="./frame-edit-expense.html" allowfullscreen></iframe>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- BOOK ROOM MODAL -->
+                    <div class="modal fade" id="transModal" tabindex="-1" aria-labelledby="trans_modal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">BOOK A ROOM</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="heading-layout1">
+                                                        <div class="item-title">
+                                                        </div>
+
+                                                    </div>
+                                                    <form id="bookForm" class="new-added-form" action="#">
+                                                        <div class="row">
+                                                            <div class="col-12 form-group">
+                                                                <label>SELECT ROOM USER</label>
+                                                                <select onchange="" id="room_user_1" class="select2"
+                                                                    required>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Room No</label>
+                                                                <select  required onchange="" id="room"
+                                                                    class="select2 form-input">
+                                                                    <option value="1">ROOM 1</option>
+                                                                    <option value="2">ROOM 2</option>
+                                                                    <option value="3">ROOM 3</option>
+                                                                    <option value="4">ROOM 4</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Room Price</label>
+                                                                <input onchange="" id="amount" min="0" value="10000"
+                                                                    type="number" placeholder="Room Price"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+                                                            <label>Checked In</label>
+                                                            <div class="col-12 form-group">
+                                                                <input onchange="" autocomplete="off" id="checked_in"
+                                                                    type="date" placeholder="Check in Date" value=""
+                                                                    class="form-control air-datepickergg"
+                                                                    data-position='bottom left' format="yyyy-MM-dd
+                                          " style="z-index: 999999;" required>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="col-12 form-group mg-t-8">
+                                                            <button type="submit" onclick="" id="createRoomBooking"
+                                                                class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">PROCEED</button>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- EDIT BOOKING MODAL -->
+                    <div class="modal fade" id="editBookingModal" tabindex="-1" aria-labelledby="editBookingModal"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 style="font-weight: bold; font-family: Poppins;" class="modal-title"
+                                        id="exampleModalLabel">EDIT ROOM BOOKING</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="heading-layout1">
+                                                        <div class="item-title">
+                                                        </div>
+
+                                                    </div>
+
+                                                    <form id="updateBookForm" class="new-added-form" action="#">
+                                                        <input id="booking_id" type="text" hidden>
+                                                        <div class="row">
+                                                            <div class="col-12 form-group">
+                                                                <label>SELECT ROOM USER</label>
+                                                                <select onchange="" id="e_room_user_1" class="select2"
+                                                                    required>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Room No</label>
+                                                                <select required onchange="" id="e_room"
+                                                                    class="select2 form-input">
+                                                                    <option value="1">ROOM 1</option>
+                                                                    <option value="2">ROOM 2</option>
+                                                                    <option value="3">ROOM 3</option>
+                                                                    <option value="4">ROOM 4</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
+                                                                <label>Room Price</label>
+                                                                <input onchange="" id="e_amount" min="0" value="10000"
+                                                                    type="number" placeholder="Room Price"
+                                                                    class="form-control form-input"
+                                                                    contenteditable="false" required>
+                                                            </div>
+
+                                                            <label>Checked In</label>
+                                                            <div class="col-12 form-group">
+                                                                <input onchange="" autocomplete="off" id="e_checked_in"
+                                                                    type="date" placeholder="Check in Date" value=""
+                                                                    class="form-control air-datepickergg"
+                                                                    data-position='bottom left' format="yyyy-MM-dd
+                                          " style="z-index: 999999;" required>
+                                                            </div>
+
+                                                            <label>Checked out</label>
+                                                            <div class="col-12 form-group">
+                                                                <input onchange="" autocomplete="off" id="e_checked_out"
+                                                                    type="date" placeholder="Check in Date" value=""
+                                                                    class="form-control air-datepickergg"
+                                                                    data-position='bottom left' format="yyyy-MM-dd
+                                          " style="z-index: 999999;">
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="col-12 form-group mg-t-8">
+                                                            <button type="submit" onclick="updateRoomBooking()"
+                                                                id="updateLoanBTN"
+                                                                class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">UPDATE
+                                                                BOOKING</button>
+
+                                                        </div>
+
+                                                    </form>
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <!-- jquery-->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <!-- Plugins js -->
+    <script src="../js/plugins.js"></script>
+    <!-- Popper js -->
+    <script src="../js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- Counterup Js -->
+    <script src="../js/jquery.counterup.min.js"></script>
+    <!-- Moment Js -->
+    <script src="../js/moment.min.js"></script>
+    <!-- Waypoints Js -->
+    <script src="../js/jquery.waypoints.min.js"></script>
+    <!-- Scroll Up Js -->
+    <script src="../js/jquery.scrollUp.min.js"></script>
+    <!-- Full Calender Js -->
+    <script src="../js/fullcalendar.min.js"></script>
+    <!-- Chart Js -->
+    <script src="../js/Chart.min.js"></script>
+    <!-- Data Table Js -->
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <!-- Custom Js -->
+    <script src="../js/main.js"></script>
+    <script src="../js/myscript.js"></script>
+    <script src="./js/business.js?v=1?v=1"></script>
+    <script src="../common-library.js"></script>
+    <!-- Select 2 Js -->
+    <script src="../js/select2.min.js"></script>
+    <!-- Date Picker Js -->
+    <script src="../js/datepicker.min.js"></script>
+    <!-- <script src="../js/iframeSizer.min.js"></script>
+    <script src="../js/frame_script.js"></script> -->
+
+    <script src="../assets/js/lib/toastr/toastr.min.js"></script>
+    <script src="../assets/js/lib/toastr/toastr.init.js"></script>
+    <script src="../assets/js/lib/sweetalert/sweetalert.min.js"></script>
+    <script src="../assets/js/lib/sweetalert/sweetalert.init.js"></script>
+
+
+
+
+
+    <script>
+        document.getElementById("start_date").value = getDate().split("~")[1];
+        document.getElementById("end_date").value = getDate().split("~")[1];
+
+
+        function resetFormInputs() {
+            var elements = document.getElementsByClassName("form-input");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].value = "";
+            }
+
+            document.getElementById("terminal_id").value = JSON.parse(localStorage["user_data"]).data.terminal_id;
+            addToNewObject('terminal_id', JSON.parse(localStorage["user_data"]).data.terminal_id);
+            addToNewObject('transaction_time', changeDateFormat(getDate().split("~")[1]) + " " + getDate().split("~")[0]);
+        }
+
+        document.getElementById("bookForm").addEventListener("submit", function (event) {
+            // Prevent the form from submitting by default
+            event.preventDefault();
+            createRoomBooking();
+        });
+
+        document.getElementById("updateBookForm").addEventListener("submit", function (event) {
+            // Prevent the form from submitting by default 
+            event.preventDefault();
+
+            checked_in = document.getElementById("e_checked_in").value;
+            checked_out = document.getElementById("e_checked_out").value;
+            amount = document.getElementById("amount").value;
+            duration = "-";
+            total_charge = 0;
+
+            if (checked_out != "") {
+                duration = getDifferenceInDays(checked_in, checked_out);
+                total_charge = parseInt(duration) * parseInt(amount);
+            }
+
+            updateRoomBooking(duration, total_charge);
+        });
+
+
+        function getDifferenceInDays(date1, date2) {
+            // Parse the date strings into Date objects
+            const date1Obj = new Date(date1);
+            const date2Obj = new Date(date2);
+
+            // Calculate the time difference in milliseconds
+            const timeDifference = Math.abs(date2Obj - date1Obj);
+
+            // Convert time difference from milliseconds to days
+            const differenceInDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+            return differenceInDays;
+        }
+
+        // Example usage:
+        const date1 = "2024-05-22";
+        const date2 = "2024-06-05";
+        console.log(getDifferenceInDays(date1, date2)); // Outputs the difference in days
+
+
+
+    </script>
+
+    <style id="result_upload_style">
+        [contenteditable] {
+            outline-color: #105c05;
+        }
+    </style>
+
+
+    <style>
+        .table>:not(:last-child)>:last-child>* {
+            border-bottom-color: #e1e1e1;
+        }
+
+        #session_term0 {
+            text-align: center;
+        }
+    </style>
+
+</body>
+
+</html>

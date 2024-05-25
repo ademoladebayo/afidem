@@ -138,6 +138,25 @@ Route::middleware([ActivityLog::class])->group(function () {
         // =============================================================================
 
 
+        // =============================================================================
+        //               BEGINNING OF SERVICE ROOM ROUTE
+        // =============================================================================
+
+        Route::post('service-room', 'ServiceRoomController@bookRoom', function () {
+        })->middleware(Cors::class);
+
+        Route::put('service-room', 'ServiceRoomController@updateBookedRoom', function () {
+        })->middleware(Cors::class);
+
+        Route::get('service-room/{from}/{to}/{user_id?}', 'ServiceRoomController@getBookedRooms', function () {
+        })->middleware(Cors::class);
+
+
+        // =============================================================================
+        //               END OF SERVICE ROOM ROUTE
+        // =============================================================================
+
+
 
     });
 

@@ -8,6 +8,7 @@ use App\Model\AdminModel;
 use App\Model\AjoModel;
 use App\Model\ExpenseModel;
 use App\Model\LoanModel;
+use App\Model\RoomModel;
 use App\Model\TransactionModel;
 use App\Util\Utils;
 use Illuminate\Http\Request;
@@ -266,8 +267,6 @@ class TransactionService
                     $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
                     $y_gross_profit = $y_income - $y_expense;
 
-                } elseif ($station->username == 'SERVICE ROOM') {
-
                 } else if ($station->username == 'LOAN') {
                     $m_income = LoanModel::where('disbursement_date', 'like', $month . '%')->where("status", "PAID")->where("loan_type", "DEBITOR")->sum("commission");
 
@@ -280,6 +279,22 @@ class TransactionService
                     $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
 
                     $y_gross_profit = $y_income - $y_expense;
+
+                } else if ($station->username == 'SERVICE ROOM') {
+                    $m_income = RoomModel::where('checked_in', 'like', $month . '%')->sum("total_charge");
+
+                    $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $station->id)->sum("amount");
+
+                    $m_gross_profit = $m_income - $m_expense;
+
+                    $y_income = RoomModel::where('checked_in', 'like', $year . '%')->sum("total_charge");
+
+                    $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
+
+                    $y_gross_profit = $y_income - $y_expense;
+
+                } else {
+
                 }
 
             }
@@ -308,21 +323,77 @@ class TransactionService
     {
         $date = $request->date;
         $expense = ExpenseModel::where('date', 'like', $request->date . '%')->where("admin_station", $request->station_id)->get();
-        $transaction = DB::table('transaction_history')
-            ->select(
-                DB::raw("SUBSTRING(transaction_time, 1, 10) AS day"),
-                DB::raw("SUM(profit) AS profit"),
-                DB::raw("COUNT(profit) AS count")
-            )
-            ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query) use ($date) {
-                $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 10)"))
-                    ->from('transaction_history')
-                    ->where('transaction_time', 'like', $date . '%');
-            })
-            ->where('admin_station', $request->station_id)
-            ->groupBy('day')
-            ->orderBy('day', 'ASC')
-            ->get();
+
+
+        if (in_array($request->station, [7, 8, 9])) {
+
+            if ($request->station == 7) {
+                DB::table('ajo')
+                    ->select(
+                        DB::raw("SUBSTRING(date, 1, 10) AS day"),
+                        DB::raw("amount AS profit"),
+                        DB::raw("CONCAT('Commission from ', users.first_name, ' ', users.last_name, ' contribution') AS description")
+                    )
+                    ->whereIn(DB::raw("SUBSTRING(date, 1, 10)"), function ($query) use ($date) {
+                        $query->select(DB::raw("DISTINCT SUBSTRING(date, 1, 10)"))
+                            ->from('ajo')
+                            ->where('date', 'like', $date . '%');
+                    })
+                    ->join('users', '=', 'ajo.user_id')
+                    ->where('is_charge', '1')
+                    ->orderBy('day', 'ASC')
+                    ->get();
+
+
+            } else if ($request->station == 8) {
+                DB::table('loan')
+                    ->select(
+                        DB::raw("SUBSTRING(disbursement_date, 1, 10) AS day"),
+                        DB::raw("commission AS profit"),
+                        DB::raw("CONCAT('%', loan.rate, ' Commission from ', users.first_name, ' ', users.last_name, ' ₦', FORMAT(loan.amount), ' loan') AS description")
+                    )
+                    ->whereIn(DB::raw("SUBSTRING(disbursement_date, 1, 10)"), function ($query) use ($date) {
+                        $query->select(DB::raw("DISTINCT SUBSTRING(disbursement_date, 1, 10)"))
+                            ->from('loan')
+                            ->where('disbursement_date', 'like', $date . '%');
+                    })
+                    ->join('users', '=', 'loan.user_id')
+                    ->where('loan_type', 'DEBITOR')
+                    ->orderBy('day', 'ASC')
+                    ->get();
+            } else if ($request->station == 9) {
+                DB::table('service_room')
+                    ->select(
+                        DB::raw("SUBSTRING(checked_in, 1, 10) AS day"),
+                        DB::raw("total_charge AS profit"),
+                        DB::raw("CONCAT(service_room.duration, ' Day(s) service charge from ', users.first_name, ' ', users.last_name) AS description")
+                    )
+                    ->whereIn(DB::raw("SUBSTRING(checked_in, 1, 10)"), function ($query) use ($date) {
+                        $query->select(DB::raw("DISTINCT SUBSTRING(checked_in, 1, 10)"))
+                            ->from('service_room')
+                            ->where('checked_in', 'like', $date . '%');
+                    })
+                    ->join('users', '=', 'service_room.user_id')
+                    ->orderBy('day', 'ASC')
+                    ->get();
+            }
+        } else {
+            $transaction = DB::table('transaction_history')
+                ->select(
+                    DB::raw("SUBSTRING(transaction_time, 1, 10) AS day"),
+                    DB::raw("SUM(profit) AS profit"),
+                    DB::raw("CONCAT(COUNT(profit), ' Transaction(s) was performed') AS description")
+                )
+                ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query) use ($date) {
+                    $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 10)"))
+                        ->from('transaction_history')
+                        ->where('transaction_time', 'like', $date . '%');
+                })
+                ->where('admin_station', $request->station_id)
+                ->groupBy('day')
+                ->orderBy('day', 'ASC')
+                ->get();
+        }
 
         return ['transaction' => $transaction, 'expense' => $expense];
     }
