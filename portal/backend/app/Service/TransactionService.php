@@ -328,7 +328,7 @@ class TransactionService
         if (in_array($request->station, [7, 8, 9])) {
 
             if ($request->station == 7) {
-                DB::table('ajo')
+                $transaction = DB::table('ajo')
                     ->select(
                         DB::raw("SUBSTRING(date, 1, 10) AS day"),
                         DB::raw("amount AS profit"),
@@ -342,7 +342,7 @@ class TransactionService
 
 
             } else if ($request->station == 8) {
-                DB::table('loan')
+                $transaction = DB::table('loan')
                     ->select(
                         DB::raw("SUBSTRING(disbursement_date, 1, 10) AS day"),
                         DB::raw("commission AS profit"),
@@ -354,7 +354,7 @@ class TransactionService
                     ->orderBy('day', 'ASC')
                     ->get();
             } else if ($request->station == 9) {
-                DB::table('service_room')
+                $transaction = DB::table('service_room')
                     ->select(
                         DB::raw("SUBSTRING(checked_in, 1, 10) AS day"),
                         DB::raw("total_charge AS profit"),
