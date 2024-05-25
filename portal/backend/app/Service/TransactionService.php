@@ -325,9 +325,9 @@ class TransactionService
         $expense = ExpenseModel::where('date', 'like', $request->date . '%')->where("admin_station", $request->station_id)->get();
 
 
-        if (in_array($request->station, [7, 8, 9])) {
+        if (in_array($request->station_id, [7, 8, 9])) {
 
-            if ($request->station == 7) {
+            if ($request->station_id == 7) {
                 $transaction = DB::table('ajo')
                     ->select(
                         DB::raw("SUBSTRING(date, 1, 10) AS day"),
@@ -341,7 +341,7 @@ class TransactionService
                     ->get();
 
 
-            } else if ($request->station == 8) {
+            } else if ($request->station_id == 8) {
                 \Log::debug("=========================");
                 $transaction = DB::table('loan')
                     ->select(
@@ -354,7 +354,7 @@ class TransactionService
                     ->where('disbursement_date', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
                     ->get();
-            } else if ($request->station == 9) {
+            } else if ($request->station_id == 9) {
                 $transaction = DB::table('service_room')
                     ->select(
                         DB::raw("SUBSTRING(checked_in, 1, 10) AS day"),
