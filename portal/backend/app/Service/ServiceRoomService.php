@@ -22,7 +22,7 @@ class ServiceRoomService
         $RoomModel->room_no = $request->room;
         $RoomModel->amount = $request->amount;
         $RoomModel->checked_in = $request->checked_in;
-        $RoomModel->checked_out = '-';
+        $RoomModel->checked_out = null;
         $RoomModel->duration = '-';
         $RoomModel->total_charge = 0;
         $RoomModel->save();
@@ -91,12 +91,12 @@ class ServiceRoomService
 
         $available_room = 0;
         foreach ($rooms as $room) {
-            if (!RoomModel::where('room_no', $room)->where('checked_out', '-')->exists()) {
+            if (!RoomModel::where('room_no', $room)->where('checked_out', null)->exists()) {
                 array_push($available_rooms, $room);
                 $available_room += 1;
             }
         }
-       
+
         return
             [
                 'stat' => $available_room . ' of ' . count($rooms),

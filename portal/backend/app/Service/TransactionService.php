@@ -347,7 +347,7 @@ class TransactionService
                     ->select(
                         DB::raw("SUBSTRING(disbursement_date, 1, 10) AS day"),
                         DB::raw("commission AS profit"),
-                        DB::raw("CONCAT('%', rate, ' Interest paid by ', users.first_name, ' ', users.last_name, ' on NGN', FORMAT(amount,0), ' loan') AS description")
+                        DB::raw("CONCAT('%', rate, ' Interest paid by ', users.first_name, ' ', users.last_name, ' on NGN', FORMAT(amount,0), ' loan for ', duration, ' month(s)') AS description")
                     )
                     ->join('users', 'users.id', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')

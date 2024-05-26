@@ -10,7 +10,7 @@ use App\Model\UserModel;
 
 class RoomModel extends Authenticatable
 {
-    use  Notifiable, HasApiTokens;
+    use Notifiable, HasApiTokens;
     protected $table = 'service_room';
     protected $primaryKey = 'id';
     public $timestamps = false;
@@ -19,4 +19,5 @@ class RoomModel extends Authenticatable
     {
         return $this->hasOne(UserModel::class, 'id', 'user_id');
     }
+
 }
