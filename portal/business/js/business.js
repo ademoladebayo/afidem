@@ -2058,7 +2058,7 @@ function getBookedRooms() {
             <td>   ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-success"><b>${data.duration} Day(s)</b></span>`}
             </td>
             <td>${dateToWord(data.checked_in)}</td>
-            <td>${data.checked_out == null ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : dateToWord(data.checkout)}</td>
+            <td>${data.checked_out == null ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : dateToWord(data.checked_out)}</td>
             <td style='color:black'>${formatNumber(parseInt(data.amount))}/ Day</td>
             <td style='color:green'>₦${formatNumber(parseInt(data.total_charge))}</td>
             <td>
