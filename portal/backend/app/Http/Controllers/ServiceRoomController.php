@@ -22,7 +22,7 @@ class ServiceRoomController extends Controller
     }
 
 
-    public function getBookedRoom($from, $to)
+    public function getBookedRooms($from, $to)
     {
         $ServiceRoomService = new ServiceRoomService();
         return $ServiceRoomService->getBookedRoom($from, $to);

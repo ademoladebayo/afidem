@@ -332,7 +332,7 @@ class TransactionService
                     ->select(
                         DB::raw("SUBSTRING(date, 1, 10) AS day"),
                         DB::raw("amount AS profit"),
-                        DB::raw("CONCAT('Commission from ', users.first_name, ' ', users.last_name, ' contribution') AS description")
+                        DB::raw("CONCAT('Commission paid by ', users.first_name, ' ', users.last_name, ' for Ajo contribution') AS description")
                     )
                     ->join('users', 'users.id', '=', 'ajo.user_id')
                     ->where('is_charge', '1')
@@ -347,7 +347,7 @@ class TransactionService
                     ->select(
                         DB::raw("SUBSTRING(disbursement_date, 1, 10) AS day"),
                         DB::raw("commission AS profit"),
-                        DB::raw("CONCAT('%', rate, ' Commission from ', users.first_name, ' ', users.last_name, ' NGN', FORMAT(amount,0), ' loan') AS description")
+                        DB::raw("CONCAT('%', rate, ' Interest paid by ', users.first_name, ' ', users.last_name, ' on NGN', FORMAT(amount,0), ' loan') AS description")
                     )
                     ->join('users', 'users.id', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')
@@ -359,7 +359,7 @@ class TransactionService
                     ->select(
                         DB::raw("SUBSTRING(checked_in, 1, 10) AS day"),
                         DB::raw("total_charge AS profit"),
-                        DB::raw("CONCAT(service_room.duration, ' Day(s) service charge from ', users.first_name, ' ', users.last_name) AS description")
+                        DB::raw("CONCAT(service_room.duration, ' Day(s) service charge paid by ', users.first_name, ' ', users.last_name) AS description")
                     )
                     ->join('users', 'users.id', '=', 'service_room.user_id')
                     ->where('checked_in', 'like', $date . '%')

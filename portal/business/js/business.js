@@ -1999,7 +1999,7 @@ function getBookedRooms() {
 
   openSpinnerModal("Booked Rooms");
 
-  fetch(ip + "/api/service-room" + start_date + "/" + end_date, {
+  fetch(ip + "/api/service-room/" + start_date + "/" + end_date, {
     method: "GET",
     headers: {
       Accept: "application/json",

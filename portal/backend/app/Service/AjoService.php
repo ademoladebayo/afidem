@@ -25,7 +25,7 @@ class AjoService
         $AjoModel->date = $request->date;
         $AjoModel->txn_type = $request->txn_type;
         $AjoModel->amount = $request->amount;
-        $curr_bal = $$this->getUserBalance($request->user_id);
+        $curr_bal = $this->getUserBalance($request->user_id);
         $AjoModel->bal_before = $curr_bal;
 
         $isFirstDepositOfTheMonth = $this->isFirstDepositOfTheMonth($request->user_id, $request->date, $request->amount);
