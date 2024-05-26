@@ -39,7 +39,7 @@ class ServiceRoomService
         }
         ;
 
-        NotificationController::createNotification(Utils::getUserLoggedIn($request) . ' JUST BOOK A NEW ROOM AT ₦' . number_format($request->amount), $receiver);
+        NotificationController::createNotification('ROOM BOOKING', Utils::getUserLoggedIn($request) . ' JUST BOOKED A NEW ROOM AT ₦' . number_format($request->amount), $receiver);
         return response(['success' => true, 'message' => "Room booked successfully."]);
     }
 
@@ -66,7 +66,7 @@ class ServiceRoomService
         $end_date = $to . " 23:59:00";
         $user_id = $user_id == '0' ? null : $user_id;
 
-        $bookedRoom = RoomModel::whereBetween('checked_in', [$start_date, $end_date]);
+        $bookedRoom = RoomModel::with('user')->whereBetween('checked_in', [$start_date, $end_date]);
         $total_sales = $bookedRoom->sum('total_charge');
         $total_user = count($bookedRoom->distinct()->pluck('user_id')->toArray());
 

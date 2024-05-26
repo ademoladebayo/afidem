@@ -2033,7 +2033,7 @@ function getBookedRooms() {
       //Append available rooms
       document.getElementById("room").innerHTML = ``;
 
-      data.room.available_room.forEach(room => {
+      data.room.available_rooms.forEach(room => {
         document.getElementById("room").innerHTML += ` <option value="${room}">ROOM ${room}</option>`;
       });
 

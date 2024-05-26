@@ -351,6 +351,7 @@ class TransactionService
                     )
                     ->join('users', 'users.id', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')
+                    ->where('status', 'PAID')
                     ->where('disbursement_date', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
                     ->get();
@@ -363,6 +364,7 @@ class TransactionService
                     )
                     ->join('users', 'users.id', '=', 'service_room.user_id')
                     ->where('checked_in', 'like', $date . '%')
+                    ->whereNotNull('checked_out')
                     ->orderBy('day', 'ASC')
                     ->get();
             }
