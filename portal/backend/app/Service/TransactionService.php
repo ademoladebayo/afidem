@@ -351,7 +351,7 @@ class TransactionService
                     )
                     ->join('users', 'users.id', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')
-                    ->where('status', 'PAID')
+                    ->where('loan.status', 'PAID')
                     ->where('disbursement_date', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
                     ->get();

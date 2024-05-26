@@ -2054,12 +2054,12 @@ function getBookedRooms() {
     
             <td>${c}.</td>
             <td>${data.user.first_name + " " + data.user.last_name}</td>
-            <td style='color:black'>Room ${data.room}</td>
-               ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-success"><b>${data.duration} Day(s)</b></span>`}
+            <td style='color:black'>Room ${data.room_no}</td>
+            <td>   ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-success"><b>${data.duration} Day(s)</b></span>`}
             </td>
             <td>${dateToWord(data.checked_in)}</td>
-            <td>${data.checked_out == null ? `<span class="badge bg-warning"><b>NOT CHECKED OUT</b></span>` : dateToWord(data.checkout)}</td>
-            <td style='color:black'>${formatNumber(parseInt(data.amount))}%</td>
+            <td>${data.checked_out == null ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : dateToWord(data.checkout)}</td>
+            <td style='color:black'>${formatNumber(parseInt(data.amount))}/ Day</td>
             <td style='color:green'>₦${formatNumber(parseInt(data.total_charge))}</td>
             <td>
               <a  onclick ="editBookedRoom(${JSON.stringify(data)
@@ -2109,9 +2109,8 @@ function editBookedRoom(data) {
 
 
   document.getElementById("e_amount").value = data.amount;
-  document.getElementById("e_rate").value = data.rate;
-  document.getElementById("e_checked_in").value = data.checked_in;
-  document.getElementById("e_checked_out").value = data.checked_out;
+  document.getElementById("e_checked_in").value = data.checked_in.split(' ')[0];
+  document.getElementById("e_checked_out").value = data.checked_out ? data.checked_out.split(' ')[0] : "";
 
   $('.select2').trigger('change');
 }

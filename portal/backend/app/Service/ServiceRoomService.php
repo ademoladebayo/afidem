@@ -43,14 +43,14 @@ class ServiceRoomService
         return response(['success' => true, 'message' => "Room booked successfully."]);
     }
 
-    public function updateLoan(Request $request)
+    public function updateBookedRoom(Request $request)
     {
         $RoomModel = RoomModel::find($request->id);
         $RoomModel->user_id = $request->user_id;
         $RoomModel->room_no = $request->room;
         $RoomModel->amount = $request->amount;
         $RoomModel->checked_in = $request->checked_in;
-        $RoomModel->checked_out = $request->checked_out;
+        $RoomModel->checked_out = $request->checked_out == "" ? null : $request->checked_out;
         $RoomModel->duration = $request->duration;
         $RoomModel->total_charge = $request->total_charge;
         $RoomModel->save();
