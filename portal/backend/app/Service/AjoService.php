@@ -170,9 +170,9 @@ class AjoService
     public function getUserBalance($user_id, $start_date = null, $end_date = null, $figure = true)
     {
         if ($start_date == null) {
-            $accountStatement = AjoModel::where('user_id', $user_id);
+            $accountStatement = AjoModel::with('user')->where('user_id', $user_id);
         } else {
-            $accountStatement = AjoModel::where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date]);
+            $accountStatement = AjoModel::with('user')->where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date]);
         }
 
         $totalCredit = clone $accountStatement;
@@ -189,7 +189,7 @@ class AjoService
 
         $stat =
             [
-                "user" => UserModel::find($user_id)->select('first_name', 'last_name')->first(),
+                "user" => $accountStatement->user, //UserModel::find($user_id)->select('first_name', 'last_name')->first(),
                 "total_credit" => $totalCredit,
                 "total_debit" => $totalDebit,
                 "total_charge" => $totalCharge,

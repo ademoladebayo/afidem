@@ -23,8 +23,8 @@ class ServiceRoomService
         $RoomModel->amount = $request->amount;
         $RoomModel->checked_in = $request->checked_in;
         $RoomModel->checked_out = null;
-        $RoomModel->duration = '-';
-        $RoomModel->total_charge = 0;
+        $RoomModel->duration = '1';
+        $RoomModel->total_charge = $request->amount;
         $RoomModel->save();
 
 

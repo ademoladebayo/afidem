@@ -79,7 +79,7 @@ class LoanService
             [
                 'debitor' => $this->processFetchLoan('DEBITOR', $user_id, $start_date, $end_date),
 
-                'creditor' => $this->processFetchLoan('CREDITOR', $user_id, $start_date, $end_date)
+                //'creditor' => $this->processFetchLoan('CREDITOR', $user_id, $start_date, $end_date)
             ];
 
         return response(['success' => true, 'data' => $data]);
@@ -104,15 +104,16 @@ class LoanService
         $total_commission = clone $loanTXN;
         $total_commission = $total_commission->where('status', 'PAID')->sum('commission');
 
-        $unpaid = clone $loanTXN;
-        $unpaid = $unpaid->where('status', 'NOT PAID')->sum('amount');
+        $loanTX = clone $loanTXN;
+        //$loanTX = $loanTX->where('status', 'NOT PAID')->sum('amount');
 
 
         return [
             'total_user' => count($totalUsers),
-            'total_amount' => $total_amount,
-            'total_commission' => $total_commission,
-            'unpaid' => $unpaid,
+            'unpaid' => $loanTX->where('status', 'NOT PAID')->sum('amount'),
+            'interest_expected' => $loanTX->where('status', 'NOT PAID')->sum('commission'),
+            'paid_debt' => $loanTX->where('status', 'PAID')->sum('amount'),
+            'interest_earned' => $loanTX->where('status', 'PAID')->sum('commission'),
             'data' => $loanTXN->get(),
 
         ];
