@@ -76,7 +76,8 @@ class AjoService
         $month = explode("-", $from)[0] . "-" . explode("-", $from)[1];
         $start_date = $from . " 00:00:00";
         $end_date = $to . " 23:59:00";
-        $user_id = $user_id == '0' ? null : $user_id;
+        $user_id = $user_id == '-' ? null : $user_id;
+        \Log::info("USER ID :: " . $user_id);
 
         if ($user_id) {
             $ajoTxn = AjoModel::with('user')->where('user_id', $user_id)->whereBetween('date', [$start_date, $end_date]);

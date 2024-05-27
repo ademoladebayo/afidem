@@ -1437,11 +1437,12 @@ function createAjoTransaction() {
 }
 
 
-function getAjoTransaction() {
+function getAjoTransaction(ajoUser) {
   getAllExpense();
   start_date = changeDateFormat(document.getElementById("start_date").value);
   end_date = changeDateFormat(document.getElementById("end_date").value);
-  ajoUser = document.getElementById('ajo_user_1').value;
+  //ajoUser = document.getElementById('ajo_user_1').value;
+  ajoUser = "-";
 
   openSpinnerModal("Fetch Ajo Transaction");
 
@@ -1511,7 +1512,7 @@ function getAjoTransaction() {
                         <td style='color:red'>₦${formatNumber(parseInt(data.data.txn_summary[i].total_charge))}</td>
                         <td style='color:black'>₦${formatNumber(parseInt(data.data.txn_summary[i].balance))}</td>
             
-                        <td> <a onclick="getAjoTransactionForAPerson('${start_date}','${end_date}','${ajoUser}')" data-bs-toggle="modal"
+                        <td> <a onclick="getAjoTransactionForAPerson('${start_date}','${end_date}','${data.data.txn_summary[i].user.id}')" data-bs-toggle="modal"
                               data-bs-target="#viewModal" href="#" style='color:blue'>${formatNumber(parseInt(data.data.txn_summary[i].available_balance))}</a></td>
                       
                       </tr>
