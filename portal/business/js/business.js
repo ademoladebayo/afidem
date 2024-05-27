@@ -1713,32 +1713,44 @@ function getLoanTransaction() {
       document.getElementById("debitor").innerHTML = formatNumber(parseInt(data.data.debitor.total_user)
       );
 
-      document.getElementById("debt_amount").innerHTML = formatNumber(
-        parseInt(data.data.debitor.total_amount)
-      );
-
-      document.getElementById("debt_commission").innerHTML = formatNumber(
-        parseInt(data.data.debitor.total_commission)
-      );
-
-      document.getElementById("unpaid_debt").innerHTML = formatNumber(
+      //DEBITOR
+      document.getElementById("unpaid").innerHTML = formatNumber(
         parseInt(data.data.debitor.unpaid)
       );
+
+      document.getElementById("interest_expected").innerHTML = formatNumber(
+        parseInt(data.data.debitor.interest_unpaid)
+      );
+
+      document.getElementById("paid_debt").innerHTML = formatNumber(
+        parseInt(data.data.debitor.paid)
+      );
+
+      document.getElementById("interest_earned").innerHTML = formatNumber(
+        parseInt(data.data.debitor.interest_paid)
+      );
+
+
 
       //CREDITORS
       document.getElementById("creditor").innerHTML = formatNumber(parseInt(data.data.creditor.total_user)
       );
 
-      document.getElementById("credit_amount").innerHTML = formatNumber(
-        parseInt(data.data.creditor.total_amount)
+      document.getElementById("credit_unpaid").innerHTML = formatNumber(
+        parseInt(data.data.creditor.unpaid)
       );
 
-      document.getElementById("credit_commission").innerHTML = formatNumber(
-        parseInt(data.data.creditor.total_commission)
+      document.getElementById("credit_interest_unpaid").innerHTML = formatNumber(
+        parseInt(data.data.creditor.interest_unpaid)
       );
 
-      document.getElementById("unpaid_credit").innerHTML = formatNumber(
-        parseInt(data.data.creditor.unpaid))
+      document.getElementById("credit_paid").innerHTML = formatNumber(
+        parseInt(data.data.creditor.paid));
+
+
+      document.getElementById("credit_interest_paid").innerHTML = formatNumber(
+        parseInt(data.data.debitor.interest_paid)
+      );
 
 
 

@@ -189,7 +189,7 @@ class AjoService
 
         $stat =
             [
-                "user" => $accountStatement->user, //UserModel::find($user_id)->select('first_name', 'last_name')->first(),
+                "user" => $accountStatement->first()->user, //UserModel::find($user_id)->select('first_name', 'last_name')->first(),
                 "total_credit" => $totalCredit,
                 "total_debit" => $totalDebit,
                 "total_charge" => $totalCharge,

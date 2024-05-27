@@ -104,16 +104,15 @@ class LoanService
         $total_commission = clone $loanTXN;
         $total_commission = $total_commission->where('status', 'PAID')->sum('commission');
 
-        $loanTX = clone $loanTXN;
-        //$loanTX = $loanTX->where('status', 'NOT PAID')->sum('amount');
+        $loanTX = $loanTXN;
 
 
         return [
             'total_user' => count($totalUsers),
             'unpaid' => $loanTX->where('status', 'NOT PAID')->sum('amount'),
-            'interest_expected' => $loanTX->where('status', 'NOT PAID')->sum('commission'),
-            'paid_debt' => $loanTX->where('status', 'PAID')->sum('amount'),
-            'interest_earned' => $loanTX->where('status', 'PAID')->sum('commission'),
+            'interest_unpaid' => $loanTX->where('status', 'NOT PAID')->sum('commission'),
+            'paid' => $loanTX->where('status', 'PAID')->sum('amount'),
+            'interest_paid' => $loanTX->where('status', 'PAID')->sum('commission'),
             'data' => $loanTXN->get(),
 
         ];
