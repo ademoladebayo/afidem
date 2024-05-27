@@ -86,6 +86,7 @@ class AjoService
 
         $totalUsers = clone $ajoTxn;
         $totalUsers = $totalUsers->distinct()->pluck('user_id')->toArray();
+        \Log::info(print_r($totalUsers, true));
 
         $contributionCount = clone $ajoTxn;
         $contributionCount = $contributionCount->count();
@@ -157,6 +158,7 @@ class AjoService
     {
         $transactions = [];
         foreach ($users as $user) {
+            \Log::info(print_r($user, true));
             $tx = $this->getUserBalance($user, $start_date, $end_date, false);
             array_push($transactions, $tx);
         }
