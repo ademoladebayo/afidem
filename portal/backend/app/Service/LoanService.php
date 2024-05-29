@@ -104,9 +104,10 @@ class LoanService
             } elseif ($type == "MDB") { //MONTHLY DEBITOR BREAKDOWN
                 $data = DB::table('loan')
                     ->select(
-                        DB::raw("CONCAT(users.first_name, ' ', users.last_name, ) AS name"),
+                        DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS name"),
                         DB::raw("amount AS loan"),
-                        DB::raw("commission")
+                        DB::raw("commission"),
+                        DB::raw("disbursement_date")
                     )
                     ->join('users', 'users.id', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')

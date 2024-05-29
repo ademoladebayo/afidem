@@ -1904,6 +1904,7 @@ function getLoanMonthlyDebitors() {
           
           </tr>
           `;
+          c = c + 1;
         });
 
       } else {
@@ -1967,6 +1968,7 @@ function getLoanMonthlyDebitorsBreakdown(period, date) {
             <td style='color:black'>₦${dateToWord(data.disbursement_date)}</td>
           </tr>
           `;
+          c = c + 1;
         });
 
       } else {
@@ -1985,8 +1987,6 @@ function getLoanMonthlyDebitorsBreakdown(period, date) {
     .catch((err) => console.log(err));
 
 }
-
-
 
 function editLoanTransaction(data) {
   document.getElementById("loan_id").value = data.id;
