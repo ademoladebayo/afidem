@@ -129,7 +129,7 @@ Route::middleware([ActivityLog::class])->group(function () {
         Route::put('loan/transaction', 'LoanController@updateLoan', function () {
         })->middleware(Cors::class);
 
-        Route::get('loan/transaction/{from}/{to}/{user_id?}', 'LoanController@fetchLoan', function () {
+        Route::get('loan/transaction/{from}/{to}/{user_id?}/{type?}', 'LoanController@fetchLoan', function () {
         })->middleware(Cors::class);
 
 

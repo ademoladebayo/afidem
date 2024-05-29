@@ -68,21 +68,57 @@ class LoanService
     }
 
 
-    public function fetchLoan($from, $to, $user_id = null)
+    public function fetchLoan($from, $to, $user_id = null, $type)
     {
-        $month = explode("-", $from)[0] . "-" . explode("-", $from)[1];
-        $start_date = $from . " 00:00:00";
-        $end_date = $to . " 23:59:00";
-        $user_id = $user_id == '0' ? null : $user_id;
+        if (!$type) {
 
-        $data =
-            [
-                'debitor' => $this->processFetchLoan('DEBITOR', $user_id, $start_date, $end_date),
+            $month = explode("-", $from)[0] . "-" . explode("-", $from)[1];
+            $start_date = $from . " 00:00:00";
+            $end_date = $to . " 23:59:00";
+            $user_id = $user_id == '0' ? null : $user_id;
 
-                //'creditor' => $this->processFetchLoan('CREDITOR', $user_id, $start_date, $end_date)
-            ];
+            $data =
+                [
+                    'debitor' => $this->processFetchLoan('DEBITOR', $user_id, $start_date, $end_date),
 
-        return response(['success' => true, 'data' => $data]);
+                    'creditor' => $this->processFetchLoan('CREDITOR', $user_id, $start_date, $end_date)
+                ];
+
+            return response(['success' => true, 'data' => $data]);
+        } else {
+
+            if ($type == "MD") {  //MONTHLY DEBITOR
+                $data = DB::table('loan')
+                    ->select(
+                        DB::raw("DATE_FORMAT(disbursement_date, '%M %Y') AS period"),
+                        DB::raw("SUM(amount) AS loan"),
+                        DB::raw("SUM(commission) AS commission"),
+                        DB::raw("SUBSTRING(disbursement_date, 1, 7) AS date")
+                    )
+                    ->where('loan_type', 'DEBITOR')
+                    ->where('loan.status', 'NOT PAID')
+                    ->groupBy('period')
+                    ->orderBy('period', 'ASC')
+                    ->get();
+
+            } elseif ($type == "MDB") { //MONTHLY DEBITOR BREAKDOWN
+                $data = DB::table('loan')
+                    ->select(
+                        DB::raw("CONCAT(users.first_name, ' ', users.last_name, ) AS name"),
+                        DB::raw("amount AS loan"),
+                        DB::raw("commission")
+                    )
+                    ->join('users', 'users.id', '=', 'loan.user_id')
+                    ->where('loan_type', 'DEBITOR')
+                    ->where('loan.status', 'NOT PAID')
+                    ->where('disbursement_date', 'like', $from . '%')
+                    ->orderBy('disbursement_date', 'ASC')
+                    ->get();
+            }
+
+            return response(['success' => true, 'data' => $data]);
+
+        }
     }
 
 
@@ -109,8 +145,8 @@ class LoanService
 
         return [
             'total_user' => count($totalUsers),
-            'unpaid' => $loanTX->where('status', 'NOT PAID')->sum('amount'),
-            'interest_unpaid' => $loanTX->where('status', 'NOT PAID')->sum('commission'),
+            'unpaid' => LoanModel::where('status', 'NOT PAID')->sum('amount'),//$loanTX->where('status', 'NOT PAID')->sum('amount'),
+            'interest_unpaid' => LoanModel::where('status', 'NOT PAID')->sum('commission'),//$loanTX->where('status', 'NOT PAID')->sum('commission'),
             'paid' => $loanTX->where('status', 'PAID')->sum('amount'),
             'interest_paid' => $loanTX->where('status', 'PAID')->sum('commission'),
             'data' => $loanTXN->get(),

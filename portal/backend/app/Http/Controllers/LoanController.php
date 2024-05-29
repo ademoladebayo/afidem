@@ -7,7 +7,7 @@ use App\Service\LoanService;
 
 class LoanController extends Controller
 {
-  
+
     public function createLoan(Request $request)
     {
         $LoanService = new LoanService();
@@ -20,11 +20,11 @@ class LoanController extends Controller
         return $LoanService->updateLoan($request);
     }
 
-    public function fetchLoan($from, $to)
+    public function fetchLoan($from, $to, $user_id, $type)
     {
         $LoanService = new LoanService();
-        return $LoanService->fetchLoan($from, $to);
+        return $LoanService->fetchLoan($from, $to, $user_id, $type);
     }
 
-    
+
 }

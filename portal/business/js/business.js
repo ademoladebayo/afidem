@@ -1858,6 +1858,134 @@ function getLoanTransaction() {
 
 }
 
+function getLoanMonthlyDebitors() {
+  start_date = changeDateFormat(document.getElementById("start_date").value);
+  end_date = changeDateFormat(document.getElementById("end_date").value);
+
+  openSpinnerModal("Fetch Monthly Debitors");
+
+  fetch(ip + "/api/loan/transaction/" + start_date + "/" + end_date + "/MD", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    }
+  })
+    .then(function (res) {
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+
+      removeSpinnerModal();
+
+      // DEBITOR SUMMARY
+      c = 1;
+      if (data.data.length > 0) {
+        document.getElementById("debt_table").innerHTML = ``;
+        data.data.forEach(data => {
+          document.getElementById("debt_table").innerHTML +=
+            `
+          <tr>
+    
+            <td>${c}.</td>
+            <td>${data.period}</td>
+            <td style='color:red'>₦${formatNumber(parseInt(data.loan))}</td>
+            <td style='color:red'>₦${formatNumber(parseInt(data.commission))}</td>
+            <td data-bs-toggle="modal"
+            data-bs-target="#debitorBreakdownReportModal" onclick="getLoanMonthlyDebitorsBreakdown('${data.period}','${data.date}')" style='color:red'>₦${formatNumber(parseInt(data.commission) + parseInt(data.loan))}</td>
+            </td>
+          
+          </tr>
+          `;
+        });
+
+      } else {
+        // document.getElementById(
+        //   "debt_table"
+        // ).innerHTML = `<td colspan="12">
+        //       <center>No transaction found</center>
+        //   </td>`;
+      }
+
+
+      // $("#paginate0").DataTable();
+      // $("#paginate1").DataTable();
+
+    })
+    .catch((err) => console.log(err));
+
+}
+
+function getLoanMonthlyDebitorsBreakdown(period, date) {
+  document.getElementById('month').innerHTML = period.toUpperCase();
+  start_date = changeDateFormat(document.getElementById("start_date").value);
+  end_date = changeDateFormat(document.getElementById("end_date").value);
+
+  openSpinnerModal("Fetch " + period + " Debitors");
+
+  fetch(ip + "/api/loan/transaction/" + date + "/" + end_date + "/MDB", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    }
+  })
+    .then(function (res) {
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+
+      removeSpinnerModal();
+
+      // DEBITOR BREAKDOWN
+      c = 1;
+      if (data.data.length > 0) {
+        document.getElementById("debt_breakdown").innerHTML = ``;
+        data.data.forEach(data => {
+          document.getElementById("debt_breakdown").innerHTML +=
+            `
+          <tr>
+    
+            <td>${c}.</td>
+            <td>${data.name}</td> 
+            <td style='color:red'>₦${formatNumber(parseInt(data.loan))}</td>
+            <td style='color:red'>₦${formatNumber(parseInt(data.commission))}</td>
+            <td style='color:red'>₦${formatNumber(parseInt(data.commission) + parseInt(data.loan))}</td>
+            <td style='color:black'>₦${dateToWord(data.disbursement_date)}</td>
+          </tr>
+          `;
+        });
+
+      } else {
+        // document.getElementById(
+        //   "debt_table"
+        // ).innerHTML = `<td colspan="12">
+        //       <center>No transaction found</center>
+        //   </td>`;
+      }
+
+
+      // $("#paginate0").DataTable();
+      // $("#paginate1").DataTable();
+
+    })
+    .catch((err) => console.log(err));
+
+}
+
+
 
 function editLoanTransaction(data) {
   document.getElementById("loan_id").value = data.id;

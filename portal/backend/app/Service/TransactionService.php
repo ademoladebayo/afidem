@@ -342,7 +342,6 @@ class TransactionService
 
 
             } else if ($request->station_id == 8) {
-                \Log::debug("=========================");
                 $transaction = DB::table('loan')
                     ->select(
                         DB::raw("SUBSTRING(disbursement_date, 1, 10) AS day"),
