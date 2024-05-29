@@ -20,7 +20,7 @@ class LoanController extends Controller
         return $LoanService->updateLoan($request);
     }
 
-    public function fetchLoan($from, $to, $user_id, $type)
+    public function fetchLoan($from, $to, $user_id = null, $type = null)
     {
         $LoanService = new LoanService();
         return $LoanService->fetchLoan($from, $to, $user_id, $type);
