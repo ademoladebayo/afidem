@@ -212,7 +212,8 @@
                                             <div style="font-family: Poppins; color: black;" class="item-title">
                                                 Debitors</div>
                                             <div style="font-family: Poppins; color: black;">
-                                                <small><a href="#" onclick="getLoanMonthlyDebitors()" data-bs-toggle="modal"
+                                                <small><a href="#" onclick="getLoanMonthlyDebitors()"
+                                                        data-bs-toggle="modal"
                                                         data-bs-target="#debitorReportModal">Unpaid Disbursement
                                                         :</a><br> ₦
                                                 </small><b><small style="font-family: Rowdies;"
@@ -650,7 +651,7 @@
                                                         </div>
 
                                                     </div>
-                                                    <form class="new-added-form" action="#">
+                                                    <form id="updateloanForm" class="new-added-form" action="#">
                                                         <input id="loan_id" type="text" hidden>
                                                         <div class="row">
                                                             <div class="col-12 form-group">
@@ -723,6 +724,13 @@
                                           " style="z-index: 999999;" required>
                                                             </div>
                                                         </div>
+
+                                                        <div class="col-12 form-group mg-t-8">
+                                                            <button type="submit" onclick="" id="updateLoanBTN"
+                                                                class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update
+                                                                Loan</button>
+
+                                                        </div>
                                                     </form>
 
                                                     <br>
@@ -750,13 +758,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-12 form-group mg-t-8">
-                                                        <button type="submit" onclick="updateLoanTransaction()"
-                                                            id="updateLoanBTN"
-                                                            class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update
-                                                            Loan</button>
 
-                                                    </div>
 
                                                 </div>
                                             </div>
@@ -1086,6 +1088,13 @@
             // Prevent the form from submitting by default
             event.preventDefault();
             createLoanTransaction();
+        });
+
+        document.getElementById("updateloanForm").addEventListener("submit", function (event) {
+            // Prevent the form from submitting by default
+            event.preventDefault();
+            processCommissionForEditLoan();
+            updateLoanTransaction();
         });
     </script>
 

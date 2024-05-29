@@ -97,7 +97,7 @@ class LoanService
                     )
                     ->where('loan_type', 'DEBITOR')
                     ->where('loan.status', 'NOT PAID')
-                    ->groupBy('period')
+                    ->groupBy('period', 'date')
                     ->orderBy('period', 'ASC')
                     ->get();
 
@@ -145,8 +145,8 @@ class LoanService
 
         return [
             'total_user' => count($totalUsers),
-            'unpaid' => LoanModel::where('status', 'NOT PAID')->sum('amount'),//$loanTX->where('status', 'NOT PAID')->sum('amount'),
-            'interest_unpaid' => LoanModel::where('status', 'NOT PAID')->sum('commission'),//$loanTX->where('status', 'NOT PAID')->sum('commission'),
+            'unpaid' => LoanModel::where('status', 'NOT PAID')->where('loan_type', $type)->sum('amount'),
+            'interest_unpaid' => LoanModel::where('status', 'NOT PAID')->where('loan_type', $type)->sum('commission'),
             'paid' => $loanTX->where('status', 'PAID')->sum('amount'),
             'interest_paid' => $loanTX->where('status', 'PAID')->sum('commission'),
             'data' => $loanTXN->get(),

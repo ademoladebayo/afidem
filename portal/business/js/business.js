@@ -1797,6 +1797,7 @@ function getLoanTransaction() {
           
           </tr>
           `;
+          c = c + 1;
         });
 
       } else {
@@ -1864,7 +1865,7 @@ function getLoanMonthlyDebitors() {
 
   openSpinnerModal("Fetch Monthly Debitors");
 
-  fetch(ip + "/api/loan/transaction/" + start_date + "/" + end_date + "/MD", {
+  fetch(ip + "/api/loan/transaction/" + start_date + "/" + end_date + "/-/MD", {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -1929,7 +1930,7 @@ function getLoanMonthlyDebitorsBreakdown(period, date) {
 
   openSpinnerModal("Fetch " + period + " Debitors");
 
-  fetch(ip + "/api/loan/transaction/" + date + "/" + end_date + "/MDB", {
+  fetch(ip + "/api/loan/transaction/" + date + "/" + end_date + "/-/MDB", {
     method: "GET",
     headers: {
       Accept: "application/json",
