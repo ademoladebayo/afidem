@@ -1749,7 +1749,7 @@ function getLoanTransaction() {
 
 
       document.getElementById("credit_interest_paid").innerHTML = formatNumber(
-        parseInt(data.data.debitor.interest_paid)
+        parseInt(data.data.creditor.interest_paid)
       );
 
 
