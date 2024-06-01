@@ -131,7 +131,7 @@ class LoanService
             $loanTXN = LoanModel::with('user')->where('loan_type', $type)->whereBetween('disbursement_date', [$start_date, $end_date]);
         }
 
-        
+
         $data = clone $loanTXN;
 
         $totalUsers = clone $loanTXN;
@@ -146,12 +146,22 @@ class LoanService
         $loanTX = $loanTXN;
 
 
+        // return [
+        //     'total_user' => count($totalUsers),
+        //     'unpaid' => LoanModel::where('status', 'NOT PAID')->where('loan_type', $type)->sum('amount'),
+        //     'interest_unpaid' => LoanModel::where('status', 'NOT PAID')->where('loan_type', $type)->sum('commission'),
+        //     'paid' => $loanTX->where('status', 'PAID')->sum('amount'),
+        //     'interest_paid' => $loanTX->where('status', 'PAID')->sum('commission'),
+        //     'data' => $data->get(),
+
+        // ];
+
         return [
             'total_user' => count($totalUsers),
             'unpaid' => LoanModel::where('status', 'NOT PAID')->where('loan_type', $type)->sum('amount'),
             'interest_unpaid' => LoanModel::where('status', 'NOT PAID')->where('loan_type', $type)->sum('commission'),
-            'paid' => $loanTX->where('status', 'PAID')->sum('amount'),
-            'interest_paid' => $loanTX->where('status', 'PAID')->sum('commission'),
+            'paid' => LoanModel::where('status', 'PAID')->where('loan_type', $type)->sum('amount'),
+            'interest_paid' => LoanModel::where('status', 'PAID')->where('loan_type', $type)->sum('commission'),
             'data' => $data->get(),
 
         ];

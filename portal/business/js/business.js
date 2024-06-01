@@ -1181,9 +1181,9 @@ function getAllUsers(element, service) {
     .then((data) => {
 
       // POPULATE USERS
-      data.forEach(user => {
-        document.getElementById(element).innerHTML += ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
-      });
+      // data.forEach(user => {
+      //   document.getElementById(element).innerHTML += ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
+      // });
 
 
       if (service == "AJO") {
@@ -1730,6 +1730,11 @@ function getLoanTransaction() {
         parseInt(data.data.debitor.interest_paid)
       );
 
+      document.getElementById("tot_debt").innerHTML = formatNumber(
+        parseInt(data.data.debitor.unpaid) + parseInt(data.data.debitor.interest_unpaid) + parseInt(data.data.debitor.paid) + parseInt(data.data.debitor.interest_paid)
+      );
+
+
 
 
       //CREDITORS
@@ -1750,6 +1755,10 @@ function getLoanTransaction() {
 
       document.getElementById("credit_interest_paid").innerHTML = formatNumber(
         parseInt(data.data.creditor.interest_paid)
+      );
+
+      document.getElementById("tot_credit").innerHTML = formatNumber(
+        parseInt(data.data.creditor.unpaid) + parseInt(data.data.creditor.interest_unpaid) + parseInt(data.data.creditor.paid) + parseInt(data.data.creditor.interest_paid)
       );
 
 
@@ -1965,7 +1974,7 @@ function getLoanMonthlyDebitorsBreakdown(period, date) {
             <td style='color:red'>₦${formatNumber(parseInt(data.loan))}</td>
             <td style='color:red'>₦${formatNumber(parseInt(data.commission))}</td>
             <td style='color:red'>₦${formatNumber(parseInt(data.commission) + parseInt(data.loan))}</td>
-            <td style='color:black'>₦${dateToWord(data.disbursement_date)}</td>
+            <td style='color:black'>${dateToWord(data.disbursement_date)}</td>
           </tr>
           `;
           c = c + 1;

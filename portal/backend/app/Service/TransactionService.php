@@ -268,13 +268,13 @@ class TransactionService
                     $y_gross_profit = $y_income - $y_expense;
 
                 } else if ($station->username == 'LOAN') {
-                    $m_income = LoanModel::where('disbursement_date', 'like', $month . '%')->where("status", "PAID")->where("loan_type", "DEBITOR")->sum("commission");
+                    $m_income = LoanModel::where('disbursement_date', 'like', $month . '%')->where("loan_type", "DEBITOR")->sum("commission"); //->where("status", "PAID")
 
                     $m_expense = ExpenseModel::where('date', 'like', $month . '%')->where("admin_station", $station->id)->sum("amount");
 
                     $m_gross_profit = $m_income - $m_expense;
 
-                    $y_income = LoanModel::where('disbursement_date', 'like', $year . '%')->where("status", "PAID")->where("loan_type", "DEBITOR")->sum("commission");
+                    $y_income = LoanModel::where('disbursement_date', 'like', $year . '%')->where("loan_type", "DEBITOR")->sum("commission");
 
                     $y_expense = ExpenseModel::where('date', 'like', $year . '%')->where("admin_station", $station->id)->sum("amount");
 
@@ -350,7 +350,7 @@ class TransactionService
                     )
                     ->join('users', 'users.id', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')
-                    ->where('loan.status', 'PAID')
+                    // ->where('loan.status', 'PAID')
                     ->where('disbursement_date', 'like', $date . '%')
                     ->orderBy('day', 'ASC')
                     ->get();
