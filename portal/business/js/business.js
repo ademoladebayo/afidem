@@ -1181,9 +1181,9 @@ function getAllUsers(element, service) {
     .then((data) => {
 
       // POPULATE USERS
-      // data.forEach(user => {
-      //   document.getElementById(element).innerHTML += ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
-      // });
+      data.forEach(user => {
+        document.getElementById(element).innerHTML += ` <option value ="${user.id}">${user.first_name + " " + user.last_name}</option> `
+      });
 
 
       if (service == "AJO") {
