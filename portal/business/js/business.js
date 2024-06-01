@@ -2226,6 +2226,7 @@ function getBookedRooms() {
           
           </tr>
           `;
+          c = c + 1;
         });
 
       } else {

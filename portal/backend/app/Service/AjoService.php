@@ -187,6 +187,11 @@ class AjoService
         $balance = $totalCredit - $totalDebit;
         $availableBalance = $balance - $totalCharge;
 
+
+        if ($figure) {
+            return $availableBalance;
+        }
+
         $stat =
             [
                 "user" => $accountStatement->first()->user, //UserModel::find($user_id)->select('first_name', 'last_name')->first(),
@@ -196,10 +201,6 @@ class AjoService
                 "balance" => $balance,
                 "available_balance" => $availableBalance,
             ];
-
-        if ($figure) {
-            return $availableBalance;
-        }
 
         return $stat;
     }
