@@ -34,7 +34,7 @@ class AjoService
             }
         } else {
             //SAME DAY TRANSACTION CHECK FOR CREDIT TRANSACTIONS
-            if (AjoModel::where('txn_type', 'CREDIT')->where('user_id', $request->user_id)->where('date', $request->date)->exist()) {
+            if (AjoModel::where('txn_type', 'CREDIT')->where('user_id', $request->user_id)->where('date', $request->date)->exists()) {
                 return response(['success' => false, 'message' => "User already have an Ajo for this day " . $request->date]);
             }
         }
