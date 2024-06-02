@@ -28,6 +28,18 @@ class AjoService
         $curr_bal = $this->getUserBalance($request->user_id);
         $AjoModel->bal_before = $curr_bal;
 
+        if ($request->txn_type == "DEBIT") {
+            if ($request->amount > $curr_bal) {
+                return response(['success' => false, 'message' => "Insufficent Fund !"]);
+            }
+        } else {
+            //SAME DAY TRANSACTION CHECK FOR CREDIT TRANSACTIONS
+            if (AjoModel::where('txn_type', 'CREDIT')->where('user_id', $request->user_id)->where('date', $request->date)->exist()) {
+                return response(['success' => false, 'message' => "User already have an Ajo for this day " . $request->date]);
+            }
+        }
+
+
         $isFirstDepositOfTheMonth = $this->isFirstDepositOfTheMonth($request->user_id, $request->date, $request->amount);
 
         $isAmountSameOfTheMonth = $this->isAmountSameOfTheMonth($request->user_id, $request->date, $request->amount);
