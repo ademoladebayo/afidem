@@ -86,7 +86,7 @@ class ServiceRoomService
 
     public function getAvailableRooms()
     {
-        $rooms = [1, 2, 3, 4];
+        $rooms = ["1a", "2a", "3a", "4a", "5a", "1b", "2b", "3b", "4b", "5b"];
         $available_rooms = [];
 
         $available_room = 0;

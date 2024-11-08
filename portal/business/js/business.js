@@ -1975,6 +1975,7 @@ function getLoanMonthlyDebitorsBreakdown(period, date) {
             <td style='color:red'>₦${formatNumber(parseInt(data.commission))}</td>
             <td style='color:red'>₦${formatNumber(parseInt(data.commission) + parseInt(data.loan))}</td>
             <td style='color:black'>${dateToWord(data.disbursement_date)}</td>
+            <td style='color:black'>${dateToWord(data.due_date)}</td>
           </tr>
           `;
           c = c + 1;
@@ -2185,7 +2186,7 @@ function getBookedRooms() {
       document.getElementById("room").innerHTML = ``;
 
       data.room.available_rooms.forEach(room => {
-        document.getElementById("room").innerHTML += ` <option value="${room}">ROOM ${room}</option>`;
+        document.getElementById("room").innerHTML += ` <option value="${room}">ROOM ${toUpperCase(room)}</option>`;
       });
 
 

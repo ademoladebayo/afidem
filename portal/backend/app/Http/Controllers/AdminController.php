@@ -23,11 +23,11 @@ class AdminController extends Controller
         }
 
         $userModel = new UserModel();
-        $userModel->first_name = $request->first_name;
-        $userModel->last_name = $request->last_name;
+        $userModel->first_name = strtoupper($request->first_name);
+        $userModel->last_name = strtoupper($request->last_name);
         $userModel->phone = $request->phone;
-        $userModel->address = $request->address;
-        $userModel->service = $request->service;
+        $userModel->address = strtoupper($request->address);
+        $userModel->service = strtoupper($request->service);
         $userModel->status = "ACTIVE";
         $userModel->save();
         return response(['success' => true, 'message' => "Customer was successfully created."]);
@@ -36,12 +36,12 @@ class AdminController extends Controller
     public function updateUser(Request $request)
     {
         $userModel = UserModel::find($request->user_id);
-        $userModel->first_name = $request->first_name;
-        $userModel->last_name = $request->last_name;
+        $userModel->first_name = strtoupper($request->first_name);
+        $userModel->last_name = strtoupper($request->last_name);
         $userModel->phone = $request->phone;
-        $userModel->address = $request->address;
-        $userModel->service = $request->service;
-        $userModel->status = $request->status;
+        $userModel->address = strtoupper($request->address);
+        $userModel->service = strtoupper($request->service);
+        $userModel->status = strtoupper($request->status);
         $userModel->save();
         return response(['success' => true, 'message' => "Customer info was successfully updated."]);
     }
