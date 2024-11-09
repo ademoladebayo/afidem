@@ -2186,7 +2186,7 @@ function getBookedRooms() {
       document.getElementById("room").innerHTML = ``;
 
       data.room.available_rooms.forEach(room => {
-        document.getElementById("room").innerHTML += ` <option value="${room}">ROOM ${toUpperCase(room)}</option>`;
+        document.getElementById("room").innerHTML += ` <option value="${room}">ROOM ${room.toUpperCase()}</option>`;
       });
 
 
