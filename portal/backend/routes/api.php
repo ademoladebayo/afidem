@@ -39,7 +39,7 @@ Route::middleware([ActivityLog::class])->group(function () {
     Route::post('device-token', 'NotificationController@saveToken', function () {
     })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
 
-    Route::middleware('auth:sanctum')->group(function () {
+   // Route::middleware('auth:sanctum')->group(function () {
 
         // USERS
         Route::post('user', 'AdminController@createUser', function () {
@@ -165,4 +165,4 @@ Route::middleware([ActivityLog::class])->group(function () {
     // =============================================================================
 
 
-});
+//});
