@@ -19,6 +19,10 @@ class CreateAllTables extends Migration
                 $table->id();
                 $table->string('first_name');
                 $table->string('last_name');
+                $table->string('phone');
+                $table->string('address');
+                $table->string('service');
+                $table->string('status');
                 $table->timestamps();
             });
         }
