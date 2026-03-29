@@ -246,7 +246,7 @@ function getStationByURL() {
     return 7;
   } else if (parentUrl.includes("/loan.html")) {
     return 8;
-  } else if (parentUrl.includes("/room-service.html")) {
+  } else if (parentUrl.includes("/service-room.html")) {
     return 9;
   } else {
     return window.parent.document.getElementById("station").value;
