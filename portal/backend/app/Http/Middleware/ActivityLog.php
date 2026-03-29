@@ -32,6 +32,7 @@ class ActivityLog
      */
     public function terminate($request, $response)
     {
+        return 0;
         // REQUEST
         $token = $request->header("Authorization");
         $request_data = $request->input();
