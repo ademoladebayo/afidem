@@ -337,6 +337,7 @@ class TransactionService
                     ->join('users', 'users.id', '=', 'ajo.user_id')
                     ->where('is_charge', '1')
                     ->where('date', 'like', $date . '%')
+                    ->whereNull('ajo.deleted_at')
                     ->orderBy('day', 'ASC')
                     ->get();
 
@@ -352,6 +353,7 @@ class TransactionService
                     ->where('loan_type', 'DEBITOR')
                     // ->where('loan.status', 'PAID')
                     ->where('disbursement_date', 'like', $date . '%')
+                    ->whereNull('loan.deleted_at')
                     ->orderBy('day', 'ASC')
                     ->get();
             } else if ($request->station_id == 9) {
@@ -364,6 +366,7 @@ class TransactionService
                     )
                     ->join('users', 'users.id', '=', 'service_room.user_id')
                     ->where('checked_in', 'like', $date . '%')
+                    ->whereNull('service_room.deleted_at')
                     // ->whereNotNull('checked_out')
                     ->orderBy('day', 'ASC')
                     ->groupBy('day')
@@ -380,9 +383,11 @@ class TransactionService
                 ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 10)"), function ($query) use ($date) {
                     $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 10)"))
                         ->from('transaction_history')
-                        ->where('transaction_time', 'like', $date . '%');
+                        ->where('transaction_time', 'like', $date . '%')
+                        ->whereNull('deleted_at');
                 })
                 ->where('admin_station', $request->station_id)
+                ->whereNull('transaction_history.deleted_at')
                 ->groupBy('day')
                 ->orderBy('day', 'ASC')
                 ->get();

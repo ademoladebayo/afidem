@@ -29,4 +29,13 @@ class ServiceRoomController extends Controller
     }
 
 
+    // DELETE BOOKED ROOM
+    public function deleteBookedRoom($id)  
+    {
+        $RoomModel = RoomModel::find($id);
+        $RoomModel->delete();
+        return response(['success' => true, 'message' => "Booked room was deleted successfully."]);
+    }
+
+
 }

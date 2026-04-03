@@ -283,8 +283,9 @@
                                                             <th>Name</th>
                                                             <th>Room</th>
                                                             <th>Duration</th>
-                                                            <th>Check In</th>
-                                                            <th>Check Out</th>
+                                                            <th>Date In</th>
+                                                            <th>Date Out</th>
+                                                            <th>Status</th>
                                                             <th>Room Price</th>
                                                             <th>Total Charge</th>
                                                             <th>Action</th>
@@ -454,21 +455,21 @@
                                                                 <label>Room No</label>
                                                                 <select required onchange="" id="room"
                                                                     class="select2 form-input">
-                                                                    <option value="1a">ROOM 1A</option>
-                                                                    <option value="2a">ROOM 2A</option>
-                                                                    <option value="3a">ROOM 3A</option>
-                                                                    <option value="4a">ROOM 4A</option>
-                                                                    <option value="5a">ROOM 5A</option>
-                                                                    <option value="1b">ROOM 1B</option>
-                                                                    <option value="2b">ROOM 2B</option>
-                                                                    <option value="3b">ROOM 3B</option>
-                                                                    <option value="4b">ROOM 4B</option>
-                                                                    <option value="5b">ROOM 5B</option>
-                                                                    <option value="1c">ROOM 1C</option>
-                                                                    <option value="2c">ROOM 2C</option>
-                                                                    <option value="3c">ROOM 3C</option>
-                                                                    <option value="4c">ROOM 4C</option>
-                                                                    <option value="5c">ROOM 5C</option>
+                                                                    <option value="1a">Phase one (ROOM 1)</option>
+                                                                    <option value="2a">Phase one (ROOM 2)</option>
+                                                                    <option value="3a">Phase one (ROOM 3)</option>
+                                                                    <option value="4a">Phase one (ROOM 4)</option>
+                                                                    <option value="5a">Phase one (ROOM 5)</option>
+                                                                    <option value="1b">Phase two (ROOM 1)</option>
+                                                                    <option value="2b">Phase two (ROOM 2)</option>
+                                                                    <option value="3b">Phase two (ROOM 3)</option>
+                                                                    <option value="4b">Phase two (ROOM 4)</option>
+                                                                    <option value="5b">Phase two (ROOM 5)</option>
+                                                                    <option value="1c">Annex (ROOM 1)</option>
+                                                                    <option value="2c">Annex (ROOM 2)</option>
+                                                                    <option value="3c">Annex (ROOM 3)</option>
+                                                                    <option value="4c">Annex (ROOM 4)</option>
+                                                                    <option value="5c">Annex (ROOM 5)</option>
                                                                 </select>
                                                             </div>
 
@@ -541,24 +542,34 @@
                                                             </div>
 
                                                             <div class="col-12 form-group">
+                                                                <label>Checked Out ?</label>
+                                                                <select id="e_has_checked_out" class="select2" required>
+                                                                    <option value="false">No</option>
+                                                                    <option value="true">Yes</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12 form-group">
                                                                 <label>Room No</label>
                                                                 <select required onchange="" id="e_room"
                                                                     class="select2 form-input">
-                                                                    <option value="1a">ROOM 1A</option>
-                                                                    <option value="2a">ROOM 2A</option>
-                                                                    <option value="3a">ROOM 3A</option>
-                                                                    <option value="4a">ROOM 4A</option>
-                                                                    <option value="5a">ROOM 5A</option>
-                                                                    <option value="1b">ROOM 1B</option>
-                                                                    <option value="2b">ROOM 2B</option>
-                                                                    <option value="3b">ROOM 3B</option>
-                                                                    <option value="4b">ROOM 4B</option>
-                                                                    <option value="5b">ROOM 5B</option>
-                                                                    <option value="1c">ROOM 1C</option>
-                                                                    <option value="2c">ROOM 2C</option>
-                                                                    <option value="3c">ROOM 3C</option>
-                                                                    <option value="4c">ROOM 4C</option>
-                                                                    <option value="5c">ROOM 5C</option>
+                                                                    <option value="1a">Phase One (ROOM 1)</option>
+                                                                    <option value="2a">Phase One (ROOM 2)</option>
+                                                                    <option value="3a">Phase One (ROOM 3)</option>
+                                                                    <option value="4a">Phase One (ROOM 4)</option>
+                                                                    <option value="5a">Phase One (ROOM 5)</option>
+
+                                                                    <option value="1b">Phase two (ROOM 1)</option>
+                                                                    <option value="2b">Phase two (ROOM 2)</option>
+                                                                    <option value="3b">Phase two (ROOM 3)</option>
+                                                                    <option value="4b">Phase two (ROOM 4)</option>
+                                                                    <option value="5b">Phase two (ROOM 5)</option>
+
+                                                                    <option value="1c">Annex (ROOM 1)</option>
+                                                                    <option value="2c">Annex (ROOM 2)</option>
+                                                                    <option value="3c">Annex (ROOM 3)</option>
+                                                                    <option value="4c">Annex (ROOM 4)</option>
+                                                                    <option value="5c">Annex (ROOM 5)</option>
                                                                 </select>
                                                             </div>
 
@@ -579,43 +590,43 @@
                                           " style="z-index: 999999;" required>
                                                             </div>
 
-                                                            <label>Checked out</label>
+                                                            <!-- <label>Checked out</label>
                                                             <div class="col-12 form-group">
                                                                 <input onchange="" autocomplete="off" id="e_checked_out"
                                                                     type="date" placeholder="Check in Date" value=""
                                                                     class="form-control air-datepickergg"
                                                                     data-position='bottom left' format="yyyy-MM-dd
-                                          " style="z-index: 999999;">
-                                                            </div>
+                                          " style="z-index: 999999;"> -->
                                                         </div>
+                                                </div>
 
 
 
-                                                        <div class="col-12 form-group mg-t-8">
-                                                            <button type="submit" onclick="" id="updateLoanBTN"
-                                                                class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">UPDATE
-                                                                BOOKING</button>
-
-                                                        </div>
-
-                                                    </form>
-
-
-
+                                                <div class="col-12 form-group mg-t-8">
+                                                    <button type="submit" onclick="" id="updateLoanBTN"
+                                                        class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">UPDATE
+                                                        BOOKING</button>
 
                                                 </div>
+
+                                                </form>
+
+
+
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
 
+                    </div>
                 </div>
+
             </div>
         </div>
+    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"

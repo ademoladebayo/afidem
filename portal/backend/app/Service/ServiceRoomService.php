@@ -7,6 +7,7 @@ use App\Model\RoomModel;
 use App\Model\AdminModel;
 use App\Util\Utils;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,9 +23,10 @@ class ServiceRoomService
         $RoomModel->room_no = $request->room;
         $RoomModel->amount = $request->amount;
         $RoomModel->checked_in = $request->checked_in;
-        $RoomModel->checked_out = null;
+        $RoomModel->checked_out = Carbon::parse($request->checked_in)->plusDays(1);
         $RoomModel->duration = '1';
         $RoomModel->total_charge = $request->amount;
+        $RoomModel->has_checked_out = "false";
         $RoomModel->save();
 
 
@@ -50,9 +52,11 @@ class ServiceRoomService
         $RoomModel->room_no = $request->room;
         $RoomModel->amount = $request->amount;
         $RoomModel->checked_in = $request->checked_in;
-        $RoomModel->checked_out = $request->checked_out == "" ? null : $request->checked_out;
-        $RoomModel->duration = $request->duration;
-        $RoomModel->total_charge = $request->total_charge;
+        $RoomModel->checked_out = Carbon::parse($request->checked_in)->plusDays(1);
+        //$RoomModel->checked_out = $request->checked_out == "" ? null : $request->checked_out;
+        $RoomModel->duration = "1"; // Default duration
+        $RoomModel->total_charge = $request->amount; //$request->total_charge;
+        $RoomModel->has_checked_out = $request->has_checked_out;
         $RoomModel->save();
 
         return response(['success' => true, 'message' => "Booked room was updated successfully."]);

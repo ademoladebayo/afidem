@@ -97,6 +97,7 @@ class LoanService
                     )
                     ->where('loan_type', 'DEBITOR')
                     ->where('loan.status', 'NOT PAID')
+                    ->whereNull('loan.deleted_at')
                     ->groupBy('period', 'date')
                     ->orderBy('period', 'ASC')
                     ->get();
@@ -114,6 +115,7 @@ class LoanService
                     ->where('loan_type', 'DEBITOR')
                     ->where('loan.status', 'NOT PAID')
                     ->where('disbursement_date', 'like', $from . '%')
+                    ->whereNull('loan.deleted_at')
                     ->orderBy('disbursement_date', 'ASC')
                     ->get();
             }

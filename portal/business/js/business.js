@@ -375,7 +375,7 @@ function getAllExpense() {
               <td>${c}.</td>
               <td>${data[i].description}</td>
               <td>${formatNumber(parseInt(data[i].amount))}</td>
-              <td>${data[i].date}</td>
+              <td>${dateToWord(data[i].date)}</td>
               <td>
                   <a  onmouseover="reloadEditFrame();localStorage.setItem('editExpense','${data[i].id
             }~${data[i].description}~${data[i].date}~${data[i].amount
@@ -2206,12 +2206,20 @@ function getBookedRooms() {
     
             <td>${c}.</td>
             <td>${data.user.first_name + " " + data.user.last_name}</td>
+
             <td style='color:black'>Room ${data.room_no}</td>
+
             <td>   ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-success"><b>${data.duration} Day(s)</b></span>`}
             </td>
+
             <td>${dateToWord(data.checked_in)}</td>
+
             <td>${data.checked_out == null ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : dateToWord(data.checked_out)}</td>
+
+            <td>${data.has_checked_out == false ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : `<span class="badge bg-success"><b>CHECKED OUT</b></span>`}</td>
+
             <td style='color:black'>${formatNumber(parseInt(data.amount))}/ Day</td>
+
             <td style='color:green'>₦${formatNumber(parseInt(data.total_charge))}</td>
             <td>
               <a  onclick ="editBookedRoom(${JSON.stringify(data)
@@ -2221,6 +2229,9 @@ function getBookedRooms() {
                 "'"
               )})" class="btn btn-warning" data-bs-toggle="modal"
               data-bs-target="#editBookingModal"><i class="fas fa-edit"></i></a>
+
+               <a  onclick ="deleteBookedRoom(${data.id})" class="btn btn-danger" data-bs-toggle="modal"
+              data-bs-target="#deleteBookingModal"><i class="fas fa-trash"></i></a>
         
     
             </td>
@@ -2246,6 +2257,41 @@ function getBookedRooms() {
 
 }
 
+function deleteBookedRoom(id) {
+  if (!confirm("Are you sure you want to delete this booking ?")) {
+    return 0;
+  }
+
+  openSpinnerModal("Delete Booked Room");
+
+  fetch(ip + "/api/service-room/" + id, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    }
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+    .then((data) => {
+      removeSpinnerModal();
+      if (data.success) {
+        successtoast(data.message);
+        getBookedRooms();
+      } else {
+        errortoast(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
 function editBookedRoom(data) {
   document.getElementById("booking_id").value = data.id;
   Array.from(document.getElementById("e_room_user_1").options).forEach(option => {
@@ -2260,10 +2306,16 @@ function editBookedRoom(data) {
     }
   });
 
+  Array.from(document.getElementById("e_has_checked_out").options).forEach(option => {
+    if (option.value == data.has_checked_out) {
+      option.selected = true;
+    }
+  });
+
 
   document.getElementById("e_amount").value = data.amount;
   document.getElementById("e_checked_in").value = data.checked_in.split(' ')[0];
-  document.getElementById("e_checked_out").value = data.checked_out ? data.checked_out.split(' ')[0] : "";
+  //document.getElementById("e_checked_out").value = data.checked_out ? data.checked_out.split(' ')[0] : "";
 
   $('.select2').trigger('change');
 }
@@ -2287,7 +2339,8 @@ function updateRoomBooking(duration, total_charge) {
       checked_in: document.getElementById('e_checked_in').value,
       checked_out: document.getElementById('e_checked_out').value,
       duration: duration,
-      total_charge: total_charge
+      total_charge: total_charge,
+      has_checked_out: document.getElementById('e_has_checked_out').value
     }),
   })
     .then(function (res) {

@@ -152,6 +152,9 @@ Route::middleware([ActivityLog::class])->group(function () {
         })->middleware(Cors::class);
 
 
+        Route::delete('service-room/{id}', 'ServiceRoomController@deleteBookedRoom', function () {
+        })->middleware(Cors::class);
+
         // =============================================================================
         //               END OF SERVICE ROOM ROUTE
         // =============================================================================
