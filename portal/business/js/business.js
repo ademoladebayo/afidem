@@ -2251,6 +2251,8 @@ function getBookedRooms() {
         //   </td>`;
       }
 
+      getAllExpense();
+
 
       $("#paginate0").DataTable();
 
