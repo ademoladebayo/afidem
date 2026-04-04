@@ -2187,11 +2187,9 @@ function getBookedRooms() {
 
       data.room.available_rooms.forEach(room => {
         document.getElementById("room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
-      });
-
-      data.room.available_rooms.forEach(room => {
         document.getElementById("e_room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
       });
+
 
 
       // Destroy the existing DataTable
@@ -2220,7 +2218,7 @@ function getBookedRooms() {
 
             <td>${data.checked_out == null ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : dateToWord(data.checked_out)}</td>
 
-            <td>${data.has_checked_out == "NO" ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : `<span class="badge bg-success"><b>CHECKED OUT</b></span>`}</td>
+            <td>${data.has_checked_out == "false" ? `<span class="badge bg-warning"><b>NOT CHECKED OUT</b></span>` : `<span class="badge bg-success"><b>CHECKED OUT</b></span>`}</td>
 
             <td style='color:black'>${formatNumber(parseInt(data.amount))}/ Day</td>
 
