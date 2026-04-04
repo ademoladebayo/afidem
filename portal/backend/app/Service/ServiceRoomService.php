@@ -95,7 +95,7 @@ class ServiceRoomService
 
         $available_room = 0;
         foreach ($rooms as $room) {
-            if (!RoomModel::where('room_no', $room)->where('checked_out', null)->exists()) {
+            if (!RoomModel::where('room_no', $room)->where('has_checked_out', "false")->exists()) {
                 array_push($available_rooms, $room);
                 $available_room += 1;
             }

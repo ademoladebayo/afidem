@@ -2209,9 +2209,9 @@ function getBookedRooms() {
             <td>${c}.</td>
             <td>${data.user.first_name + " " + data.user.last_name}</td>
 
-            <td style='color:black'>${roomMap(data.room_no)}</td>
+            <td style='color:black'><b><small>${roomMap(data.room_no)}</small></b></td>
 
-            <td>   ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-primary"><b>${data.duration} Day(s)</b></span>`}
+            <td>   ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-primary"><b>${data.duration} Day</b></span>`}
             </td>
 
             <td>${dateToWord(data.checked_in)}</td>
