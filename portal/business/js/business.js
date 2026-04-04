@@ -2186,7 +2186,11 @@ function getBookedRooms() {
       document.getElementById("room").innerHTML = ``;
 
       data.room.available_rooms.forEach(room => {
-        document.getElementById("room").innerHTML += ` <option value="${room}">ROOM ${room.toUpperCase()}</option>`;
+        document.getElementById("room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
+      });
+
+      data.room.available_rooms.forEach(room => {
+        document.getElementById("e_room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
       });
 
 
@@ -2207,16 +2211,16 @@ function getBookedRooms() {
             <td>${c}.</td>
             <td>${data.user.first_name + " " + data.user.last_name}</td>
 
-            <td style='color:black'>Room ${data.room_no}</td>
+            <td style='color:black'>${roomMap(data.room_no)}</td>
 
-            <td>   ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-success"><b>${data.duration} Day(s)</b></span>`}
+            <td>   ${data.duration == '-' ? ` <span class="badge bg-warning"><b>USAGE IN PROGRESS</b></span>` : `<span class="badge bg-primary"><b>${data.duration} Day(s)</b></span>`}
             </td>
 
             <td>${dateToWord(data.checked_in)}</td>
 
             <td>${data.checked_out == null ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : dateToWord(data.checked_out)}</td>
 
-            <td>${data.has_checked_out == false ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : `<span class="badge bg-success"><b>CHECKED OUT</b></span>`}</td>
+            <td>${data.has_checked_out == "NO" ? `<span class="badge bg-danger"><b>NOT CHECKED OUT</b></span>` : `<span class="badge bg-success"><b>CHECKED OUT</b></span>`}</td>
 
             <td style='color:black'>${formatNumber(parseInt(data.amount))}/ Day</td>
 
@@ -2255,6 +2259,27 @@ function getBookedRooms() {
     })
     .catch((err) => console.log(err));
 
+}
+
+function roomMap(value) {
+  if (!value || typeof value !== 'string') {
+    return '';
+  }
+
+  const roomKey = value.toLowerCase();
+  const zoneCode = roomKey.slice(-1);
+  const roomNumber = roomKey.slice(0, -1);
+
+  const zoneNames = {
+    a: 'Phase One',
+    b: 'Phase Two',
+    c: 'Annex',
+    d: 'Phase Three',
+  };
+
+  const zoneName = zoneNames[zoneCode] || 'Unknown';
+
+  return `${zoneName} (ROOM ${roomNumber})`;
 }
 
 function deleteBookedRoom(id) {
@@ -2337,7 +2362,7 @@ function updateRoomBooking(duration, total_charge) {
       room: document.getElementById('e_room').value,
       amount: document.getElementById('e_amount').value,
       checked_in: document.getElementById('e_checked_in').value,
-      checked_out: document.getElementById('e_checked_out').value,
+      //checked_out: document.getElementById('e_checked_out').value,
       duration: duration,
       total_charge: total_charge,
       has_checked_out: document.getElementById('e_has_checked_out').value

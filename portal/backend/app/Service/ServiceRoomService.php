@@ -23,7 +23,7 @@ class ServiceRoomService
         $RoomModel->room_no = $request->room;
         $RoomModel->amount = $request->amount;
         $RoomModel->checked_in = $request->checked_in;
-        $RoomModel->checked_out = Carbon::parse($request->checked_in)->plusDays(1);
+        $RoomModel->checked_out = Carbon::parse($request->checked_in)->addDay();
         $RoomModel->duration = '1';
         $RoomModel->total_charge = $request->amount;
         $RoomModel->has_checked_out = "false";
@@ -52,7 +52,7 @@ class ServiceRoomService
         $RoomModel->room_no = $request->room;
         $RoomModel->amount = $request->amount;
         $RoomModel->checked_in = $request->checked_in;
-        $RoomModel->checked_out = Carbon::parse($request->checked_in)->plusDays(1);
+        $RoomModel->checked_out = Carbon::parse($request->checked_in)->addDay();
         //$RoomModel->checked_out = $request->checked_out == "" ? null : $request->checked_out;
         $RoomModel->duration = "1"; // Default duration
         $RoomModel->total_charge = $request->amount; //$request->total_charge;
@@ -90,7 +90,7 @@ class ServiceRoomService
 
     public function getAvailableRooms()
     {
-        $rooms = ["1a", "2a", "3a", "4a", "5a", "1b", "2b", "3b", "4b", "5b", "1c", "2c", "3c", "4c", "5c"];
+        $rooms = ["1a", "2a", "3a", "4a", "5a", "1b", "2b", "3b", "4b", "5b", "1c", "2c", "3c", "4c", "5c", "1d", "2d", "3d", "4d", "5d"];
         $available_rooms = [];
 
         $available_room = 0;
