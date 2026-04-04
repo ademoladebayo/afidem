@@ -574,6 +574,11 @@ function getAllTransaction() {
     date = changeDateFormat(start_date) + "~" + changeDateFormat(end_date);
   }
 
+  var parentUrl = window.parent.location.href;
+  if (!parentUrl.includes("/dashboard.html")) {
+    return;
+  }
+
   openSpinnerModal("Fetch Transaction");
 
   fetch(ip + "/api/transaction", {
