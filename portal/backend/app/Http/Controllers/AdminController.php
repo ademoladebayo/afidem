@@ -67,6 +67,11 @@ class AdminController extends Controller
 
     }
 
-
+    public function deleteUser($id)
+    {
+        $userModel = UserModel::find($id);
+        $userModel->delete();
+        return response(['success' => true, 'message' => "Customer was successfully deleted."]);
+    }
 
 }

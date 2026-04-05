@@ -32,8 +32,12 @@ class TransactionController extends Controller
 
     public function allExpense(Request $request)
     {
-        $month = explode("-", $request->date)[0] . "-" . explode("-", $request->date)[1];
-        return ExpenseModel::where('date', 'like', $month . '%')->where('admin_station', $request->admin_station)->orderBy('id', 'DESC')->get();
+        $date = explode("~", $request->date);
+        $start_date = Carbon::parse($date[0]);
+        $end_date = Carbon::parse($date[1]);
+        return ExpenseModel::whereBetween('date', [$start_date, $end_date])->where('admin_station', $request->admin_station)->orderBy('id', 'DESC')->get();
+        // $month = explode("-", $request->date)[0] . "-" . explode("-", $request->date)[1];
+        // return ExpenseModel::where('date', 'like', $month . '%')->where('admin_station', $request->admin_station)->orderBy('id', 'DESC')->get();
     }
     public function deleteExpense($fee_id)
     {

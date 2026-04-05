@@ -307,7 +307,12 @@ function createExpense() {
           setTimeout(function () {
             closeModal("modalYT");
             // window.parent.location.reload();
-            window.parent.processReport();
+            removeSpinnerModal();
+            var parentUrl = window.parent.location.href;
+            if (parentUrl.includes("/dashboard.html")) {
+              window.parent.processReport();
+            }
+
           }, 1000);
         } else {
           errortoast("<b>" + data.message + "</b>");
@@ -1348,6 +1353,9 @@ function getAllCustomer() {
                 "'"
               )})" class="btn btn-warning" data-bs-toggle="modal"
                 data-bs-target="#updateCustomerModal"><i class="fas fa-edit"></i></a>
+
+                 <a  onclick ="deleteCustomer(${data.id})" class="btn btn-danger" data-bs-toggle="modal"
+              data-bs-target="#deleteCustomerModal"><i class="fas fa-trash"></i></a>
           
       
               </td>
@@ -1387,6 +1395,44 @@ function editCustomer(data) {
   });
 
   $('.select2').trigger('change');
+}
+
+
+function deleteCustomer(id) {
+  if (!confirm("Are you sure you want to delete ?")) {
+    return 0;
+  }
+
+  openSpinnerModal("Delete User");
+
+  fetch(ip + "/api/user/" + id, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+      removeSpinnerModal();
+      toastr.remove();
+      if (data.success) {
+        successtoast("<b>" + data.message + "</b>");
+        getAllCustomer();
+      } else {
+        errortoast("<b>" + data.message + "</b>");
+      }
+    })
+    .catch((err) => console.log(err));
 }
 /* END USERS SECTION */
 

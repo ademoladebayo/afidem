@@ -51,6 +51,9 @@ Route::middleware([ActivityLog::class])->group(function () {
         Route::get('user/{service?}', 'AdminController@getUsers', function () {
         })->middleware(Cors::class);
 
+        Route::delete('user/{id}', 'AdminController@deleteUser', function () {
+        })->middleware(Cors::class);
+
 
         // TRANSACTION {EXPENSE MANAGEMENT}
         Route::post('transaction/create-expense', 'TransactionController@createExpense', function () {
