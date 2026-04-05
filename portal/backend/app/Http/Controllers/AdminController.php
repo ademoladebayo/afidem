@@ -29,6 +29,8 @@ class AdminController extends Controller
         $userModel->address = strtoupper($request->address);
         $userModel->service = strtoupper($request->service);
         $userModel->status = "ACTIVE";
+        $userModel->created_at = date("Y-m-d H:i:s");
+        $userModel->updated_at = date("Y-m-d H:i:s");
         $userModel->save();
         return response(['success' => true, 'message' => "Customer was successfully created."]);
     }

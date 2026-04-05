@@ -1406,7 +1406,7 @@ function deleteCustomer(id) {
   openSpinnerModal("Delete User");
 
   fetch(ip + "/api/user/" + id, {
-    method: "GET",
+    method: "DELETE",
     headers: {
       Accept: "application/json",
       "Content-type": "application/json",
