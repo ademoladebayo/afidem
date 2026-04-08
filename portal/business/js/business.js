@@ -2236,7 +2236,7 @@ function getBookedRooms() {
 
       //Append available rooms
       document.getElementById("room").innerHTML = ``;
-      document.getElementById("e_room").innerHTML = ``;
+      document.getElementById("e_room").innerHTML = `<option value="${data.room}">${roomMap(data.room_no)}</option>`;
 
       data.room.available_rooms.forEach(room => {
         document.getElementById("room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
@@ -2379,7 +2379,7 @@ function editBookedRoom(data) {
   });
 
   Array.from(document.getElementById("e_room").options).forEach(option => {
-    if (option.value == data.room) {
+    if (option.value == data.room_no) {
       option.selected = true;
     }
   });
