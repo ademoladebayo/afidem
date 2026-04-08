@@ -1434,6 +1434,7 @@ function deleteCustomer(id) {
     })
     .catch((err) => console.log(err));
 }
+
 /* END USERS SECTION */
 
 
@@ -2235,6 +2236,7 @@ function getBookedRooms() {
 
       //Append available rooms
       document.getElementById("room").innerHTML = ``;
+      document.getElementById("e_room").innerHTML = ``;
 
       data.room.available_rooms.forEach(room => {
         document.getElementById("room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;

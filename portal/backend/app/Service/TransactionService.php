@@ -361,7 +361,7 @@ class TransactionService
                     ->select(
                         DB::raw("SUBSTRING(checked_in, 1, 10) AS day"),
                         DB::raw("SUM(total_charge) AS profit"),
-                        DB::raw("CONCAT('Service charge for ', COUNT(DISTINCT(user_id)),' room(s)') AS description")
+                        DB::raw("CONCAT('Service charge for ', COUNT(DISTINCT(room_no)),' room(s)') AS description")
                         // DB::raw("CONCAT(service_room.duration, ' Day(s) service charge paid by ', users.first_name, ' ', users.last_name) AS description")
                     )
                     ->join('users', 'users.id', '=', 'service_room.user_id')
