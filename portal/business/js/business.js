@@ -2236,13 +2236,12 @@ function getBookedRooms() {
 
       //Append available rooms
       document.getElementById("room").innerHTML = ``;
-      document.getElementById("e_room").innerHTML = `<option value="${data.data.room_no}">${roomMap(data.data.room_no)}</option>`;
+      document.getElementById("e_room").innerHTML = ``;
 
       data.room.available_rooms.forEach(room => {
         document.getElementById("room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
         document.getElementById("e_room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
       });
-
 
 
       // Destroy the existing DataTable
@@ -2371,12 +2370,15 @@ function deleteBookedRoom(id) {
 }
 
 function editBookedRoom(data) {
+
   document.getElementById("booking_id").value = data.id;
   Array.from(document.getElementById("e_room_user_1").options).forEach(option => {
     if (option.value == data.user.id) {
       option.selected = true;
     }
   });
+
+  document.getElementById("e_room").innerHTML = `<option value="${data.room_no}">${roomMap(data.room_no)}</option>` + document.getElementById("e_room").innerHTML;
 
   Array.from(document.getElementById("e_room").options).forEach(option => {
     if (option.value == data.room_no) {
