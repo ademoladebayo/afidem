@@ -2236,7 +2236,7 @@ function getBookedRooms() {
 
       //Append available rooms
       document.getElementById("room").innerHTML = ``;
-      document.getElementById("e_room").innerHTML = `<option value="${data.room}">${roomMap(data.room_no)}</option>`;
+      document.getElementById("e_room").innerHTML = `<option value="${data.data.room_no}">${roomMap(data.data.room_no)}</option>`;
 
       data.room.available_rooms.forEach(room => {
         document.getElementById("room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
