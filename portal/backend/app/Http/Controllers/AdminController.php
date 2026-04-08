@@ -22,6 +22,10 @@ class AdminController extends Controller
             return response(['success' => false, 'message' => "Customer already exists !"]);
         }
 
+        if (UserModel::where(["phone" => $request->phone])->exists()) {
+            return response(['success' => false, 'message' => "Customer with this phone number already exists !"]);
+        }
+
         $userModel = new UserModel();
         $userModel->first_name = strtoupper($request->first_name);
         $userModel->last_name = strtoupper($request->last_name);

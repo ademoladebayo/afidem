@@ -2383,6 +2383,8 @@ function editBookedRoom(data) {
   Array.from(document.getElementById("e_room").options).forEach(option => {
     if (option.value == data.room_no) {
       option.selected = true;
+    } else {
+      option.selected = false;
     }
   });
 
