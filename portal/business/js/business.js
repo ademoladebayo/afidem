@@ -16,6 +16,8 @@ var profit_list = {};
 
 var newObj = {};
 
+var available_rooms = [];
+
 collapseSidebar();
 
 function loadSideNav(page) {
@@ -2238,7 +2240,9 @@ function getBookedRooms() {
       document.getElementById("room").innerHTML = ``;
       document.getElementById("e_room").innerHTML = ``;
 
-      data.room.available_rooms.forEach(room => {
+      available_rooms = data.room.available_rooms;
+
+      available_rooms.forEach(room => {
         document.getElementById("room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
         document.getElementById("e_room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
       });
@@ -2378,7 +2382,13 @@ function editBookedRoom(data) {
     }
   });
 
+
+  document.getElementById("e_room").innerHTML = ``;
   document.getElementById("e_room").innerHTML = `<option value="${data.room_no}">${roomMap(data.room_no)}</option>` + document.getElementById("e_room").innerHTML;
+  available_rooms.forEach(room => {
+    document.getElementById("e_room").innerHTML += ` <option value="${room}">${roomMap(room)}</option>`;
+  });
+
 
   Array.from(document.getElementById("e_room").options).forEach(option => {
     if (option.value == data.room_no) {
