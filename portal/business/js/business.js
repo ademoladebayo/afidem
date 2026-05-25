@@ -1194,7 +1194,7 @@ function getBreakdownMonthly(date, station_id, station_name) {
         data.transaction.forEach((transaction) => {
           document.getElementById("monthly_profit").innerHTML += `<tr>
             <td>${c}.</td>
-            <td>${monthToWord(transaction.month)}</td>
+            <td>${monthToWord(transaction.month+"-01")}</td>
             <td>₦${formatNumber(parseInt(transaction.profit))}</td>
         </tr>
         `;

@@ -407,7 +407,7 @@ class TransactionService
             if ($request->station_id == 7) {
                 $transaction = DB::table('ajo')
                     ->select(
-                        DB::raw("SUBSTRING(date, 1, 6) AS month"),
+                        DB::raw("SUBSTRING(date, 1, 7) AS month"),
                         DB::raw("amount AS profit"),
                         DB::raw("CONCAT('Commission paid by ', users.first_name, ' ', users.last_name, ' for Ajo contribution') AS description")
                     )
@@ -422,7 +422,7 @@ class TransactionService
             } else if ($request->station_id == 8) {
                 $transaction = DB::table('loan')
                     ->select(
-                        DB::raw("SUBSTRING(disbursement_date, 1, 6) AS month"),
+                        DB::raw("SUBSTRING(disbursement_date, 1, 7) AS month"),
                         DB::raw("commission AS profit"),
                         DB::raw("CONCAT('%', rate, ' Interest paid by ', users.first_name, ' ', users.last_name, ' on NGN', FORMAT(amount,0), ' loan for ', duration, ' month(s)') AS description")
                     )
@@ -436,7 +436,7 @@ class TransactionService
             } else if ($request->station_id == 9) {
                 $transaction = DB::table('service_room')
                     ->select(
-                        DB::raw("SUBSTRING(checked_in, 1, 6) AS month"),
+                        DB::raw("SUBSTRING(checked_in, 1, 7) AS month"),
                         DB::raw("SUM(total_charge) AS profit"),
                         DB::raw("CONCAT('Service charge for ', COUNT(DISTINCT(room_no)),' room(s)') AS description")
                         // DB::raw("CONCAT(service_room.duration, ' Day(s) service charge paid by ', users.first_name, ' ', users.last_name) AS description")
@@ -452,13 +452,13 @@ class TransactionService
         } else {
             $transaction = DB::table('transaction_history')
                 ->select(
-                    DB::raw("SUBSTRING(transaction_time, 1, 6) AS month"),
+                    DB::raw("SUBSTRING(transaction_time, 1, 7) AS month"),
                     DB::raw("SUM(profit) AS profit"),
                     DB::raw("CONCAT(COUNT(profit), ' Transaction(s)') AS description"),
                     DB::raw("COUNT(profit) as count")
                 )
-                ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 6)"), function ($query) use ($date) {
-                    $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 6)"))
+                ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 7)"), function ($query) use ($date) {
+                    $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 7)"))
                         ->from('transaction_history')
                         ->where('transaction_time', 'like', $date . '%')
                         ->whereNull('deleted_at');
