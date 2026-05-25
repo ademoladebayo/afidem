@@ -901,6 +901,7 @@ function deleteTransaction(id) {
 }
 
 function getFinancialSummary() {
+  year = document.getElementById("year").value;
   custom_date =
     document.getElementById("year").value +
     "-" +
@@ -986,7 +987,11 @@ function getFinancialSummary() {
               <td></td>
               <td>${formatNumber(data[i].yearly.expense)}</td>
               <td></td>
-              <td>${formatNumber(data[i].yearly.gross_profit)}</td>
+              <td> <a onclick="getBreakdownMonthly('${year}','${data[i].station_id
+            }', '${data[i].station_name}')" data-bs-toggle="modal"
+                  data-bs-target="#monthlyViewModal" href="#">${formatNumber(
+              data[i].yearly.gross_profit
+            )}</a></td>
              </tr>
               `;
           c = c + 1;
@@ -1140,6 +1145,93 @@ function getBreakdown(date, station_id, station_name) {
       document.getElementById("transaction_count").innerHTML =
         formatNumber(total_trans_count);
       document.getElementById("gross_profit").innerHTML =
+        "₦" + formatNumber(total_profit - total_expense);
+    })
+    .catch((err) => console.log(err));
+}
+
+function getBreakdownMonthly(date, station_id, station_name) {
+  resetBreakdownTable();
+  openSpinnerModal("Transaction Breakdown");
+  fetch(ip + "/api/transaction/financial-summary/breakdown/monthly", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: "Bearer " + localStorage["token"],
+    },
+    body: JSON.stringify({
+      date: date,
+      station_id: station_id,
+    }),
+  })
+    .then(function (res) {
+      console.log(res.status);
+      if (res.status == 401) {
+        removeSpinnerModal();
+        openAuthenticationModal();
+      }
+      return res.json();
+    })
+
+    .then((data) => {
+      removeSpinnerModal();
+      total_expense = 0;
+      total_trans_count = 0;
+      total_profit = 0;
+
+      const dat = new Date(date);
+      const year = dat.getFullYear();
+      const month = dat.toLocaleDateString("en-US", { month: "long" });
+
+      document.getElementById("pd_label_monthly").innerHTML =
+        station_name +
+        "'s TRANSACTION BREAKDOWN FOR " + year;
+
+      if (data.transaction.length > 0) {
+        c = 1;
+        document.getElementById("monthly_profit").innerHTML = ``;
+        data.transaction.forEach((transaction) => {
+          document.getElementById("monthly_profit").innerHTML += `<tr>
+            <td>${c}.</td>
+            <td>${monthToWord(transaction.month)}</td>
+            <td>₦${formatNumber(parseInt(transaction.profit))}</td>
+        </tr>
+        `;
+
+          if (transaction.count != null) {
+            total_trans_count += parseInt(transaction.count);
+          } else {
+            total_trans_count = data.transaction.length;
+          }
+          total_profit += parseInt(transaction.profit);
+
+          c = c + 1;
+        });
+      }
+
+      if (data.expense.length > 0) {
+        c = 1;
+        document.getElementById("m_expense_table").innerHTML = ``;
+        data.expense.forEach((expense) => {
+          document.getElementById("m_expense_table").innerHTML += `<tr>
+            <td>${c}.</td>
+            <td>${monthToWord(expense.date)}</td>
+            <td>₦${formatNumber(parseInt(expense.amount))}</td>
+        </tr>
+        `;
+          total_expense += parseInt(expense.amount);
+          c = c + 1;
+        });
+      }
+
+      document.getElementById("m_total_expense").innerHTML =
+        "₦" + formatNumber(total_expense);
+      document.getElementById("m_total_income").innerHTML =
+        "₦" + formatNumber(total_profit);
+      document.getElementById("m_transaction_count").innerHTML =
+        formatNumber(total_trans_count);
+      document.getElementById("m_gross_profit").innerHTML =
         "₦" + formatNumber(total_profit - total_expense);
     })
     .catch((err) => console.log(err));
@@ -2479,6 +2571,15 @@ function dateToWord(date) {
     year: "numeric",
     month: "long",
     day: "numeric",
+  };
+  const formattedDate = new Date(date).toLocaleDateString("en-US", options);
+  return formattedDate;
+}
+
+function monthToWord(date) {
+  const options = {
+    year: "numeric",
+    month: "long",
   };
   const formattedDate = new Date(date).toLocaleDateString("en-US", options);
   return formattedDate;

@@ -395,4 +395,81 @@ class TransactionService
 
         return ['transaction' => $transaction, 'expense' => $expense];
     }
+
+     public function getBreakdownMonthly(Request $request)
+    {
+        $date = $request->date;
+        $expense = ExpenseModel::where('date', 'like', $request->date . '%')->where("admin_station", $request->station_id)->get();
+
+
+        if (in_array($request->station_id, [7, 8, 9])) {
+
+            if ($request->station_id == 7) {
+                $transaction = DB::table('ajo')
+                    ->select(
+                        DB::raw("SUBSTRING(date, 1, 6) AS month"),
+                        DB::raw("amount AS profit"),
+                        DB::raw("CONCAT('Commission paid by ', users.first_name, ' ', users.last_name, ' for Ajo contribution') AS description")
+                    )
+                    ->join('users', 'users.id', '=', 'ajo.user_id')
+                    ->where('is_charge', '1')
+                    ->where('date', 'like', $date . '%')
+                    ->whereNull('ajo.deleted_at')
+                    ->orderBy('day', 'ASC')
+                    ->get();
+
+
+            } else if ($request->station_id == 8) {
+                $transaction = DB::table('loan')
+                    ->select(
+                        DB::raw("SUBSTRING(disbursement_date, 1, 6) AS month"),
+                        DB::raw("commission AS profit"),
+                        DB::raw("CONCAT('%', rate, ' Interest paid by ', users.first_name, ' ', users.last_name, ' on NGN', FORMAT(amount,0), ' loan for ', duration, ' month(s)') AS description")
+                    )
+                    ->join('users', 'users.id', '=', 'loan.user_id')
+                    ->where('loan_type', 'DEBITOR')
+                    // ->where('loan.status', 'PAID')
+                    ->where('disbursement_date', 'like', $date . '%')
+                    ->whereNull('loan.deleted_at')
+                    ->orderBy('month', 'ASC')
+                    ->get();
+            } else if ($request->station_id == 9) {
+                $transaction = DB::table('service_room')
+                    ->select(
+                        DB::raw("SUBSTRING(checked_in, 1, 6) AS month"),
+                        DB::raw("SUM(total_charge) AS profit"),
+                        DB::raw("CONCAT('Service charge for ', COUNT(DISTINCT(room_no)),' room(s)') AS description")
+                        // DB::raw("CONCAT(service_room.duration, ' Day(s) service charge paid by ', users.first_name, ' ', users.last_name) AS description")
+                    )
+                    ->join('users', 'users.id', '=', 'service_room.user_id')
+                    ->where('checked_in', 'like', $date . '%')
+                    ->whereNull('service_room.deleted_at')
+                    // ->whereNotNull('checked_out')
+                    ->orderBy('month', 'ASC')
+                    ->groupBy('month')
+                    ->get();
+            }
+        } else {
+            $transaction = DB::table('transaction_history')
+                ->select(
+                    DB::raw("SUBSTRING(transaction_time, 1, 6) AS month"),
+                    DB::raw("SUM(profit) AS profit"),
+                    DB::raw("CONCAT(COUNT(profit), ' Transaction(s)') AS description"),
+                    DB::raw("COUNT(profit) as count")
+                )
+                ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 6)"), function ($query) use ($date) {
+                    $query->select(DB::raw("DISTINCT SUBSTRING(transaction_time, 1, 6)"))
+                        ->from('transaction_history')
+                        ->where('transaction_time', 'like', $date . '%')
+                        ->whereNull('deleted_at');
+                })
+                ->where('admin_station', $request->station_id)
+                ->whereNull('transaction_history.deleted_at')
+                ->groupBy('month')
+                ->orderBy('month', 'ASC')
+                ->get();
+        }
+
+        return ['transaction' => $transaction, 'expense' => $expense];
+    }
 }

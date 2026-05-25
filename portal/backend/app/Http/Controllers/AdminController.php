@@ -55,7 +55,7 @@ class AdminController extends Controller
     public function getUsers($service = null)
     {
         if ($service) {
-            return UserModel::select('id', 'first_name', 'last_name')->where('service', 'LIKE', '%' . $service . '%')->where("status", "ACTIVE")->get();
+            return UserModel::select('id', 'first_name', 'last_name')->where('service', 'LIKE', '%' . $service . '%')->where("status", "ACTIVE")->orderBy("first_name", "ASC")->get();
         } else {
             $data =
                 [
