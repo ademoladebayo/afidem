@@ -1216,7 +1216,7 @@ function getBreakdownMonthly(date, station_id, station_name) {
         data.expense.forEach((expense) => {
           document.getElementById("m_expense_table").innerHTML += `<tr>
             <td>${c}.</td>
-            <td>${monthToWord(expense.date)}</td>
+            <td>${monthToWord(expense.month)}</td>
             <td>₦${formatNumber(parseInt(expense.amount))}</td>
         </tr>
         `;

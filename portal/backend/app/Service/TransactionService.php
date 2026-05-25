@@ -396,10 +396,18 @@ class TransactionService
         return ['transaction' => $transaction, 'expense' => $expense];
     }
 
-     public function getBreakdownMonthly(Request $request)
+    public function getBreakdownMonthly(Request $request)
     {
         $date = $request->date;
-        $expense = ExpenseModel::where('date', 'like', $request->date . '%')->where("admin_station", $request->station_id)->get();
+        $expense = ExpenseModel::select(
+            DB::raw("SUBSTRING(date, 1, 7) AS month"),
+            DB::raw("SUM(amount) AS amount")
+        )
+            ->where('date', 'like', $request->date . '%')
+            ->where("admin_station", $request->station_id)
+            ->orderBy('month', 'ASC')
+            ->groupBy('month')
+            ->get();
 
 
         if (in_array($request->station_id, [7, 8, 9])) {
@@ -408,14 +416,15 @@ class TransactionService
                 $transaction = DB::table('ajo')
                     ->select(
                         DB::raw("SUBSTRING(date, 1, 7) AS month"),
-                        DB::raw("amount AS profit"),
+                        DB::raw("SUM(amount) AS profit"),
                         DB::raw("CONCAT('Commission paid by ', users.first_name, ' ', users.last_name, ' for Ajo contribution') AS description")
                     )
                     ->join('users', 'users.id', '=', 'ajo.user_id')
                     ->where('is_charge', '1')
                     ->where('date', 'like', $date . '%')
                     ->whereNull('ajo.deleted_at')
-                    ->orderBy('day', 'ASC')
+                    ->orderBy('month', 'ASC')
+                    ->groupBy('month')
                     ->get();
 
 
@@ -423,7 +432,7 @@ class TransactionService
                 $transaction = DB::table('loan')
                     ->select(
                         DB::raw("SUBSTRING(disbursement_date, 1, 7) AS month"),
-                        DB::raw("commission AS profit"),
+                        DB::raw("SUM(commission) AS profit"),
                         DB::raw("CONCAT('%', rate, ' Interest paid by ', users.first_name, ' ', users.last_name, ' on NGN', FORMAT(amount,0), ' loan for ', duration, ' month(s)') AS description")
                     )
                     ->join('users', 'users.id', '=', 'loan.user_id')
@@ -432,6 +441,7 @@ class TransactionService
                     ->where('disbursement_date', 'like', $date . '%')
                     ->whereNull('loan.deleted_at')
                     ->orderBy('month', 'ASC')
+                    ->groupBy('month')
                     ->get();
             } else if ($request->station_id == 9) {
                 $transaction = DB::table('service_room')
