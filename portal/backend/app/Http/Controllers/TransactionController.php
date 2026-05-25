@@ -81,4 +81,10 @@ class TransactionController extends Controller
         $TransactionService = new TransactionService();
         return $TransactionService->getBreakdown($request);
     }
+
+    public function getBreakdownMonthly(Request $request)
+    {
+        $TransactionService = new TransactionService();
+        return $TransactionService->getBreakdownMonthly($request);
+    }
 }

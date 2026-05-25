@@ -39,136 +39,139 @@ Route::middleware([ActivityLog::class])->group(function () {
     Route::post('device-token', 'NotificationController@saveToken', function () {
     })->middleware(Cors::class)->withoutMiddleware([ActivityLog::class]);
 
-   // Route::middleware('auth:sanctum')->group(function () {
+    // Route::middleware('auth:sanctum')->group(function () {
 
-        // USERS
-        Route::post('user', 'AdminController@createUser', function () {
-        })->middleware(Cors::class);
+    // USERS
+    Route::post('user', 'AdminController@createUser', function () {
+    })->middleware(Cors::class);
 
-        Route::put('user', 'AdminController@updateUser', function () {
-        })->middleware(Cors::class);
+    Route::put('user', 'AdminController@updateUser', function () {
+    })->middleware(Cors::class);
 
-        Route::get('user/{service?}', 'AdminController@getUsers', function () {
-        })->middleware(Cors::class);
+    Route::get('user/{service?}', 'AdminController@getUsers', function () {
+    })->middleware(Cors::class);
 
-        Route::delete('user/{id}', 'AdminController@deleteUser', function () {
-        })->middleware(Cors::class);
-
-
-        // TRANSACTION {EXPENSE MANAGEMENT}
-        Route::post('transaction/create-expense', 'TransactionController@createExpense', function () {
-        })->middleware(Cors::class);
-
-        Route::post('transaction/edit-expense', 'TransactionController@editExpense', function () {
-        })->middleware(Cors::class);
-
-        Route::get('transaction/delete-expense/{expense_id}', 'TransactionController@deleteExpense', function () {
-        })->middleware(Cors::class);
-
-        Route::post('transaction/all-expense', 'TransactionController@allExpense', function () {
-        })->middleware(Cors::class);
+    Route::delete('user/{id}', 'AdminController@deleteUser', function () {
+    })->middleware(Cors::class);
 
 
-        // UPLOAD REPORT
-        Route::post('transaction/report', 'TransactionController@uploadReport', function () {
-        })->middleware(Cors::class);
+    // TRANSACTION {EXPENSE MANAGEMENT}
+    Route::post('transaction/create-expense', 'TransactionController@createExpense', function () {
+    })->middleware(Cors::class);
 
-        Route::post('transaction', 'TransactionController@fetchTransaction', function () {
-        })->middleware(Cors::class);
+    Route::post('transaction/edit-expense', 'TransactionController@editExpense', function () {
+    })->middleware(Cors::class);
 
-        Route::get('transaction/delete-transaction/{id}', 'TransactionController@deleteTransaction', function () {
-        })->middleware(Cors::class);
+    Route::get('transaction/delete-expense/{expense_id}', 'TransactionController@deleteExpense', function () {
+    })->middleware(Cors::class);
 
-
-        Route::post('transaction/profit', 'TransactionController@uploadProfit', function () {
-        })->middleware(Cors::class);
-
-        Route::post('transaction/financial-summary', 'TransactionController@getFinancialSummary', function () {
-        })->middleware(Cors::class);
-
-        Route::post('transaction/financial-summary/breakdown', 'TransactionController@getBreakdown', function () {
-        })->middleware(Cors::class);
+    Route::post('transaction/all-expense', 'TransactionController@allExpense', function () {
+    })->middleware(Cors::class);
 
 
+    // UPLOAD REPORT
+    Route::post('transaction/report', 'TransactionController@uploadReport', function () {
+    })->middleware(Cors::class);
+
+    Route::post('transaction', 'TransactionController@fetchTransaction', function () {
+    })->middleware(Cors::class);
+
+    Route::get('transaction/delete-transaction/{id}', 'TransactionController@deleteTransaction', function () {
+    })->middleware(Cors::class);
 
 
+    Route::post('transaction/profit', 'TransactionController@uploadProfit', function () {
+    })->middleware(Cors::class);
 
-        // =============================================================================
-        //               BEGINNING OF AJO ROUTE
-        // =============================================================================
+    Route::post('transaction/financial-summary', 'TransactionController@getFinancialSummary', function () {
+    })->middleware(Cors::class);
 
-        Route::post('ajo/transaction', 'AjoController@createTransaction', function () {
-        })->middleware(Cors::class);
+    Route::post('transaction/financial-summary/breakdown', 'TransactionController@getBreakdown', function () {
+    })->middleware(Cors::class);
 
-        Route::get('ajo/transaction/{from}/{to}/{user_id?}', 'AjoController@fetchTransaction', function () {
-        })->middleware(Cors::class);
+    Route::post('transaction/financial-summary/breakdown/monthly', 'TransactionController@getBreakdownMonthly', function () {
+    })->middleware(Cors::class);
 
 
 
 
-
-
-
-        Route::get('ajo/delete-expense/{expense_id}', 'AjoController@deleteExpense', function () {
-        })->middleware(Cors::class);
-
-        Route::post('ajo/all-expense', 'AjoController@allExpense', function () {
-        })->middleware(Cors::class);
-
-
-        // =============================================================================
-        //               END OF AJO ROUTE
-        // =============================================================================
-
-
-
-        // =============================================================================
-        //               BEGINNING OF LOAN ROUTE
-        // =============================================================================
-
-        Route::post('loan/transaction', 'LoanController@createLoan', function () {
-        })->middleware(Cors::class);
-
-        Route::put('loan/transaction', 'LoanController@updateLoan', function () {
-        })->middleware(Cors::class);
-
-        Route::get('loan/transaction/{from}/{to}/{user_id?}/{type?}', 'LoanController@fetchLoan', function () {
-        })->middleware(Cors::class);
-
-
-        // =============================================================================
-        //               END OF LOAN ROUTE
-        // =============================================================================
-
-
-        // =============================================================================
-        //               BEGINNING OF SERVICE ROOM ROUTE
-        // =============================================================================
-
-        Route::post('service-room', 'ServiceRoomController@bookRoom', function () {
-        })->middleware(Cors::class);
-
-        Route::put('service-room', 'ServiceRoomController@updateBookedRoom', function () {
-        })->middleware(Cors::class);
-
-        Route::get('service-room/{from}/{to}/{user_id?}', 'ServiceRoomController@getBookedRooms', function () {
-        })->middleware(Cors::class);
-
-
-        Route::delete('service-room/{id}', 'ServiceRoomController@deleteBookedRoom', function () {
-        })->middleware(Cors::class);
-
-        // =============================================================================
-        //               END OF SERVICE ROOM ROUTE
-        // =============================================================================
-
-
-
-    });
 
     // =============================================================================
-    //               END OF TRANSACTION ROUTE
+    //               BEGINNING OF AJO ROUTE
     // =============================================================================
+
+    Route::post('ajo/transaction', 'AjoController@createTransaction', function () {
+    })->middleware(Cors::class);
+
+    Route::get('ajo/transaction/{from}/{to}/{user_id?}', 'AjoController@fetchTransaction', function () {
+    })->middleware(Cors::class);
+
+
+
+
+
+
+
+    Route::get('ajo/delete-expense/{expense_id}', 'AjoController@deleteExpense', function () {
+    })->middleware(Cors::class);
+
+    Route::post('ajo/all-expense', 'AjoController@allExpense', function () {
+    })->middleware(Cors::class);
+
+
+    // =============================================================================
+    //               END OF AJO ROUTE
+    // =============================================================================
+
+
+
+    // =============================================================================
+    //               BEGINNING OF LOAN ROUTE
+    // =============================================================================
+
+    Route::post('loan/transaction', 'LoanController@createLoan', function () {
+    })->middleware(Cors::class);
+
+    Route::put('loan/transaction', 'LoanController@updateLoan', function () {
+    })->middleware(Cors::class);
+
+    Route::get('loan/transaction/{from}/{to}/{user_id?}/{type?}', 'LoanController@fetchLoan', function () {
+    })->middleware(Cors::class);
+
+
+    // =============================================================================
+    //               END OF LOAN ROUTE
+    // =============================================================================
+
+
+    // =============================================================================
+    //               BEGINNING OF SERVICE ROOM ROUTE
+    // =============================================================================
+
+    Route::post('service-room', 'ServiceRoomController@bookRoom', function () {
+    })->middleware(Cors::class);
+
+    Route::put('service-room', 'ServiceRoomController@updateBookedRoom', function () {
+    })->middleware(Cors::class);
+
+    Route::get('service-room/{from}/{to}/{user_id?}', 'ServiceRoomController@getBookedRooms', function () {
+    })->middleware(Cors::class);
+
+
+    Route::delete('service-room/{id}', 'ServiceRoomController@deleteBookedRoom', function () {
+    })->middleware(Cors::class);
+
+    // =============================================================================
+    //               END OF SERVICE ROOM ROUTE
+    // =============================================================================
+
+
+
+});
+
+// =============================================================================
+//               END OF TRANSACTION ROUTE
+// =============================================================================
 
 
 //});
