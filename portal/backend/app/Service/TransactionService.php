@@ -417,7 +417,6 @@ class TransactionService
                     ->select(
                         DB::raw("SUBSTRING(date, 1, 7) AS month"),
                         DB::raw("SUM(amount) AS profit"),
-                        DB::raw("CONCAT('Commission paid by ', users.first_name, ' ', users.last_name, ' for Ajo contribution') AS description")
                     )
                     ->join('users', 'users.id', '=', 'ajo.user_id')
                     ->where('is_charge', '1')
@@ -432,8 +431,7 @@ class TransactionService
                 $transaction = DB::table('loan')
                     ->select(
                         DB::raw("SUBSTRING(disbursement_date, 1, 7) AS month"),
-                        DB::raw("SUM(commission) AS profit"),
-                        DB::raw("CONCAT('%', rate, ' Interest paid by ', users.first_name, ' ', users.last_name, ' on NGN', FORMAT(amount,0), ' loan for ', duration, ' month(s)') AS description")
+                        DB::raw("SUM(commission) AS profit")
                     )
                     ->join('users', 'users.id', '=', 'loan.user_id')
                     ->where('loan_type', 'DEBITOR')
@@ -447,9 +445,7 @@ class TransactionService
                 $transaction = DB::table('service_room')
                     ->select(
                         DB::raw("SUBSTRING(checked_in, 1, 7) AS month"),
-                        DB::raw("SUM(total_charge) AS profit"),
-                        DB::raw("CONCAT('Service charge for ', COUNT(DISTINCT(room_no)),' room(s)') AS description")
-                        // DB::raw("CONCAT(service_room.duration, ' Day(s) service charge paid by ', users.first_name, ' ', users.last_name) AS description")
+                        DB::raw("SUM(total_charge) AS profit")
                     )
                     ->join('users', 'users.id', '=', 'service_room.user_id')
                     ->where('checked_in', 'like', $date . '%')
@@ -464,7 +460,6 @@ class TransactionService
                 ->select(
                     DB::raw("SUBSTRING(transaction_time, 1, 7) AS month"),
                     DB::raw("SUM(profit) AS profit"),
-                    DB::raw("CONCAT(COUNT(profit), ' Transaction(s)') AS description"),
                     DB::raw("COUNT(profit) as count")
                 )
                 ->whereIn(DB::raw("SUBSTRING(transaction_time, 1, 7)"), function ($query) use ($date) {
