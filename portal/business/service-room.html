@@ -32,8 +32,12 @@
     <script src="https://checkout.flutterwave.com/v3.js"></script>
     <!-- Data Table CSS -->
     <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
+    
     <!-- Select 2 CSS -->
     <link rel="stylesheet" href="../css/select2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
     <!-- Date Picker CSS -->
     <link rel="stylesheet" href="../css/datepicker.min.css">
     <link href="../assets/css/lib/toastr/toastr.min.css" rel="stylesheet">
@@ -689,6 +693,21 @@
 
 
     <script>
+
+
+        $(document).ready(function () {
+            $('#e_room_user_1').select2({
+                placeholder: "Search by name ...",
+                allowClear: true
+            });
+
+            $('#room_user_1').select2({
+                placeholder: "Search by name ...",
+                allowClear: true
+            }); 
+        });
+
+
         document.getElementById("start_date").value = getDate().split("~")[1];
         document.getElementById("end_date").value = getDate().split("~")[1];
 
