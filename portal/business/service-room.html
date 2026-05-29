@@ -704,6 +704,22 @@
                 dropdownAutoWidth: true
             });
 
+            $('#room_user_1').select2({
+                placeholder: "Search by name ...",
+                allowClear: true,
+                dropdownParent: $('#transModal'),
+                minimumResultsForSearch: 0,
+                dropdownAutoWidth: true
+            });
+
+            $('#room').select2({
+                placeholder: "Search by name ...",
+                allowClear: true,
+                dropdownParent: $('#transModal'),
+                minimumResultsForSearch: 0,
+                dropdownAutoWidth: true
+            });
+
             $('#e_room_user_1').select2({
                 placeholder: "Search by name ...",
                 allowClear: true,
@@ -712,13 +728,18 @@
                 dropdownAutoWidth: true
             });
 
-            $('#room_user_1').select2({
+            $('#e_room').select2({
                 placeholder: "Search by name ...",
                 allowClear: true,
-                dropdownParent: $('#transModal'),
+                dropdownParent: $('#editBookingModal'),
                 minimumResultsForSearch: 0,
                 dropdownAutoWidth: true
             });
+
+
+
+
+
         });
 
 

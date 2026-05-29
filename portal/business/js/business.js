@@ -1239,7 +1239,7 @@ function getBreakdownMonthly(date, station_id, station_name) {
             <td>${c}.</td>
             <td style="color:black">${monthToWord(sales.month + "-01")}</td>
             <td style="color:blue">₦${formatNumber(parseInt(sales.profit))}</td>
-            <td style="color:red">₦${formatNumber(parseInt(expense.amount))}</td>
+            <td style="color:red">₦${formatNumber(parseInt(expense.amount ?? 0))}</td>
             <td style="color: ${netSales < 0 ? "red" : "green"
           }"><b>₦${formatNumber(netSales)}</b></td>
         </tr>
@@ -1251,7 +1251,7 @@ function getBreakdownMonthly(date, station_id, station_name) {
           total_trans_count = data.transaction.length;
         }
         total_profit += parseInt(sales.profit);
-        total_expense += parseInt(expense.amount);
+        total_expense += parseInt(expense.amount ?? 0);
 
         c = c + 1;
       }
