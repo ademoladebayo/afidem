@@ -1233,7 +1233,7 @@ function getBreakdownMonthly(date, station_id, station_name) {
       for (i = 0; i < length; i++) {
         const sales = data.transaction[i];
         const expense = data.expense[i];
-        const netSales = parseInt(sales.profit) - parseInt(expense.amount);
+        const netSales = parseInt(sales.profit) - parseInt(expense.amount ?? 0);
 
         document.getElementById("monthly_profit").innerHTML += `<tr>
             <td>${c}.</td>
