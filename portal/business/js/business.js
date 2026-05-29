@@ -1188,42 +1188,74 @@ function getBreakdownMonthly(date, station_id, station_name) {
         station_name +
         "'s TRANSACTION BREAKDOWN FOR " + year;
 
-      if (data.transaction.length > 0) {
-        c = 1;
-        document.getElementById("monthly_profit").innerHTML = ``;
-        data.transaction.forEach((transaction) => {
-          document.getElementById("monthly_profit").innerHTML += `<tr>
+      // if (data.transaction.length > 0) {
+      //   c = 1;
+      //   document.getElementById("monthly_profit").innerHTML = ``;
+      //   data.transaction.forEach((transaction) => {
+      //     document.getElementById("monthly_profit").innerHTML += `<tr>
+      //       <td>${c}.</td>
+      //       <td>${monthToWord(transaction.month + "-01")}</td>
+      //       <td>₦${formatNumber(parseInt(transaction.profit))}</td>
+      //   </tr>
+      //   `;
+
+      //     if (transaction.count != null) {
+      //       total_trans_count += parseInt(transaction.count);
+      //     } else {
+      //       total_trans_count = data.transaction.length;
+      //     }
+      //     total_profit += parseInt(transaction.profit);
+
+      //     c = c + 1;
+      //   });
+      // }
+
+      // if (data.expense.length > 0) {
+      //   c = 1;
+      //   document.getElementById("m_expense_table").innerHTML = ``;
+      //   data.expense.forEach((expense) => {
+      //     document.getElementById("m_expense_table").innerHTML += `<tr>
+      //       <td>${c}.</td>
+      //       <td>${monthToWord(expense.month + "-01")}</td>
+      //       <td>₦${formatNumber(parseInt(expense.amount))}</td>
+      //   </tr>
+      //   `;
+      //     total_expense += parseInt(expense.amount);
+      //     c = c + 1;
+      //   });
+      // }
+
+
+      // USE FOR LOOP TO POPULATE TABLE INSTEAD OF FOREACH TO AVOID REPAINTING THE DOM MULTIPLE TIMES
+      c = 1;
+      length = data.transaction.length;
+      document.getElementById("monthly_profit").innerHTML = ``;
+      for (i = 0; i < length; i++) {
+        const sales = data.transaction[i];
+        const expense = data.expense[i];
+        const netSales = parseInt(sales.profit) - parseInt(expense.amount);
+
+        document.getElementById("monthly_profit").innerHTML += `<tr>
             <td>${c}.</td>
-            <td>${monthToWord(transaction.month+"-01")}</td>
-            <td>₦${formatNumber(parseInt(transaction.profit))}</td>
+            <td style="color:black">${monthToWord(sales.month + "-01")}</td>
+            <td style="color:blue">₦${formatNumber(parseInt(sales.profit))}</td>
+            <td style="color:red">₦${formatNumber(parseInt(expense.amount))}</td>
+            <td style="color: ${netSales < 0 ? "red" : "green"
+          }"><b>₦${formatNumber(netSales)}</b></td>
         </tr>
         `;
 
-          if (transaction.count != null) {
-            total_trans_count += parseInt(transaction.count);
-          } else {
-            total_trans_count = data.transaction.length;
-          }
-          total_profit += parseInt(transaction.profit);
+        if (sales.count != null) {
+          total_trans_count += parseInt(sales.count);
+        } else {
+          total_trans_count = data.transaction.length;
+        }
+        total_profit += parseInt(sales.profit);
+        total_expense += parseInt(expense.amount);
 
-          c = c + 1;
-        });
+        c = c + 1;
       }
 
-      if (data.expense.length > 0) {
-        c = 1;
-        document.getElementById("m_expense_table").innerHTML = ``;
-        data.expense.forEach((expense) => {
-          document.getElementById("m_expense_table").innerHTML += `<tr>
-            <td>${c}.</td>
-            <td>${monthToWord(expense.month+"-01")}</td>
-            <td>₦${formatNumber(parseInt(expense.amount))}</td>
-        </tr>
-        `;
-          total_expense += parseInt(expense.amount);
-          c = c + 1;
-        });
-      }
 
       document.getElementById("m_total_expense").innerHTML =
         "₦" + formatNumber(total_expense);
