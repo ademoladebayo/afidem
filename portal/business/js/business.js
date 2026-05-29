@@ -1233,13 +1233,13 @@ function getBreakdownMonthly(date, station_id, station_name) {
       for (i = 0; i < length; i++) {
         const sales = data.transaction[i];
         const expense = data.expense[i];
-        const netSales = parseInt(sales.profit) - parseInt(expense.amount ?? 0);
+        const netSales = parseInt(sales.profit) - parseInt(expense ? expense.amount : 0);
 
         document.getElementById("monthly_profit").innerHTML += `<tr>
             <td>${c}.</td>
             <td style="color:black">${monthToWord(sales.month + "-01")}</td>
             <td style="color:blue">₦${formatNumber(parseInt(sales.profit))}</td>
-            <td style="color:red">₦${formatNumber(parseInt(expense.amount ?? 0))}</td>
+            <td style="color:red">₦${formatNumber(parseInt(expense ? expense.amount : 0))}</td>
             <td style="color: ${netSales < 0 ? "red" : "green"
           }"><b>₦${formatNumber(netSales)}</b></td>
         </tr>
@@ -1251,7 +1251,7 @@ function getBreakdownMonthly(date, station_id, station_name) {
           total_trans_count = data.transaction.length;
         }
         total_profit += parseInt(sales.profit);
-        total_expense += parseInt(expense.amount ?? 0);
+        total_expense += parseInt(expense ? expense.amount : 0);
 
         c = c + 1;
       }
