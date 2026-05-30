@@ -1257,14 +1257,34 @@ function getBreakdownMonthly(date, station_id, station_name) {
       }
 
 
-      document.getElementById("m_total_expense").innerHTML =
-        "₦" + formatNumber(total_expense);
-      document.getElementById("m_total_income").innerHTML =
-        "₦" + formatNumber(total_profit);
-      document.getElementById("m_transaction_count").innerHTML =
-        formatNumber(total_trans_count);
-      document.getElementById("m_gross_profit").innerHTML =
-        "₦" + formatNumber(total_profit - total_expense);
+      // document.getElementById("m_total_expense").innerHTML =
+      //   "₦" + formatNumber(total_expense);
+      // document.getElementById("m_total_income").innerHTML =
+      //   "₦" + formatNumber(total_profit);
+      // document.getElementById("m_transaction_count").innerHTML =
+      //   formatNumber(total_trans_count);
+      // document.getElementById("m_gross_profit").innerHTML =
+      //   "₦" + formatNumber(total_profit - total_expense);
+
+
+      // NEW ROW
+      document.getElementById("monthly_profit").innerHTML += `
+        <tr>
+            <td></td>
+            <td>TOTAL :</td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+        total_profit
+      )}</td>
+            <td></td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+        total_expense
+      )}</td>
+            <td></td>
+            <td style=" border-top: 2px solid black; border-bottom: 6px double black;">${formatNumber(
+        total_profit - total_expense
+      )}</td>
+        </tr>
+        `;
     })
     .catch((err) => console.log(err));
 }
